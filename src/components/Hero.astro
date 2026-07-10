@@ -1,0 +1,140 @@
+---
+import { Image } from 'astro:assets';
+import heroBg from '../assets/hero-bg.png';
+import heroMan from '../assets/hero-man.png';
+---
+
+<section class="hero">
+  <Image
+    class="hero__bg"
+    src={heroBg}
+    alt=""
+    widths={[960, 1440, 1920, 2560, 3456]}
+    sizes="100vw"
+    format="webp"
+    quality={80}
+    loading="eager"
+    fetchpriority="high"
+  />
+
+  <div class="hero__copy">
+    <p class="hero__eyebrow">Hi! I am</p>
+
+    <div class="hero__name">
+      <h1 class="hero__title">Daksh Sharma</h1>
+      <Image
+        class="hero__man"
+        src={heroMan}
+        alt="Illustration of Daksh Sharma reclining on a cloud"
+        widths={[440, 882]}
+        sizes="(max-width: 40rem) 60vw, 30vw"
+        format="webp"
+        quality={90}
+        loading="eager"
+      />
+    </div>
+
+    <p class="hero__tagline">
+      <strong>Senior Product Designer</strong> working where AI, health, and
+      high-craft interfaces meet, building the whole thing from strategy to ship
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    overflow: hidden;
+    padding: var(--space-xl);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero__copy {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    /* Lift the block above the horizon line baked into the artwork. */
+    padding-bottom: 14vh;
+  }
+
+  .hero__eyebrow {
+    font-size: var(--font-md);
+    font-weight: 400;
+    margin-bottom: var(--space-xs);
+  }
+
+  .hero__name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__title {
+    font-size: var(--font-display);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* Negative offset floats the man over the lower half of the name while
+     still reserving flow space for the tagline below. */
+  .hero__man {
+    width: clamp(15rem, 30vw, 29rem);
+    height: auto;
+    margin-top: -0.42em;
+    font-size: var(--font-display);
+    animation: float 6s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .hero__tagline {
+    max-width: 34ch;
+    margin-top: var(--space-lg);
+    font-size: var(--font-md);
+    font-weight: 400;
+  }
+
+  .hero__tagline strong {
+    font-weight: 700;
+  }
+
+  @keyframes float {
+    from {
+      transform: translateY(-0.6rem) rotate(-0.4deg);
+    }
+    to {
+      transform: translateY(0.6rem) rotate(0.4deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__man {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .hero__man {
+      width: 60vw;
+    }
+
+    .hero__tagline {
+      font-size: var(--font-base);
+    }
+  }
+</style>
