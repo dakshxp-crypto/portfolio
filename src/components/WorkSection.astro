@@ -1,0 +1,185 @@
+---
+// Case studies shown under the hero. Add future studies to this array.
+const work = [
+  {
+    index: '01',
+    title: 'Food Logging with Kaira',
+    hook: 'Good logging feels like talking, not filling. So I stopped designing a form.',
+    role: 'Sole product designer, GoodFlip',
+    tags: ['AI-first', 'Metabolic health', '0 to 1'],
+    href: '/work/food-logging-with-kaira',
+    cover: 'Shipped Kaira insight card',
+  },
+];
+---
+
+<section class="work" id="work">
+  <header class="work__head">
+    <h2 class="work__title">My Work</h2>
+    <p class="work__sub">Selected case studies. Decision-led, impact-first.</p>
+  </header>
+
+  <ul class="work__list">
+    {work.map((item) => (
+      <li class="work__item">
+        <a class="card" href={item.href}>
+          <div class="card__cover" aria-hidden="true">
+            <span class="card__cover-label">{item.cover}</span>
+          </div>
+          <div class="card__body">
+            <span class="card__index">{item.index}</span>
+            <h3 class="card__title">{item.title}</h3>
+            <p class="card__hook">{item.hook}</p>
+            <p class="card__role">{item.role}</p>
+            <ul class="card__tags">
+              {item.tags.map((t) => <li>{t}</li>)}
+            </ul>
+            <span class="card__cta">View case study<span class="card__arrow" aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .work {
+    color: var(--ink);
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-xl);
+  }
+
+  .work__head {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .work__title {
+    font-size: var(--font-xxl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .work__sub {
+    margin-top: var(--space-xs);
+    font-size: var(--font-md);
+    color: var(--muted);
+  }
+
+  .work__list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--space-2xl);
+    align-items: center;
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: inherit;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .card__cover {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    border-radius: calc(var(--radius-md) - 6px);
+    /* Placeholder until the real anchor image is exported. */
+    background:
+      repeating-linear-gradient(-45deg, rgba(0,0,0,0.03) 0 12px, transparent 12px 24px),
+      linear-gradient(135deg, #FFE9D9, #FFD3BE);
+    border: 1px dashed var(--hairline);
+  }
+
+  .card__cover-label {
+    font-size: var(--font-sm);
+    color: var(--muted);
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card__index {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .card__title {
+    margin-top: var(--space-xs);
+    font-size: var(--font-xl);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .card__hook {
+    margin-top: var(--space-sm);
+    font-size: var(--font-md);
+    line-height: 1.4;
+  }
+
+  .card__role {
+    margin-top: var(--space-sm);
+    font-size: var(--font-sm);
+    color: var(--muted);
+  }
+
+  .card__tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+  }
+
+  .card__tags li {
+    font-size: var(--font-xs);
+    padding: var(--space-2xs) var(--space-sm);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-pill);
+    color: var(--muted);
+  }
+
+  .card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-top: var(--space-lg);
+    font-size: var(--font-base);
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .card__arrow {
+    transition: transform 0.25s ease;
+  }
+
+  .card:hover .card__arrow,
+  .card:focus-visible .card__arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 48rem) {
+    .card {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+  }
+</style>

@@ -1,0 +1,255 @@
+---
+// Interactive process timeline: four nodes, hover (or tap) a step to reveal
+// the real artifact from that step. One card open at a time, fixed-height
+// panel so the row never jumps.
+import { Image } from 'astro:assets';
+import competitive from '../assets/process-competitive.png';
+import emotional from '../assets/emotional-map.png';
+import wireframes from '../assets/process-wireframes.png';
+
+const steps = [
+  {
+    label: 'Competitive analysis',
+    image: competitive,
+    alt: 'Competitor teardown boards comparing manual, snap, and voice logging across nutrition apps',
+    caption:
+      'I start by mapping what already exists and where it falls short, so I design against the real gap, not a blank page.',
+  },
+  {
+    label: 'Emotional mapping of archetypes',
+    image: emotional,
+    alt: 'Emotional journey map with stages, user thoughts, and emotions across the CGM-triggered path',
+    caption:
+      'I map how each kind of user feels at each moment, because most drop-off is emotional before it is functional.',
+  },
+  {
+    label: 'User stories & scenarios',
+    image: null,
+    artifact: 'User stories / scenarios artifact',
+    caption:
+      'I turn those archetypes into concrete stories and scenarios, so every screen answers a real moment a real person is in.',
+  },
+  {
+    label: 'Wireframes',
+    image: wireframes,
+    alt: 'Wireframe flow of the voice logging conversation across multiple screens',
+    caption:
+      'Only then do I wireframe. By this point the hard thinking is done and the screens almost draw themselves.',
+  },
+];
+---
+
+<div class="tl" data-active="0">
+  <p class="tl__hint">Hover each step to see it in action.</p>
+
+  <ol class="tl__nodes">
+    {steps.map((step, i) => (
+      <li>
+        <button class="tl__node" type="button" data-i={i} aria-label={step.label}>
+          <span class="tl__dot" aria-hidden="true"></span>
+          <span class="tl__label">{step.label}</span>
+        </button>
+      </li>
+    ))}
+  </ol>
+
+  <div class="tl__panels">
+    {steps.map((step, i) => (
+      <figure class="tl__panel" data-i={i}>
+        {step.image ? (
+          <Image class="tl__img" src={step.image} alt={step.alt} widths={[600, 900, 1400]} sizes="(max-width: 44rem) 92vw, 44rem" />
+        ) : (
+          <div class="tl__ph">
+            <span class="tl__badge">Fill: {step.artifact} image</span>
+          </div>
+        )}
+        <figcaption class="tl__cap">{step.caption}</figcaption>
+      </figure>
+    ))}
+  </div>
+</div>
+
+<style>
+  .tl {
+    margin-top: var(--space-xl);
+  }
+
+  .tl__hint {
+    font-size: var(--font-sm);
+    color: var(--muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .tl__nodes {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+    position: relative;
+  }
+
+  /* Connecting line behind the dots. */
+  .tl__nodes::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: var(--hairline);
+    z-index: 0;
+  }
+
+  .tl__node {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+
+  .tl__dot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--hairline);
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  }
+
+  .tl__label {
+    font-size: var(--font-xs);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .tl__node:hover,
+  .tl__node:focus-visible {
+    color: var(--ink);
+  }
+
+  .tl__node:hover .tl__dot,
+  .tl__node:focus-visible .tl__dot {
+    border-color: var(--accent);
+    transform: scale(1.15);
+  }
+
+  /* Active node */
+  .tl.js .tl__node.is-active {
+    color: var(--accent);
+  }
+
+  .tl.js .tl__node.is-active .tl__dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Panels: fixed min-height so switching never shifts layout. */
+  .tl__panels {
+    margin-top: var(--space-lg);
+  }
+
+  .tl__panel {
+    margin: 0;
+  }
+
+  /* No-JS fallback: all panels stacked and visible. JS collapses to one. */
+  .tl.js .tl__panel {
+    display: none;
+  }
+
+  .tl.js .tl__panel.is-active {
+    display: block;
+    animation: tl-fade 0.28s ease both;
+  }
+
+  .tl__ph {
+    display: grid;
+    place-items: center;
+    min-height: 16rem;
+    border: 1px dashed var(--hairline);
+    border-radius: var(--radius-md);
+    background:
+      repeating-linear-gradient(-45deg, rgba(0,0,0,0.02) 0 14px, transparent 14px 28px),
+      var(--surface);
+  }
+
+  .tl__img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+
+  .tl__badge {
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: var(--space-2xs) var(--space-sm);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-pill);
+  }
+
+  .tl__cap {
+    margin-top: var(--space-md);
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 40rem;
+  }
+
+  @keyframes tl-fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tl.js .tl__panel.is-active { animation: none; }
+    .tl__dot { transition: none; }
+  }
+
+  @media (max-width: 40rem) {
+    .tl__label {
+      font-size: 0.7rem;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.tl').forEach((tl) => {
+    const nodes = Array.from(tl.querySelectorAll<HTMLButtonElement>('.tl__node'));
+    const panels = Array.from(tl.querySelectorAll<HTMLElement>('.tl__panel'));
+    const hint = tl.querySelector<HTMLElement>('.tl__hint');
+    tl.classList.add('js');
+
+    const coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if (coarse && hint) hint.textContent = 'Tap each step to see it in action.';
+
+    function activate(i: number) {
+      nodes.forEach((n, k) => n.classList.toggle('is-active', k === i));
+      panels.forEach((p, k) => p.classList.toggle('is-active', k === i));
+      tl.dataset.active = String(i);
+    }
+
+    nodes.forEach((node, i) => {
+      // Desktop: reveal on hover / keyboard focus.
+      node.addEventListener('mouseenter', () => activate(i));
+      node.addEventListener('focus', () => activate(i));
+      // Touch / click: reveal on tap.
+      node.addEventListener('click', () => activate(i));
+    });
+
+    activate(0);
+  });
+</script>

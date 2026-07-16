@@ -2,114 +2,212 @@
 import { Image } from 'astro:assets';
 import heroBg from '../assets/hero-bg.png';
 import heroMan from '../assets/hero-man.png';
+import frameImg from '../assets/frame.png';
 ---
 
-<section class="hero">
-  <Image
-    class="hero__bg"
-    src={heroBg}
-    alt=""
-    widths={[960, 1440, 1920, 2560, 3456]}
-    sizes="100vw"
-    format="webp"
-    quality={80}
-    loading="eager"
-    fetchpriority="high"
-  />
-
-  <div class="hero__copy">
-    <p class="hero__eyebrow">Hi! I am</p>
-
-    <div class="hero__name">
-      <h1 class="hero__title">Daksh Sharma</h1>
-      <Image
-        class="hero__man"
-        src={heroMan}
-        alt="Illustration of Daksh Sharma reclining on a cloud"
-        widths={[440, 882]}
-        sizes="(max-width: 40rem) 60vw, 30vw"
-        format="webp"
-        quality={90}
-        loading="eager"
-      />
+<section class="stage grid-bg">
+  <div class="stage__pin">
+    <!-- The painting: background scene + floating man. Scales down into the
+         frame as the page scrolls; the frame border fades in around it. -->
+    <div class="framed">
+      <div class="scene">
+        <Image
+          class="scene__bg"
+          src={heroBg}
+          alt=""
+          widths={[960, 1440, 1920, 2560, 3456]}
+          sizes="100vw"
+          format="webp"
+          quality={80}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <Image
+          class="scene__man"
+          src={heroMan}
+          alt="Illustration of Daksh Sharma reclining on a cloud"
+          widths={[440, 882]}
+          sizes="40vw"
+          format="webp"
+          quality={90}
+          loading="eager"
+        />
+      </div>
+      <Image class="frame" src={frameImg} alt="" widths={[820, 1640]} sizes="70vw" loading="eager" />
     </div>
 
-    <p class="hero__tagline">
-      <strong>Senior Product Designer</strong> working where AI, health, and
-      high-craft interfaces meet, building the whole thing from strategy to ship
-    </p>
+    <!-- Foreground copy + nav. Fades out as the scene collapses into the frame. -->
+    <div class="overlay">
+      <header class="nav">
+        <div class="nav__logo">
+          <!-- Logo goes here -->
+        </div>
+        <nav class="nav__links" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#resume">Resume</a>
+          <a href="#work">Work</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <div class="copy">
+        <p class="copy__eyebrow">Hi! I am</p>
+        <h1 class="copy__title">Daksh Sharma</h1>
+        <p class="copy__tagline">
+          <strong>Senior Product Designer</strong> working where AI, health, and
+          high-craft interfaces meet, building the whole thing from strategy to ship
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    display: grid;
-    place-items: center;
-    min-height: 100svh;
-    overflow: hidden;
-    padding: var(--space-xl);
+  .stage {
+    /* Scroll runway: the extra height beyond one viewport is the distance
+       over which the collapse-into-frame plays out. */
+    height: 260vh;
   }
 
-  .hero__bg {
+  .stage__pin {
+    position: sticky;
+    top: 0;
+    display: grid;
+    place-items: center;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .framed {
+    position: relative;
+    width: min(64vw, 820px);
+    aspect-ratio: 2152 / 1416;
+    /* Default (pre-JS / first paint) ≈ full-bleed scene, frame off-screen.
+       JS recomputes the exact cover scale and updates it on scroll. */
+    transform: scale(2.4);
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  .scene {
+    position: absolute;
+    /* Inset to the frame's inner opening (measured from the PNG's alpha). */
+    inset: 7.3% 5.6% 7.5% 5.6%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+
+  .scene__bg {
     position: absolute;
     inset: 0;
-    z-index: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
   }
 
-  .hero__copy {
+  .scene__man {
     position: relative;
-    z-index: 1;
+    width: 34%;
+    height: auto;
+    animation: float 6s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    will-change: opacity;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    will-change: opacity;
+  }
+
+  .nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-lg) var(--space-xl);
+    gap: var(--space-lg);
+  }
+
+  .nav__links {
+    display: flex;
+    gap: var(--space-lg);
+    font-size: var(--font-base);
+    font-weight: 500;
+  }
+
+  .nav__links a {
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  .nav__links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .nav__links a:hover::after,
+  .nav__links a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .copy {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    /* Lift the block above the horizon line baked into the artwork. */
+    padding: var(--space-xl);
     padding-bottom: 14vh;
   }
 
-  .hero__eyebrow {
-    font-size: var(--font-md);
-    font-weight: 400;
+  .copy__eyebrow {
+    font-size: var(--font-lg);
+    font-weight: 700;
     margin-bottom: var(--space-xs);
   }
 
-  .hero__name {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero__title {
+  .copy__title {
     font-size: var(--font-display);
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.02em;
   }
 
-  /* Negative offset floats the man over the lower half of the name while
-     still reserving flow space for the tagline below. */
-  .hero__man {
-    width: clamp(15rem, 30vw, 29rem);
-    height: auto;
-    margin-top: -0.42em;
-    font-size: var(--font-display);
-    animation: float 6s ease-in-out infinite alternate;
-    will-change: transform;
-  }
-
-  .hero__tagline {
+  .copy__tagline {
     max-width: 34ch;
-    margin-top: var(--space-lg);
+    margin-top: var(--space-2xl);
     font-size: var(--font-md);
     font-weight: 400;
   }
 
-  .hero__tagline strong {
+  .copy__tagline strong {
     font-weight: 700;
   }
 
@@ -123,18 +221,99 @@ import heroMan from '../assets/hero-man.png';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__man {
+    .scene__man {
       animation: none;
     }
   }
 
   @media (max-width: 40rem) {
-    .hero__man {
-      width: 60vw;
+    .framed {
+      width: 86vw;
     }
 
-    .hero__tagline {
+    .nav {
+      padding: var(--space-md);
+    }
+
+    .nav__links {
+      gap: var(--space-md);
+      font-size: var(--font-sm);
+    }
+
+    .copy__tagline {
       font-size: var(--font-base);
     }
   }
 </style>
+
+<script>
+  const stage = document.querySelector<HTMLElement>('.stage');
+  const framed = document.querySelector<HTMLElement>('.framed');
+  const frame = document.querySelector<HTMLElement>('.frame');
+  const overlay = document.querySelector<HTMLElement>('.overlay');
+
+  if (stage && framed && frame && overlay) {
+    // Fraction of the frame taken up by its border, per axis (from the PNG).
+    const INSET_X = 0.056 + 0.056;
+    const INSET_Y = 0.073 + 0.075;
+
+    const clamp = (t: number) => (t < 0 ? 0 : t > 1 ? 1 : t);
+    const smooth = (t: number) => t * t * (3 - 2 * t);
+
+    // The collapse completes at this fraction of the pinned scroll range; the
+    // remainder holds the finished painting on the wall before it unpins.
+    const ANIM_END = 0.72;
+
+    let coverScale = 2.4;
+    let runway = 1;
+
+    function measure() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      // offsetWidth/Height are layout sizes, unaffected by the transform.
+      const sceneW = framed!.offsetWidth * (1 - INSET_X);
+      const sceneH = framed!.offsetHeight * (1 - INSET_Y);
+      // Scale at which the inner scene just covers the viewport.
+      coverScale = Math.max(vw / sceneW, vh / sceneH) * 1.04;
+      runway = Math.max(1, stage!.offsetHeight - vh);
+    }
+
+    let ticking = false;
+    function render() {
+      ticking = false;
+      const raw = clamp(-stage!.getBoundingClientRect().top / runway);
+      const p = clamp(raw / ANIM_END);
+      const eased = smooth(p);
+
+      framed!.style.transform = `scale(${coverScale + (1 - coverScale) * eased})`;
+      frame!.style.opacity = String(smooth(clamp((p - 0.55) / 0.4)));
+
+      const copyOpacity = 1 - smooth(clamp(p / 0.4));
+      overlay!.style.opacity = String(copyOpacity);
+      overlay!.style.pointerEvents = copyOpacity < 0.05 ? 'none' : '';
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(render);
+      }
+    }
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function init() {
+      measure();
+      render();
+    }
+
+    init();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      measure();
+      render();
+    });
+    // Re-measure once the frame image has loaded (aspect-ratio holds layout,
+    // but this guards against late font/layout shifts).
+    window.addEventListener('load', init);
+  }
+</script>

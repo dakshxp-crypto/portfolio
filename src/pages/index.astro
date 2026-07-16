@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import WorkSection from '../components/WorkSection.astro';
 ---
 
 <BaseLayout
@@ -9,5 +10,14 @@ import Hero from '../components/Hero.astro';
 >
   <main>
     <Hero />
+    <section class="grid-bg page-content">
+      <WorkSection />
+    </section>
   </main>
 </BaseLayout>
+
+<style>
+  .page-content {
+    min-height: 100vh;
+  }
+</style>

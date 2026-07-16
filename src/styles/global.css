@@ -3,9 +3,18 @@
 :root {
   /* Design Tokens - Colors */
   --bg: #F25B2E;
+  --surface: #FFFFFF;
   --text: #FFFFFF;
+  --ink: #1A1A1A;
+  --muted: #6B6B6B;
+  --hairline: rgba(0, 0, 0, 0.12);
   --accent: #E75F38;
   --radius-pill: 999px;
+  --radius-md: 16px;
+
+  /* Page-background grid */
+  --grid-size: 64px;
+  --grid-line: rgba(0, 0, 0, 0.06);
 
   /* Typography Scale */
   --font-xs: 0.75rem;     /* 12px */
@@ -48,4 +57,13 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Faint square grid used as page-background texture. */
+.grid-bg {
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
 }
