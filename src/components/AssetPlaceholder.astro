@@ -1,0 +1,58 @@
+---
+// Visible placeholder for a pending asset. Renders a dashed labeled frame in
+// the live page (never a comment), so gaps are obvious and can be cleared one
+// by one. `ratio` (e.g. "16/9", "9/16") sets the intended aspect ratio.
+interface Props {
+  label: string;
+  ratio?: string;
+}
+const { label, ratio } = Astro.props;
+---
+
+<div class="asset-ph" style={ratio ? `aspect-ratio: ${ratio};` : undefined}>
+  <span class="asset-ph__tag">Asset</span>
+  <span class="asset-ph__label">{label}</span>
+  {ratio && <span class="asset-ph__ratio">{ratio}</span>}
+</div>
+
+<style>
+  .asset-ph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    min-height: 12rem;
+    padding: var(--space-2xl) var(--space-lg);
+    text-align: center;
+    border: 1px dashed var(--hairline);
+    border-radius: var(--radius-md);
+    background:
+      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.02) 0 14px, transparent 14px 28px),
+      var(--surface);
+  }
+
+  .asset-ph__tag {
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: var(--space-2xs) var(--space-sm);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-pill);
+  }
+
+  .asset-ph__label {
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 34rem;
+  }
+
+  .asset-ph__ratio {
+    font-size: var(--font-xs);
+    color: var(--muted);
+    opacity: 0.7;
+  }
+</style>
