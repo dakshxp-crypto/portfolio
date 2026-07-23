@@ -1,14 +1,29 @@
 ---
+import { Image } from 'astro:assets';
+import cgmCover from '../assets/cgm-hero.png';
+import kairaCover from '../assets/cs-hero.png';
+
 // Case studies shown under the hero. Add future studies to this array.
 const work = [
   {
     index: '01',
+    title: 'GoodFlip CGM',
+    hook: 'A live glucose dashboard built for three kinds of reader.',
+    role: 'Sole product designer, TatvaCare',
+    tags: ['Medical device', 'Data-dense UI', 'Shipped'],
+    href: '/work/goodflip-cgm',
+    cover: cgmCover,
+    coverAlt: 'GoodFlip CGM app screens: daily glucose, onboarding, and a Kaira spike insight',
+  },
+  {
+    index: '02',
     title: 'Food Logging with Kaira',
     hook: 'Good logging feels like talking, not filling. So I stopped designing a form.',
     role: 'Sole product designer, GoodFlip',
     tags: ['AI-first', 'Metabolic health', '0 to 1'],
     href: '/work/food-logging-with-kaira',
-    cover: 'Shipped Kaira insight card',
+    cover: kairaCover,
+    coverAlt: 'Kaira app: a conversational meal log and its insight card around the Kaira mark',
   },
 ];
 ---
@@ -23,8 +38,8 @@ const work = [
     {work.map((item) => (
       <li class="work__item">
         <a class="card" href={item.href}>
-          <div class="card__cover" aria-hidden="true">
-            <span class="card__cover-label">{item.cover}</span>
+          <div class="card__cover">
+            <Image class="card__cover-img" src={item.cover} alt={item.coverAlt} widths={[500, 900, 1440]} sizes="(max-width: 48rem) 92vw, 34rem" />
           </div>
           <div class="card__body">
             <span class="card__index">{item.index}</span>
@@ -93,20 +108,19 @@ const work = [
   }
 
   .card__cover {
-    display: grid;
-    place-items: center;
     aspect-ratio: 16 / 10;
     border-radius: calc(var(--radius-md) - 6px);
-    /* Placeholder until the real anchor image is exported. */
-    background:
-      repeating-linear-gradient(-45deg, rgba(0,0,0,0.03) 0 12px, transparent 12px 24px),
-      linear-gradient(135deg, #FFE9D9, #FFD3BE);
-    border: 1px dashed var(--hairline);
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    background: var(--surface);
   }
 
-  .card__cover-label {
-    font-size: var(--font-sm);
-    color: var(--muted);
+  .card__cover-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
   .card__body {
