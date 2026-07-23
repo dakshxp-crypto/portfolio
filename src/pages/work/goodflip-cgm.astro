@@ -1,0 +1,1528 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AssetPlaceholder from '../../components/AssetPlaceholder.astro';
+import cgmHero from '../../assets/cgm-hero.png';
+import cgmIA from '../../assets/cgm-ia.jpg';
+import cgmToggle from '../../assets/cgm-toggle.png';
+import cgmAdvanced from '../../assets/cgm-advanced.png';
+import cgmMetricCards from '../../assets/cgm-metric-cards.png';
+import cgmEducation from '../../assets/cgm-education.png';
+import cgmNudges from '../../assets/cgm-nudges.png';
+import cgmSyncError from '../../assets/cgm-sync-error.png';
+import cgmReplica from '../../assets/cgm-replica.png';
+import cgmConnection from '../../assets/cgm-connection.png';
+import cgmQrBefore from '../../assets/cgm-qr-before.png';
+import cgmQrAfter from '../../assets/cgm-qr-after.png';
+import cgmHindiBefore from '../../assets/cgm-hindi-before.png';
+import cgmHindiAfter from '../../assets/cgm-hindi-after.png';
+import cgmAiGraph from '../../assets/cgm-ai-graph.png';
+import cgmAiDaily from '../../assets/cgm-ai-daily.png';
+import cgmAiSpike from '../../assets/cgm-ai-spike.png';
+
+const beat5 = {
+  toggle: { src: cgmToggle, alt: 'Dashboard with a Daily Metrics and Cumulative Report toggle at the top, showing the current glucose reading' },
+  advanced: { src: cgmAdvanced, alt: 'A separated Advanced Metrics section below the everyday cards, with HbA1c and glucose variability' },
+  metricCards: { src: cgmMetricCards, alt: 'Metric cards ending on a human verdict: Time in Range 76% you’re on track, Time Above Range 18% room to improve' },
+  education: { src: cgmEducation, alt: 'An education page explaining what the day glucose graph means and how to read it, in plain language' },
+  nudges: { src: cgmNudges, alt: 'The nudge system table: trigger, timing, user state, and message, led by glucose-spike nudges' },
+  syncError: { src: cgmSyncError, alt: 'An in-context Sync Paused error telling the user to check the transmitter is properly fitted' },
+  replica: { src: cgmReplica, alt: 'A live on-screen replica of the CGM device showing the current glucose reading' },
+  connection: { src: cgmConnection, alt: 'Connection support: a sensor warming-up screen with a CGM guide and video tutorials' },
+};
+
+const KAIRA_HREF = '/work/food-logging-with-kaira';
+
+const readers = [
+  {
+    name: 'The Seeker',
+    body: 'doesn’t have diabetes. She’s doing intermittent fasting and wants to know one thing: did I stay in range today? CV% and GMI mean nothing to her.',
+  },
+  {
+    name: 'The Changer',
+    body: 'is working with a coach to reverse insulin resistance. He tracks week over week, and needs something clean enough to share.',
+  },
+  {
+    name: 'The Diagnosed Diabetic',
+    body: 'has used CGM for years. She reads AGP and standard deviation natively, and compares today against last Tuesday.',
+  },
+];
+
+const lenses = [
+  {
+    label: 'Business',
+    body: 'A standalone SKU in a growing market (BeatO, Ultrahuman, SugarFit), with a natural 15-day repurchase cycle.',
+  },
+  {
+    label: 'Product / ecosystem',
+    body: 'Filled the gap between six-month lab tests. Slotted in alongside BCA and coaching.',
+  },
+  {
+    label: 'User',
+    body: 'See your own glucose patterns, catch spikes early, watch progress without waiting six months.',
+  },
+  {
+    label: 'Clinical / coaching',
+    body: 'Continuous data a coach could act on, versus twice-a-year snapshots.',
+  },
+];
+
+const views = [
+  { label: 'Daily', body: 'the glanceable home. Current glucose, daily average, time in range.' },
+  { label: 'Cumulative', body: 'progress across fifteen days, for the person tracking change.' },
+  { label: 'Advanced', body: 'the clinical layer, and the view a user shares with their doctor or coach.' },
+];
+
+const metrics = [
+  {
+    metric: 'Time in range',
+    call: 'Show',
+    tone: 'show',
+    why: 'Upfront, never buried. The one number that answers am I okay.',
+  },
+  {
+    metric: 'GMI',
+    call: 'Simplify',
+    tone: 'simplify',
+    why: 'Renamed “Glucose Estimate” with a tooltip. The acronym means nothing to most people.',
+  },
+  {
+    metric: 'Max fluctuation',
+    call: 'Withhold',
+    tone: 'withhold',
+    why: 'Held back from the everyday user. A lone alarming spike doesn’t inform them, it frightens them. It lives in the advanced view, where a coach reads it in context.',
+  },
+];
+
+const steps = [
+  'Understand the medical concepts',
+  'Sit with the medical team on how they read the data',
+  'Wear the CGM for 15 days',
+  'Write user stories and scenarios',
+  'Wireframe',
+];
+
+// Shipped interactive prototypes (Figma). Session tokens stripped.
+const protos = [
+  {
+    label: 'Onboarding journey',
+    url: 'https://www.figma.com/proto/L8LwpJoeVQ67IGvsiU7eha/GF-CGM-Onboarding?node-id=3-9681&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3%3A8352&page-id=2%3A21',
+  },
+  {
+    label: 'Main landing page',
+    url: 'https://www.figma.com/proto/vpNbjYQVD5VEKL6R38CNEF/Kaira-s-CGM-Insights?node-id=243-11801&scaling=scale-down&content-scaling=fixed&starting-point-node-id=243%3A11830&page-id=1%3A3',
+  },
+].map((p) => ({
+  ...p,
+  embed: `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(p.url)}`,
+}));
+---
+
+<BaseLayout
+  title="GoodFlip CGM | Daksh Sharma"
+  description="Case study: a live glucose dashboard built for three kinds of reader. Sole product designer, research to shipped UI, GoodFlip CGM (TatvaCare)."
+>
+  <article class="cs">
+    <a class="cs__back" href="/#work">← Back to work</a>
+
+    {/* BEAT 1 — ANCHOR */}
+    <header class="cs__anchor">
+      <p class="cs__kicker">Case study</p>
+      <h1 class="cs__title">GoodFlip CGM</h1>
+      <p class="cs__hook">
+        A live glucose dashboard read by three people who couldn’t be more
+        different: someone who just wants to know they’re okay today, someone
+        tracking progress with a coach, and someone who reads the clinical data
+        natively. One product, three levels of medical literacy.
+      </p>
+    </header>
+
+    <figure class="shot shot--hero">
+      <Image
+        class="cs__hero-img"
+        src={cgmHero}
+        alt="GoodFlip CGM app: daily glucose metrics, the device onboarding screen, and a Kaira spike insight"
+        widths={[900, 1440, 2000, 3360]}
+        sizes="min(60rem, 92vw)"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <figcaption>GoodFlip CGM dashboard. Sole designer, research to shipped UI.</figcaption>
+    </figure>
+
+    <dl class="cs__stats">
+      <div class="stat">
+        <dd class="stat__value">77.6%</dd>
+        <dt class="stat__label">finished setup</dt>
+      </div>
+      <div class="stat">
+        <dd class="stat__value">78%</dd>
+        <dt class="stat__label">were still using it at day 14</dt>
+      </div>
+    </dl>
+
+    {/* ROLE BLOCK */}
+    <dl class="role">
+      <div class="role__row">
+        <dt>Role</dt>
+        <dd>Sole Product Designer, research to shipped UI</dd>
+      </div>
+      <div class="role__row">
+        <dt>Product</dt>
+        <dd>GoodFlip CGM dashboard (TatvaCare)</dd>
+      </div>
+      <div class="role__row">
+        <dt>Scope</dt>
+        <dd>Research, IA, interaction, visual design, shipped</dd>
+      </div>
+      <div class="role__row">
+        <dt>Timeline</dt>
+        <dd><span class="fill-inline">[ fill: duration ]</span></dd>
+      </div>
+      <div class="role__row">
+        <dt>Tools</dt>
+        <dd>Figma <span class="fill-inline">[ fill: remaining tools ]</span></dd>
+      </div>
+    </dl>
+
+    {/* BEAT 2 — WHY CGM */}
+    <section class="beat">
+      <h2 class="beat__h">Why CGM</h2>
+      <p>
+        CGM was a product call. My job was to design against it, which meant
+        understanding why it was the right one.
+      </p>
+    </section>
+
+    <div class="fourlens">
+      <div class="fourlens__hub" aria-hidden="true">CGM</div>
+      <ul class="fourlens__grid">
+        {lenses.map((l) => (
+          <li class="lens">
+            <h3 class="lens__label">{l.label}</h3>
+            <p class="lens__body">{l.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <section class="beat">
+      <p>Four different reasons to say yes. The design had to hold up to all of them.</p>
+    </section>
+
+    {/* BEAT 3 — THE BET (CENTERPIECE) */}
+    <section class="beat">
+      <p class="beat__eyebrow">The bet</p>
+      <h2 class="beat__h">One product, three readers</h2>
+      <p>
+        GoodFlip is built to be science-forward, so hiding the clinical data was
+        never the option. The full picture had to be in the product.
+      </p>
+      <p>
+        But a CGM produces around fifteen metrics, and the people reading them
+        aren’t the same person.
+      </p>
+    </section>
+
+    <ul class="readers">
+      {readers.map((r) => (
+        <li class="reader">
+          <h3 class="reader__name">{r.name}</h3>
+          <p class="reader__body">{r.body}</p>
+        </li>
+      ))}
+    </ul>
+
+    <section class="beat">
+      <p>
+        So I stopped designing one screen and split the dashboard into three
+        views, by how deep a reader wanted to go.
+      </p>
+    </section>
+
+    <div class="iaviews">
+      {views.map((v) => (
+        <div class="iaview">
+          <h3 class="iaview__label">{v.label}</h3>
+          <p class="iaview__body">{v.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <figure class="shot shot--hero">
+      <Image
+        class="shot__img"
+        src={cgmIA}
+        alt="Information architecture: Defining IA splits into a Daily View, a Cumulative view, and an Advanced metrics view shared with doctors and coaches, each broken into its metrics"
+        widths={[900, 1600, 2600]}
+        sizes="min(60rem, 92vw)"
+      />
+      <figcaption>The final IA: three views, split by how deep a reader wants to go.</figcaption>
+    </figure>
+
+    <section class="beat">
+      <p>
+        Inside each view I made one more call, metric by metric. Show it, simplify
+        it, or hold it back.
+      </p>
+    </section>
+
+    <div class="mtable-wrap">
+      <p class="mtable-title">The per-metric call</p>
+      <table class="mtable">
+        <thead>
+          <tr><th>Metric</th><th>Call</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          {metrics.map((m) => (
+            <tr>
+              <td class="mtable__metric">{m.metric}</td>
+              <td><span class={`mtag mtag--${m.tone}`}>{m.call}</span></td>
+              <td class="mtable__why">{m.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <section class="beat">
+      <p class="beat__lead">
+        The question was never how much to show. It was what each person could act
+        on, and what would only scare them.
+      </p>
+    </section>
+
+    {/* BEAT 4 — LIVING WITH THE DEVICE */}
+    <section class="beat">
+      <p class="beat__eyebrow">Living with the device</p>
+      <h2 class="beat__h">I wore it for fifteen days</h2>
+    </section>
+
+    <ol class="pstrip">
+      {steps.map((s, i) => (
+        <li class={`pstrip__node ${i === 2 ? 'pstrip__node--current' : ''}`}>
+          <span class="pstrip__dot" aria-hidden="true"></span>
+          <span class="pstrip__label">{s}</span>
+        </li>
+      ))}
+    </ol>
+
+    <section class="beat">
+      <p>
+        Before I designed a screen, I put a sensor on my own arm and lived with it
+        for the full fifteen-day cycle.
+      </p>
+      <p>Three things surfaced that no amount of research would have.</p>
+      <p>
+        <strong>The install was harder than the manual admits.</strong> Two-part
+        device, and even having studied it, I fumbled the first attempt. If I
+        struggled, the 60-year-old installing their first one didn’t stand a chance.
+      </p>
+      <p>
+        <strong>The errors weren’t edge cases.</strong> Data dropped out. Moisture
+        got in. A reading vanished and I couldn’t tell whether it was me, the
+        sensor, or the app.
+      </p>
+      <p>
+        <strong>The nudges were the one thing that genuinely helped.</strong> I
+        expected notification noise. Instead, the right prompt at the right moment
+        made the data feel alive instead of buried.
+      </p>
+      <p>
+        I ended the fifteen days with a list of everything that can go wrong with
+        this device. That list became the brief for what I designed next.
+      </p>
+    </section>
+
+    <figure class="shot shot--hero">
+      <AssetPlaceholder label="Real photo from the 15 days: sensor on arm / app showing live data (real photo strongly preferred over mock)" ratio="4/3" />
+    </figure>
+
+    {/* BEAT 5 — WHAT I BUILT IN RESPONSE */}
+    <section class="beat">
+      <p class="beat__eyebrow">What I built in response</p>
+      <h2 class="beat__h">Legible data, trustworthy device</h2>
+      <p>
+        That list of everything that can go wrong became the brief. I built
+        against it in two directions: making the data legible, and making the
+        device trustworthy.
+      </p>
+    </section>
+
+    <div class="protos">
+      {protos.map((p) => (
+        <figure class="proto">
+          <figcaption class="proto__label">{p.label}</figcaption>
+          <div class="proto__frame">
+            <iframe
+              src={p.embed}
+              title={`Interactive Figma prototype: GoodFlip CGM ${p.label}`}
+              loading="lazy"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </figure>
+      ))}
+    </div>
+
+    <section class="beat">
+      <h3 class="beat__sub">Making the data legible</h3>
+    </section>
+
+    <ul class="b5">
+      <li class="b5-item">
+        <h4 class="b5-item__title">Daily and Cumulative, one tap</h4>
+        <p class="b5-item__desc">
+          The archetype work couldn’t stay on paper. One switch at the top of the
+          dashboard lets the Seeker land on today’s single answer and the Diabetic
+          drop into fifteen-day trends, without either wading through the other’s
+          screen. The three-view split, made into one tap.
+        </p>
+        <figure class="b5-item__fig b5-item__fig--portrait">
+          <Image class="b5-item__img" src={beat5.toggle.src} alt={beat5.toggle.alt} widths={[400, 800]} sizes="(max-width: 48rem) 92vw, 20rem" />
+        </figure>
+      </li>
+
+      <li class="b5-item">
+        <h4 class="b5-item__title">Advanced Metrics, walled off</h4>
+        <p class="b5-item__desc">
+          A clearly separated section, so the everyday user knows where the
+          clinical depth begins and where they can stop looking.
+        </p>
+        <figure class="b5-item__fig b5-item__fig--portrait">
+          <Image class="b5-item__img" src={beat5.advanced.src} alt={beat5.advanced.alt} widths={[400, 786]} sizes="(max-width: 48rem) 92vw, 20rem" />
+        </figure>
+      </li>
+
+      <li class="b5-item">
+        <h4 class="b5-item__title">Plain-language cards</h4>
+        <p class="b5-item__desc">
+          Every metric card ends on a human verdict, not just a number. 18% above
+          range reads as “room to improve.”
+        </p>
+        <figure class="b5-item__fig b5-item__fig--wide">
+          <Image class="b5-item__img" src={beat5.metricCards.src} alt={beat5.metricCards.alt} widths={[600, 1200, 1754]} sizes="(max-width: 48rem) 92vw, 44rem" />
+        </figure>
+      </li>
+
+      <li class="b5-item">
+        <h4 class="b5-item__title">Education pages</h4>
+        <p class="b5-item__desc">
+          For every metric a user might not understand, a page that explains what
+          it means and how to read it, in plain language before clinical terms.
+          This is the decision I can prove worked, see the numbers below. People
+          didn’t tolerate the education. They sought it out.
+        </p>
+        <figure class="b5-item__fig b5-item__fig--portrait">
+          <Image class="b5-item__img" src={beat5.education.src} alt={beat5.education.alt} widths={[400, 750]} sizes="(max-width: 48rem) 92vw, 20rem" />
+        </figure>
+      </li>
+
+      <li class="b5-item">
+        <h4 class="b5-item__title">The nudge system</h4>
+        <p class="b5-item__desc">
+          The thing that helped me most during my fifteen days, designed as a
+          system rather than a stream of alerts. Seven triggers, each tuned to what
+          the moment can bear: a low-glucose dip is cautious and actionable, a
+          night spike is quietly informative, the end of a spiky day is reflective,
+          not alarming. Same duty of care as the dashboard itself, applied to what
+          we say and when.
+        </p>
+        <figure class="b5-item__fig b5-item__fig--wide">
+          <Image class="b5-item__img" src={beat5.nudges.src} alt={beat5.nudges.alt} widths={[600, 1200, 2022]} sizes="(max-width: 48rem) 92vw, 44rem" />
+        </figure>
+      </li>
+
+      <li class="b5-item">
+        <h4 class="b5-item__title">In-context error states</h4>
+        <p class="b5-item__desc">
+          When syncing dropped, the screen said what to check and why, in place,
+          rather than leaving the user staring at missing data.
+        </p>
+        <figure class="b5-item__fig b5-item__fig--portrait">
+          <Image class="b5-item__img" src={beat5.syncError.src} alt={beat5.syncError.alt} widths={[400, 980]} sizes="(max-width: 48rem) 92vw, 20rem" />
+        </figure>
+      </li>
+
+      <li class="b5-item">
+        <h4 class="b5-item__title">Live CGM replica</h4>
+        <p class="b5-item__desc">
+          Marketing wanted to launch this as India’s first Bluetooth CGM. I turned
+          that ask into a live on-screen replica of the device showing the current
+          reading, so the data felt alive rather than buried in a table.
+        </p>
+        <figure class="b5-item__fig b5-item__fig--wide">
+          <Image class="b5-item__img" src={beat5.replica.src} alt={beat5.replica.alt} widths={[500, 986]} sizes="(max-width: 48rem) 92vw, 44rem" />
+        </figure>
+      </li>
+
+      <li class="b5-item">
+        <h4 class="b5-item__title">Connection support</h4>
+        <p class="b5-item__desc">
+          Help, demos, and a way to reach support built into the connection journey
+          itself, where the install actually got hard.
+        </p>
+        <figure class="b5-item__fig b5-item__fig--portrait">
+          <Image class="b5-item__img" src={beat5.connection.src} alt={beat5.connection.alt} widths={[400, 590]} sizes="(max-width: 48rem) 92vw, 20rem" />
+        </figure>
+      </li>
+    </ul>
+
+    <section class="beat">
+      <p class="beat__lead">
+        Most of this held. The onboarding didn’t, and the complaints told me
+        exactly where.
+      </p>
+    </section>
+
+    {/* BEAT 6 — THE RECKONING */}
+    <section class="beat">
+      <p class="beat__eyebrow">The reckoning</p>
+      <h2 class="beat__h">Then I looked at what happened</h2>
+      <p>
+        Six weeks after launch, the February 2026 data was in. I only claim what
+        it can hold, so here’s what held.
+      </p>
+    </section>
+
+    <div class="statblocks">
+      <article class="statblock">
+        <p class="statblock__fig">77.6%</p>
+        <p class="statblock__claim">of people who started setup finished it</p>
+        <p class="statblock__body">
+          218 of 281, through a ten-step, two-part hardware pairing flow. Device
+          onboarding usually bleeds users at every step. This one mostly didn’t.
+          And I know exactly where the other 22% fell: transmitter detection, the
+          one real cliff in the funnel (93% to 83%). That specificity matters,
+          because it’s the same two-part device that came back to bite us after
+          launch.
+        </p>
+      </article>
+
+      <article class="statblock">
+        <p class="statblock__fig">78%</p>
+        <p class="statblock__claim">were still using it at day 14</p>
+        <p class="statblock__body">
+          The full sensor cycle (Day 0: 93%, Day 7: 81%, Day 14: 78%). People
+          didn’t set it up and drift. They came back to read their data every day.
+          One honest limit: I hold this at day 14 and no further. Beyond that the
+          cohorts thin out and the number stops being trustworthy. So this is the
+          ceiling I’ll claim.
+        </p>
+      </article>
+
+      <article class="statblock statblock--peak">
+        <p class="statblock__fig">42%</p>
+        <p class="statblock__claim">opened the day-glucose explainer, the most-opened content on the dashboard</p>
+        <p class="statblock__body">
+          In the last section I claimed people sought out the education rather than
+          tolerating it. Here’s the proof: the day-glucose explainer was the single
+          most-opened piece of content on the dashboard (42%), with the
+          time-in-range explainer next (24%). People didn’t just glance at their
+          numbers. They stopped to learn what the numbers meant. The one decision I
+          most wanted to be right about, was.
+        </p>
+      </article>
+    </div>
+
+    <figure class="shot shot--support">
+      <figcaption class="chart-title">Retention across the sensor cycle</figcaption>
+      <div class="retention">
+        <svg class="retention__svg" viewBox="0 0 120 62" preserveAspectRatio="none" role="img" aria-label="Retention: Day 0 at 93 percent, Day 7 at 81 percent, Day 14 at 78 percent, held to day 14">
+          <path class="retention__area" d="M10 14.5 L60 41.5 L110 48.25 L110 56 L10 56 Z" />
+          <path class="retention__line" d="M10 14.5 L60 41.5 L110 48.25" />
+          <circle class="retention__dot" cx="10" cy="14.5" r="2.4" />
+          <circle class="retention__dot" cx="60" cy="41.5" r="2.4" />
+          <circle class="retention__dot" cx="110" cy="48.25" r="2.4" />
+          <line class="retention__ceiling" x1="110" y1="48.25" x2="110" y2="8" />
+        </svg>
+        <div class="retention__labels" aria-hidden="true">
+          <span><b>93%</b>Day 0</span>
+          <span><b>81%</b>Day 7</span>
+          <span><b>78%</b>Day 14</span>
+        </div>
+        <p class="retention__note">Held to day 14. Beyond that the cohorts thin out, so this is the ceiling claimed.</p>
+      </div>
+    </figure>
+
+    <section class="beat">
+      <p class="beat__lead">The dashboard held. The onboarding was where reality pushed back.</p>
+    </section>
+
+    {/* BEAT 7 — WHERE REALITY PUSHED BACK */}
+    <section class="beat">
+      <p class="beat__eyebrow">Where reality pushed back</p>
+      <h2 class="beat__h">The device didn’t behave</h2>
+      <p>
+        Setup completion said 77.6%. What it didn’t say: some of those completed
+        setups started coming back as replacement requests. The data looked clean.
+        The device, in people’s hands, wasn’t behaving.
+      </p>
+      <p>
+        The complaints traced to one thing. It’s a two-component device (sensor and
+        transmitter, assembled by the user), and despite clear instructions, people
+        couldn’t tell when it was seated correctly. Data wouldn’t show, or they’d
+        installed it slightly wrong, or it wasn’t attached properly.
+      </p>
+      <p>
+        The root cause wasn’t the instructions. It was the mental model. Our
+        audience was used to a single-piece, stick-it-on-and-forget device. A
+        two-part assembly was a category they’d never met, and no amount of
+        on-screen copy fixed a hardware expectation. (The funnel had already
+        whispered this: transmitter detection was the one cliff in setup.)
+      </p>
+    </section>
+
+    <section class="beat">
+      <h3 class="beat__sub">Two responses, each matched to a specific failure</h3>
+    </section>
+
+    <ol class="fixes">
+      <li class="fix">
+        <h4 class="fix__lead">The QR scan kept failing</h4>
+        <p>On the sensor mapping step, so I added manual code entry as a fallback.</p>
+        <div class="beforeafter">
+          <figure class="ba">
+            <span class="ba__label">Before</span>
+            <Image class="ba__img" src={cgmQrBefore} alt="Connect-sensor step with QR scan only, no manual fallback" widths={[400, 790]} sizes="(max-width: 48rem) 46vw, 18rem" />
+          </figure>
+          <figure class="ba">
+            <span class="ba__label ba__label--after">After</span>
+            <Image class="ba__img" src={cgmQrAfter} alt="The same step with a Can’t scan the sensor QR? Enter ID Manually fallback added" widths={[400, 810]} sizes="(max-width: 48rem) 46vw, 18rem" />
+          </figure>
+        </div>
+      </li>
+      <li class="fix">
+        <h4 class="fix__lead">Older users were arriving in numbers we hadn’t designed for</h4>
+        <p>So I translated the whole flow to Hindi with a language toggle.</p>
+        <div class="beforeafter">
+          <figure class="ba">
+            <span class="ba__label">Before</span>
+            <Image class="ba__img" src={cgmHindiBefore} alt="Put-on-the-sensor step in English only" widths={[400, 784]} sizes="(max-width: 48rem) 46vw, 18rem" />
+          </figure>
+          <figure class="ba">
+            <span class="ba__label ba__label--after">After</span>
+            <Image class="ba__img" src={cgmHindiAfter} alt="The same step with an English and Hindi language toggle added" widths={[400, 650]} sizes="(max-width: 48rem) 46vw, 18rem" />
+          </figure>
+        </div>
+      </li>
+    </ol>
+
+    <div class="killed">
+      <div class="killed__text">
+        <span class="killed__tag">Killed idea</span>
+        <p>
+          I also pitched the more ambitious fix: use the phone camera as a live
+          install assistant, guiding the user through seating the device in real
+          time. I built a working demo. We killed it: dev bandwidth was thin, and
+          more seriously, nobody could answer what happens if the assistant tells
+          someone it’s seated correctly when it isn’t. On a medical device, a
+          confident wrong answer is worse than no answer. So it stayed a prototype.
+        </p>
+      </div>
+      <AssetPlaceholder label="Camera install-assistant prototype (optional)" ratio="9/16" />
+    </div>
+
+    {/* BEAT 8 — KAIRA ON CGM */}
+    <section class="beat">
+      <p class="beat__eyebrow">Closing the loop</p>
+      <h2 class="beat__h">Kaira on the CGM graph</h2>
+      <p>
+        The fixes handled what broke. The next move wasn’t a fix. The dashboard
+        could tell you your glucose spiked at 3pm. It couldn’t tell you why. The
+        why was almost always food.
+      </p>
+      <p>
+        So we brought Kaira, our food-logging AI, onto the CGM graph itself, with
+        two aims: help users see the pattern between what they ate and how their
+        glucose moved, and get them logging more in the first place.
+      </p>
+    </section>
+
+    <div class="collage">
+      <div class="collage__grid">
+        <figure class="collage__item collage__item--main">
+          <Image src={cgmAiGraph} alt="Daily glucose trend with food markers placed directly on the curve and an entry point into AI insights" widths={[500, 936]} sizes="(max-width: 48rem) 92vw, 24rem" />
+        </figure>
+        <figure class="collage__item">
+          <Image src={cgmAiDaily} alt="A Kaira daily insight reading the day’s glucose rhythm and naming the meal that helped most" widths={[500, 762]} sizes="(max-width: 48rem) 92vw, 18rem" />
+        </figure>
+        <figure class="collage__item">
+          <Image src={cgmAiSpike} alt="A Kaira spike insight explaining a 240 mg/dL rise after a meal, plainly and without alarm" widths={[500, 734]} sizes="(max-width: 48rem) 92vw, 18rem" />
+        </figure>
+      </div>
+      <p class="collage__cap">
+        Kaira on the CGM graph: food marked on the curve, and the plain-language
+        insights users open.
+      </p>
+    </div>
+
+    <ol class="decisions4">
+      <li class="fix">
+        <h4 class="fix__lead">Food, placed on the curve</h4>
+        <p>
+          Users could mark meals directly onto their glucose graph and tap any one
+          to see how it moved their sugar. A spike stopped being a number to worry
+          about and became a meal you could point to.
+        </p>
+      </li>
+      <li class="fix">
+        <h4 class="fix__lead">A clear entry point for AI insights</h4>
+        <p>
+          One obvious place to go from “here’s my data” to “tell me what it means,”
+          so the AI layer was something users chose to open, not something that got
+          in their way.
+        </p>
+      </li>
+      <li class="fix">
+        <h4 class="fix__lead">The insight itself was a design surface, not just the container</h4>
+        <p>
+          I owned what the AI actually said, the logic behind which insight surfaces
+          when, and the language it used to say it. In a product like this, the
+          model’s response is the interface, so I treated its words the way I’d
+          treat any other UX copy, held to the same care: useful, plain, and never
+          alarming to someone looking at their own health data.
+        </p>
+      </li>
+      <li class="fix">
+        <h4 class="fix__lead">AI only when the user asks for it</h4>
+        <p>
+          The one-liner above the graph looks AI-generated, but it’s rule-based by
+          design. Real AI runs only on genuine user intent, when someone actually
+          asks for an insight. Same result on screen, a fraction of the token cost
+          at scale.
+        </p>
+      </li>
+    </ol>
+
+    <div class="evidence">
+      <p>
+        It worked as an entry point. The CGM screen became the second-largest
+        food-logging doorway in the entire app, driving 26% of all logging starts,
+        behind only the nutrition screen built specifically for it. A glucose
+        dashboard turned into one of the product’s primary places to log a meal.
+      </p>
+    </div>
+
+    <section class="beat">
+      <p>
+        My part was the integration: how Kaira surfaced on the CGM screen, how
+        meals mapped onto the graph, the tap-to-detail interaction, the entry point
+        into insights, and the logic and language of the insights themselves. I
+        designed it and handed the logic to the developers.
+      </p>
+    </section>
+
+    <a class="crosslink" href={KAIRA_HREF}>
+      <span class="crosslink__label">Kaira as a product has its own story</span>
+      <span class="crosslink__cta">Read the Kaira case study<span aria-hidden="true"> →</span></span>
+    </a>
+
+    {/* BEAT 9 — WHERE IT STANDS */}
+    <section class="beat">
+      <p class="beat__eyebrow">Where it stands</p>
+      <h2 class="beat__h">The close</h2>
+      <p>
+        What worked, I can point to. The education pages, the bet I most wanted to
+        be right about, are among the most-opened content on the dashboard. The
+        dashboard itself has drawn few real complaints and some genuine user
+        appreciation, which for a screen this dense is the outcome I’d have taken at
+        the start.
+      </p>
+      <p>
+        The clearest proof it held: the same dashboard now runs on MedEcho, the
+        doctor-facing version, where clinicians read their patients’ data through
+        it. A screen built to be legible for three kinds of reader turned out
+        legible enough to become the clinical one.
+      </p>
+    </section>
+
+    <section class="beat">
+      <p>
+        It isn’t finished. We watch the user reviews as they come, and I worked
+        with a colleague to resolve the most common friction through a proper FAQ
+        layer. And the thing we ruled out at launch, real two-way interaction with
+        Kaira, is now being built directly into the CGM. The ambition that dev
+        bandwidth killed on day one is the direction the product is taking now.
+      </p>
+      <p class="beat__lead">
+        None of this was about a dashboard. It was about deciding what each person
+        could handle, showing the data honestly, and fixing what I got wrong when
+        the device proved me wrong. That’s the work I’d do again.
+      </p>
+    </section>
+
+    <a class="crosslink" href={KAIRA_HREF}>
+      <span class="crosslink__label">The food-logging AI has its own story</span>
+      <span class="crosslink__cta">Read the Kaira case study<span aria-hidden="true"> →</span></span>
+    </a>
+
+    <footer class="cs__foot">
+      <a class="cs__back" href="/#work">← Back to work</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Light reading surface for the case study, matching the Kaira page. */
+  body:has(.cs) {
+    background-color: var(--surface);
+    color: var(--ink);
+  }
+</style>
+
+<style>
+  /* ---- Shared case-study primitives (match the Kaira study) ---- */
+  .cs {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-xl) var(--space-3xl);
+    color: var(--ink);
+  }
+
+  .cs__back {
+    display: inline-block;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+  .cs__back:hover { color: var(--accent); }
+
+  .cs__anchor { margin-top: var(--space-2xl); }
+
+  .cs__kicker {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .cs__title {
+    margin-top: var(--space-sm);
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .cs__hook {
+    margin-top: var(--space-lg);
+    font-size: var(--font-lg);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  /* Break-out helper used by wide elements. */
+  .shot,
+  .fourlens,
+  .iaviews,
+  .mtable-wrap,
+  .pstrip,
+  .readers,
+  .decision,
+  .caption-item,
+  .statblocks,
+  .fixes,
+  .decisions4,
+  .killed,
+  .evidence,
+  .crosslink {
+    width: min(60rem, 92vw);
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Header stats */
+  .cs__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+    margin: var(--space-xl) 0 0;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--hairline);
+    max-width: 44rem;
+  }
+  .stat { display: flex; flex-direction: column; }
+  .stat__value {
+    order: -1;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .stat__label {
+    margin-top: var(--space-sm);
+    font-size: var(--font-base);
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 22ch;
+  }
+
+  /* Role block */
+  .role {
+    max-width: 44rem;
+    margin: var(--space-2xl) 0 0;
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    display: grid;
+    gap: var(--space-sm);
+  }
+  .role__row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: var(--space-md);
+    align-items: baseline;
+  }
+  .role__row dt {
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .role__row dd {
+    font-size: var(--font-sm);
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .fill-inline {
+    font-size: var(--font-xs);
+    color: var(--muted);
+    border: 1px dashed var(--hairline);
+    border-radius: var(--radius-pill);
+    padding: 0.05em 0.5em;
+  }
+
+  /* Beats */
+  .beat { margin-top: var(--space-3xl); }
+  .beat__eyebrow {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-xs);
+  }
+  .beat__h {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-md);
+  }
+  .beat__sub {
+    font-size: var(--font-md);
+    font-weight: 700;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-xs);
+  }
+  .beat p {
+    font-size: var(--font-md);
+    line-height: 1.6;
+    margin-top: var(--space-md);
+  }
+  .beat p:first-of-type { margin-top: 0; }
+  .beat__lead {
+    font-weight: 700;
+    font-size: var(--font-lg) !important;
+    line-height: 1.35;
+  }
+
+  /* Figures / placeholders */
+  .shot { margin-top: var(--space-2xl); margin-bottom: var(--space-2xl); }
+  .shot--support { width: min(48rem, 92vw); }
+  .shot figcaption {
+    margin-top: var(--space-sm);
+    font-size: var(--font-sm);
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .cs__hero-img,
+  .shot__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+
+  /* ---- Beat 2: four-lens diagram ---- */
+  .fourlens {
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+  .fourlens__hub {
+    display: grid;
+    place-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: var(--font-md);
+    letter-spacing: 0.02em;
+  }
+  .fourlens__grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    width: 100%;
+  }
+  .lens {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .lens__label {
+    font-size: var(--font-base);
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .lens__body {
+    margin-top: var(--space-xs);
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  /* ---- Beat 3: readers, IA views, metric table ---- */
+  .readers {
+    list-style: none;
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+  .reader {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    border-top: 3px solid var(--accent);
+  }
+  .reader__name { font-size: var(--font-md); font-weight: 700; }
+  .reader__body {
+    margin-top: var(--space-sm);
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .iaviews {
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+  .iaview {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.02);
+  }
+  .iaview__label {
+    font-size: var(--font-md);
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .iaview__body {
+    margin-top: var(--space-xs);
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .mtable-wrap { margin-top: var(--space-xl); }
+  .mtable-title {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+  }
+  .mtable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .mtable th,
+  .mtable td {
+    text-align: left;
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--hairline);
+    vertical-align: top;
+  }
+  .mtable th {
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.03);
+  }
+  .mtable tr:last-child td { border-bottom: none; }
+  .mtable__metric { font-weight: 700; white-space: nowrap; }
+  .mtable__why { color: var(--muted); }
+  .mtag {
+    display: inline-block;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    padding: var(--space-2xs) var(--space-sm);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+  .mtag--show { background: var(--accent); color: #fff; }
+  .mtag--simplify { color: var(--accent); border: 1px solid var(--accent); }
+  .mtag--withhold { color: var(--muted); border: 1px solid var(--hairline); }
+
+  /* ---- Beat 4: process strip ---- */
+  .pstrip {
+    list-style: none;
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-sm);
+    position: relative;
+  }
+  .pstrip::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: var(--hairline);
+    z-index: 0;
+  }
+  .pstrip__node {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    text-align: center;
+  }
+  .pstrip__dot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--hairline);
+  }
+  .pstrip__label {
+    font-size: var(--font-xs);
+    line-height: 1.3;
+    color: var(--muted);
+  }
+  .pstrip__node--current .pstrip__dot {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.35);
+  }
+  .pstrip__node--current .pstrip__label {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* ---- Beat 5 / 7: decision + screen, caption items, fixes ---- */
+  .decision {
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: 1fr 16rem;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+  .decision__kind {
+    display: inline-block;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+  }
+  .decision__text p {
+    font-size: var(--font-md);
+    line-height: 1.6;
+  }
+
+  .caption-item {
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+  .caption-item__cap {
+    font-size: var(--font-sm);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* Real screens inside decision / caption blocks */
+  .decision__img,
+  .caption-item__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+
+  /* Wide screens (tables, landscape cards) get their own full-width row. */
+  .decision:has(.decision__img--wide),
+  .caption-item:has(.caption-item__img--wide) {
+    grid-template-columns: 1fr;
+  }
+  .decision__img--wide,
+  .caption-item__img--wide {
+    max-width: 42rem;
+    margin-inline: auto;
+  }
+
+  /* Before / after pairs (Beat 7 fixes) */
+  .beforeafter {
+    margin-top: var(--space-md);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+  .ba { margin: 0; }
+  .ba__label {
+    display: inline-block;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-xs);
+  }
+  .ba__label--after { color: var(--accent); }
+  .ba__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+
+  /* Keep the before/after pairs compact enough for smaller laptops. */
+  .fixes {
+    width: min(46rem, 92vw);
+  }
+
+  /* Shipped prototypes (Figma embeds) at the top of Beat 5. */
+  .protos {
+    width: min(60rem, 92vw);
+    margin: var(--space-xl) 50% 0;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+  .proto {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .proto__label {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+  }
+  .proto__frame {
+    aspect-ratio: 3 / 4;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.03);
+  }
+  .proto__frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Beat 5: uniform, equally-weighted blocks aligned to the reading column. */
+  .b5 {
+    list-style: none;
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+  }
+  .b5-item__title {
+    font-size: var(--font-md);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-xs);
+  }
+  .b5-item__desc {
+    font-size: var(--font-md);
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 40rem;
+  }
+  .b5-item__fig {
+    margin: var(--space-lg) 0 0;
+  }
+  .b5-item__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+  .b5-item__fig--portrait .b5-item__img {
+    max-width: 20rem;
+  }
+
+  /* Kaira AI collage (Beat 8) */
+  .collage {
+    width: min(60rem, 92vw);
+    margin: var(--space-2xl) 50%;
+    transform: translateX(-50%);
+    padding: var(--space-lg);
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+  .collage__grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: var(--space-md);
+    align-items: start;
+  }
+  .collage__item { margin: 0; }
+  .collage__item :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .collage__cap {
+    margin-top: var(--space-md);
+    font-size: var(--font-sm);
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .fixes,
+  .decisions4 {
+    list-style: none;
+    margin-top: var(--space-xl);
+    display: grid;
+    gap: var(--space-lg);
+  }
+  .decisions4 { grid-template-columns: repeat(2, 1fr); }
+  .fix {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .fix__lead {
+    font-size: var(--font-md);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .fix p {
+    font-size: var(--font-sm);
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .killed {
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: 1fr 14rem;
+    gap: var(--space-xl);
+    align-items: center;
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-md);
+    background: rgba(231, 95, 56, 0.04);
+  }
+  .killed__tag {
+    display: inline-block;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+  }
+  .killed__text p { font-size: var(--font-md); line-height: 1.6; }
+
+  /* ---- Beat 6: stat blocks + retention curve ---- */
+  .statblocks {
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+  .statblock {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+  .statblock--peak {
+    border-color: var(--accent);
+    background: rgba(231, 95, 56, 0.06);
+  }
+  .statblock__fig {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .statblock--peak .statblock__fig { color: var(--accent); }
+  .statblock__claim {
+    margin-top: var(--space-sm);
+    font-size: var(--font-base);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .statblock__body {
+    margin-top: var(--space-sm);
+    font-size: var(--font-sm);
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .chart-title {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-md);
+  }
+  .retention {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+  .retention__svg {
+    width: 100%;
+    height: 12rem;
+    overflow: visible;
+  }
+  .retention__line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .retention__area { fill: rgba(231, 95, 56, 0.08); stroke: none; }
+  .retention__dot { fill: var(--accent); }
+  .retention__ceiling {
+    stroke: var(--accent);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.6;
+  }
+  .retention__labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-sm);
+    font-size: var(--font-xs);
+    color: var(--muted);
+  }
+  .retention__labels span { display: flex; flex-direction: column; }
+  .retention__labels b { color: var(--ink); font-size: var(--font-sm); }
+  .retention__labels span:last-child b { color: var(--accent); }
+  .retention__note {
+    margin-top: var(--space-md);
+    font-size: var(--font-xs);
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ---- Beat 8: evidence + cross-link ---- */
+  .evidence { margin-top: var(--space-xl); }
+  .evidence p { font-size: var(--font-md); line-height: 1.6; }
+  .evidence__verify { margin-top: var(--space-md); }
+
+  .crosslink {
+    margin-top: var(--space-2xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .crosslink:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .crosslink__label { font-size: var(--font-md); font-weight: 700; }
+  .crosslink__cta {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .cs__foot {
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--hairline);
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 48rem) {
+    .fourlens__grid,
+    .readers,
+    .iaviews,
+    .decisions4,
+    .statblocks {
+      grid-template-columns: 1fr;
+    }
+    .pstrip {
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+    }
+    .pstrip::before { display: none; }
+    .pstrip__node { flex-direction: row; gap: var(--space-md); text-align: left; }
+    .decision,
+    .caption-item,
+    .killed {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    .caption-item { direction: ltr; }
+    .collage__grid { grid-template-columns: 1fr; }
+    .protos { grid-template-columns: 1fr; }
+  }
+</style>

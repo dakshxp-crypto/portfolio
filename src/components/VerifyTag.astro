@@ -1,0 +1,40 @@
+---
+// Visible marker for an unverified fact. Renders an orange-outlined [VERIFY]
+// pill inline, with an optional note for what still needs confirming.
+interface Props {
+  note?: string;
+}
+const { note } = Astro.props;
+---
+
+<span class="verify" role="note">
+  <span class="verify__pill">[VERIFY]</span>
+  {note && <span class="verify__note">{note}</span>}
+</span>
+
+<style>
+  .verify {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    vertical-align: baseline;
+  }
+
+  .verify__pill {
+    display: inline-block;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    padding: 0.05em 0.5em;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+
+  .verify__note {
+    font-size: var(--font-xs);
+    color: var(--accent);
+    line-height: 1.4;
+  }
+</style>
