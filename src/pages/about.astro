@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="About | Daksh Sharma"
+  description="Daksh Sharma is a senior product designer working where AI, health, and high-craft interfaces meet, from research and strategy through to shipped UI."
+>
+  <article class="about">
+    <a class="about__back" href="/">← Home</a>
+
+    <header class="about__head">
+      <p class="about__kicker">About</p>
+      <h1 class="about__title">Daksh Sharma</h1>
+      <p class="about__lead">
+        Senior Product Designer working where AI, health, and high-craft
+        interfaces meet, building the whole thing from strategy to ship.
+      </p>
+    </header>
+
+    <div class="about__body">
+      <p>
+        I work end to end, from research and strategy through to shipped,
+        high-craft UI. My focus is the place where AI and health meet: tools
+        people actually have to trust with their bodies and their data, where a
+        confident wrong answer is worse than no answer at all.
+      </p>
+      <p>
+        Most recently, as sole product designer at GoodFlip (TatvaCare), I
+        designed Kaira, an AI food-logging companion, and the GoodFlip CGM
+        dashboard, both shipped to people managing chronic metabolic conditions.
+        I owned the problem definition, the interaction and visual design, and,
+        for the AI surfaces, the logic and language of what the product actually
+        says back.
+      </p>
+    </div>
+
+    <div class="about__cta">
+      <a class="about__link about__link--primary" href="/#work">See my work</a>
+      <a class="about__link" href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Download resume</a>
+    </div>
+  </article>
+
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  /* Light reading surface for the About page. */
+  body:has(.about) {
+    background-color: var(--surface);
+    color: var(--ink);
+  }
+</style>
+
+<style>
+  .about {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-xl) var(--space-3xl);
+    color: var(--ink);
+  }
+
+  .about__back {
+    display: inline-block;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+  .about__back:hover {
+    color: var(--accent);
+  }
+
+  .about__head {
+    margin-top: var(--space-2xl);
+  }
+
+  .about__kicker {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .about__title {
+    margin-top: var(--space-sm);
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .about__lead {
+    margin-top: var(--space-lg);
+    font-size: var(--font-lg);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .about__body {
+    margin-top: var(--space-2xl);
+  }
+  .about__body p {
+    font-size: var(--font-md);
+    line-height: 1.6;
+    margin-top: var(--space-md);
+  }
+  .about__body p:first-child {
+    margin-top: 0;
+  }
+
+  .about__cta {
+    margin-top: var(--space-2xl);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+  .about__link {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    color: var(--ink);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .about__link:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .about__link--primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+</style>

@@ -1,8 +1,10 @@
 ---
 import { Image } from 'astro:assets';
+import Logo from './Logo.astro';
 import heroBg from '../assets/hero-bg.png';
-import heroMan from '../assets/hero-man.png';
+// hero-man.png intentionally kept in assets for possible later use.
 import frameImg from '../assets/frame.png';
+import Dakshxp from './Dakshxp.astro';
 ---
 
 <section class="stage grid-bg">
@@ -22,16 +24,6 @@ import frameImg from '../assets/frame.png';
           loading="eager"
           fetchpriority="high"
         />
-        <Image
-          class="scene__man"
-          src={heroMan}
-          alt="Illustration of Daksh Sharma reclining on a cloud"
-          widths={[440, 882]}
-          sizes="40vw"
-          format="webp"
-          quality={90}
-          loading="eager"
-        />
       </div>
       <Image class="frame" src={frameImg} alt="" widths={[820, 1640]} sizes="70vw" loading="eager" />
     </div>
@@ -39,11 +31,11 @@ import frameImg from '../assets/frame.png';
     <!-- Foreground copy + nav. Fades out as the scene collapses into the frame. -->
     <div class="overlay">
       <header class="nav">
-        <div class="nav__logo">
-          <!-- Logo goes here -->
-        </div>
+        <a class="nav__logo" href="/" aria-label="Home">
+          <Logo white />
+        </a>
         <nav class="nav__links" aria-label="Primary">
-          <a href="#about">About</a>
+          <a href="/about">About</a>
           <a href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Resume</a>
           <a href="#work">Work</a>
           <a href="#contact">Contact</a>
@@ -53,10 +45,9 @@ import frameImg from '../assets/frame.png';
       <div class="copy">
         <p class="copy__eyebrow">Hi! I am</p>
         <h1 class="copy__title">Daksh Sharma</h1>
-        <p class="copy__tagline">
-          <strong>Senior Product Designer</strong> working where AI, health, and
-          high-craft interfaces meet, building the whole thing from strategy to ship
-        </p>
+        <p class="copy__tagline">Senior Product Designer</p>
+
+        <Dakshxp />
       </div>
     </div>
   </div>
@@ -145,6 +136,12 @@ import frameImg from '../assets/frame.png';
     gap: var(--space-lg);
   }
 
+  .nav__logo {
+    display: inline-flex;
+    align-items: center;
+    color: #fff;
+  }
+
   .nav__links {
     display: flex;
     gap: var(--space-lg);
@@ -185,6 +182,8 @@ import frameImg from '../assets/frame.png';
     text-align: center;
     padding: var(--space-xl);
     padding-bottom: 14vh;
+    /* Non-interactive text; let clicks pass through to the nav beneath it. */
+    pointer-events: none;
   }
 
   .copy__eyebrow {
@@ -201,14 +200,9 @@ import frameImg from '../assets/frame.png';
   }
 
   .copy__tagline {
-    max-width: 34ch;
-    margin-top: var(--space-2xl);
-    font-size: var(--font-md);
-    font-weight: 400;
-  }
-
-  .copy__tagline strong {
-    font-weight: 700;
+    margin-top: var(--space-xs);
+    font-size: var(--font-lg);
+    font-weight: 500;
   }
 
   @keyframes float {

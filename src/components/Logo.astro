@@ -1,0 +1,19 @@
+---
+// The Fab Icon mark. Default renders the orange mark (sits correctly on white
+// surfaces); pass `white` for the white version used on orange/dark backgrounds.
+interface Props {
+  white?: boolean;
+}
+const { white = false } = Astro.props;
+const src = white ? '/fab-icon-white.svg' : '/favicon.svg';
+---
+
+<img class="logo" src={src} alt="Daksh Sharma" width="900" height="600" decoding="async" />
+
+<style>
+  .logo {
+    display: block;
+    height: 1.9rem;
+    width: auto;
+  }
+</style>

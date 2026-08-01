@@ -1,20 +1,34 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import StickyNav from '../components/StickyNav.astro';
 import Hero from '../components/Hero.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.astro';
 import WorkSection from '../components/WorkSection.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout
   title="Daksh Sharma | Senior Product Designer"
   description="Senior Product Designer working where AI, health, and high-craft interfaces meet, building the whole thing from strategy to ship."
 >
+  <StickyNav />
   <main>
     <Hero />
     <section class="grid-bg page-content">
+      <ExperienceTimeline />
       <WorkSection />
     </section>
   </main>
+  <Footer />
 </BaseLayout>
+
+<style is:global>
+  /* Homepage surface is white; keeps overscroll (past the footer / above the
+     hero) from showing the orange body background. */
+  body:has(main) {
+    background-color: var(--surface);
+  }
+</style>
 
 <style>
   .page-content {
