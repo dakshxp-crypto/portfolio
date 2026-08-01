@@ -1,0 +1,408 @@
+---
+import { Image, getImage } from 'astro:assets';
+import bunch from '../assets/balloons-bunch.png';
+import balloonSrc from '../assets/balloon.png';
+import cloudSrc from '../assets/cloud.png';
+import mountainBg from '../assets/mountain-bg.png';
+import daliSrc from '../assets/artist-dali.png';
+import magritteSrc from '../assets/artist-magritte.png';
+
+// One optimized copy of the repeated decorations, reused across instances.
+const balloon = await getImage({ src: balloonSrc, width: 280, format: 'webp' });
+const cloud = await getImage({ src: cloudSrc, width: 700, format: 'webp' });
+const dali = await getImage({ src: daliSrc, width: 72, format: 'webp' });
+
+// Contact details.
+const email = 'dakshxp@gmail.com';
+const phone = '+918658652555';
+const phoneDisplay = '+91 865 865 2555';
+const linkedin = 'https://www.linkedin.com/in/dakshxp';
+const resume = '/Daksh_Sharma_Resume.pdf';
+
+// Decorative parallax layers. `speed` is the px offset applied across the
+// footer's travel through the viewport (negative = drifts up / floats faster).
+const balloons = [
+  { cls: 'b1', speed: -70 },
+  { cls: 'b2', speed: -46 },
+  { cls: 'b3', speed: -64 },
+  { cls: 'b4', speed: -104 },
+  { cls: 'b5', speed: -54 },
+  { cls: 'b6', speed: -88 },
+];
+const clouds = [
+  { cls: 'c1', speed: 26 },
+  { cls: 'c2', speed: 18 },
+];
+---
+
+<footer class="footer" id="contact">
+  <!-- The balloon scene: parallax sky + the carried contact card. -->
+  <div class="footer__scene">
+  <!-- Parallax sky: clouds behind, small balloons in front, all decorative. -->
+  <div class="footer__sky" aria-hidden="true">
+    {clouds.map((c) => (
+      <img class={`footer__cloud footer__cloud--${c.cls}`} src={cloud.src} alt="" loading="lazy" decoding="async" data-speed={c.speed} />
+    ))}
+    {balloons.map((b) => (
+      <img class={`footer__balloon footer__balloon--${b.cls}`} src={balloon.src} alt="" loading="lazy" decoding="async" data-speed={b.speed} />
+    ))}
+  </div>
+
+  <!-- The central figure: the balloon bunch carrying the contact card. -->
+  <div class="footer__center" data-speed="-34">
+    <Image
+      class="footer__bunch"
+      src={bunch}
+      alt="A bunch of orange balloons"
+      widths={[420, 640, 960]}
+      sizes="min(30rem, 60vw)"
+      loading="lazy"
+    />
+
+    <div class="footer__card">
+      <h2 class="footer__title">Let&rsquo;s connect</h2>
+
+      <div class="footer__cols">
+        <ul class="footer__info">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span>Based in Bengaluru</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h3.5l1.8 4.6-2.3 1.4a12 12 0 0 0 5 5l1.4-2.3 4.6 1.8V21a2 2 0 0 1-2 2A18 18 0 0 1 3 5a2 2 0 0 1 2-2Z"/></svg>
+            <a class="footer__plain" href={`tel:${phone}`}>{phoneDisplay}</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+            <a class="footer__plain" href={`mailto:${email}`}>{email}</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4 0 4.75 2.65 4.75 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.07 1.4-2.07 2.85V21H9z"/></svg>
+            <a class="footer__link" href={linkedin} target="_blank" rel="noopener">
+              Visit my LinkedIn Profile
+              <svg class="footer__arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M10 5l5 5-5 5"/></svg>
+            </a>
+          </li>
+        </ul>
+
+        <div class="footer__divider" aria-hidden="true"></div>
+
+        <nav class="footer__nav" aria-label="Footer">
+          <a href="/about">About Me</a>
+          <a href={resume} target="_blank" rel="noopener">View My Resume</a>
+          <a href="#work">See My Work</a>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+  </div>
+
+  <!-- Artist credits -->
+  <div class="footer__credits">
+    <p class="footer__inspired">
+      The design of this portfolio is inspired by the surrealist works of
+      <span class="footer__chip"><img src={magritteSrc.src} alt="René Magritte" width="32" height="32" loading="lazy" decoding="async" /> René Magritte</span>
+      <span class="footer__amp">&amp;</span>
+      <span class="footer__chip"><img src={dali.src} alt="Salvador Dalí" width="32" height="32" loading="lazy" decoding="async" /> Salvador Dalí</span>
+    </p>
+    <p class="footer__note">No Rights Reserved! Go ahead and steal like an ARTIST</p>
+  </div>
+
+  <!-- Surreal mountains anchored to the very bottom -->
+  <Image
+    class="footer__mountains"
+    src={mountainBg}
+    alt=""
+    widths={[1440, 2400, 3450]}
+    sizes="100vw"
+    loading="lazy"
+  />
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .footer__scene {
+    position: relative;
+    padding-top: clamp(3rem, 9vh, 6rem);
+  }
+
+  /* ---- Parallax sky ---- */
+  .footer__sky {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .footer__balloon,
+  .footer__cloud {
+    position: absolute;
+    height: auto;
+    will-change: transform;
+  }
+  .footer__balloon { z-index: 1; }
+  .footer__cloud { z-index: 0; opacity: 0.95; }
+
+  /* Small balloons */
+  .footer__balloon--b1 { top: 12%; left: 7%;  width: clamp(56px, 7vw, 120px); }
+  .footer__balloon--b2 { top: 9%;  left: 27%; width: clamp(40px, 5vw, 82px); }
+  .footer__balloon--b3 { top: 8%;  right: 8%; width: clamp(64px, 8.5vw, 140px); }
+  .footer__balloon--b4 { top: 13%; right: 21%; width: clamp(34px, 4.5vw, 68px); }
+  .footer__balloon--b5 { top: 30%; right: 11%; width: clamp(42px, 5.5vw, 90px); }
+  .footer__balloon--b6 { top: 41%; left: 15%; width: clamp(50px, 6.5vw, 100px); }
+
+  /* Clouds */
+  .footer__cloud--c1 { top: 55%; left: -3%; width: clamp(220px, 27vw, 440px); }
+  .footer__cloud--c2 { bottom: 1%; right: -4%; width: clamp(240px, 31vw, 520px); }
+
+  /* ---- Central carried figure ---- */
+  .footer__center {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    will-change: transform;
+  }
+
+  .footer__bunch {
+    display: block;
+    width: min(30rem, 60vw);
+    height: auto;
+    filter: drop-shadow(0 24px 40px rgba(242, 91, 46, 0.18));
+  }
+
+  /* The strings converge into the top of the card. */
+  .footer__card {
+    position: relative;
+    width: min(680px, 92%);
+    margin-top: -18px;
+    background: var(--surface);
+    border-radius: 28px;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    box-shadow:
+      0 0 0 1px rgba(242, 91, 46, 0.08),
+      0 30px 70px rgba(242, 91, 46, 0.16),
+      0 12px 30px rgba(0, 0, 0, 0.06);
+  }
+
+  .footer__title {
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .footer__cols {
+    margin-top: clamp(1.5rem, 3.5vw, 2.5rem);
+    display: flex;
+    align-items: stretch;
+    gap: clamp(1.5rem, 6vw, 4.5rem);
+  }
+
+  .footer__info {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.85rem, 2vw, 1.2rem);
+  }
+  .footer__info li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: var(--font-md);
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .footer__info li > svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    flex: none;
+    color: var(--accent);
+  }
+
+  /* Email / phone: live links, but styled as plain text like the reference. */
+  .footer__plain {
+    color: var(--ink);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+  .footer__plain:hover {
+    border-color: var(--ink);
+  }
+
+  /* The one emphasised, underlined link. */
+  .footer__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+  }
+  .footer__link .footer__arrow {
+    width: 1.05rem;
+    height: 1.05rem;
+    transition: transform 0.2s ease;
+  }
+  .footer__link:hover .footer__arrow {
+    transform: translateX(3px);
+  }
+
+  .footer__divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--hairline);
+    flex: none;
+  }
+
+  .footer__nav {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.85rem, 2vw, 1.2rem);
+  }
+  .footer__nav a {
+    width: fit-content;
+    font-size: var(--font-md);
+    font-weight: 500;
+    color: var(--ink);
+    position: relative;
+    padding-bottom: 2px;
+  }
+  .footer__nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .footer__nav a:hover::after,
+  .footer__nav a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* ---- Artist credits ---- */
+  .footer__credits {
+    position: relative;
+    z-index: 2;
+    max-width: 78rem;
+    margin: clamp(3rem, 7vw, 5.5rem) auto clamp(2.5rem, 6vw, 4.5rem);
+    padding-inline: var(--space-lg);
+    text-align: center;
+  }
+  .footer__inspired {
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    font-weight: 500;
+    line-height: 2.4;
+    color: var(--ink);
+  }
+  .footer__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0.15rem;
+    padding: 0.25rem 0.9rem 0.25rem 0.3rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .footer__chip img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+  }
+  .footer__amp {
+    margin: 0 0.35rem;
+    color: var(--muted);
+  }
+  .footer__note {
+    margin-top: var(--space-md);
+    font-size: var(--font-sm);
+    color: var(--muted);
+  }
+
+  /* ---- Mountains at the very bottom ---- */
+  .footer__mountains {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+
+  @media (max-width: 40rem) {
+    .footer__cols {
+      flex-direction: column;
+      gap: clamp(1.25rem, 4vw, 1.75rem);
+    }
+    .footer__divider {
+      width: 100%;
+      height: 1px;
+    }
+    /* Thin the sky so it doesn't crowd the card on small screens. */
+    .footer__balloon--b2,
+    .footer__balloon--b4 {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__balloon,
+    .footer__cloud,
+    .footer__center {
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  const footer = document.querySelector<HTMLElement>('.footer');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (footer && !reduce) {
+    const layers = Array.from(
+      footer.querySelectorAll<HTMLElement>('[data-speed]')
+    ).map((el) => ({ el, speed: Number(el.dataset.speed) || 0 }));
+
+    const clamp = (t: number) => (t < 0 ? 0 : t > 1 ? 1 : t);
+    let ticking = false;
+
+    function render() {
+      ticking = false;
+      const rect = footer!.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // 0 as the footer's top reaches the viewport bottom, 1 as it exits the top.
+      const p = clamp((vh - rect.top) / (vh + rect.height));
+      for (const { el, speed } of layers) {
+        el.style.transform = `translate3d(0, ${(p - 0.5) * speed}px, 0)`;
+      }
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(render);
+      }
+    }
+
+    render();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', render);
+  }
+</script>

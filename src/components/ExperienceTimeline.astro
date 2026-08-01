@@ -1,0 +1,205 @@
+---
+import { Image } from 'astro:assets';
+import door from '../assets/exp-door.png';
+import tatvacare from '../assets/co-tatvacare.webp';
+import dehaat from '../assets/co-dehaat.webp';
+import tykhe from '../assets/co-tykhe.webp';
+import paysafe from '../assets/co-paysafe.webp';
+
+// Newest first.
+const roles = [
+  { period: 'Jan 2024 – Present', role: 'Senior Product Designer', org: 'TatvaCare', icon: tatvacare },
+  { period: 'May 2023 – Jan 2024', role: 'Product Designer I', org: 'DeHaat', icon: dehaat },
+  { period: 'Jun 2022 – Feb 2023', role: 'Product Design Intern', org: 'Tykhe Ventures', icon: tykhe },
+  { period: 'Mar 2021 – Sep 2021', role: 'UX Consultant', org: 'Paysafe', icon: paysafe },
+];
+---
+
+<section class="exp" aria-label="Experience">
+  <header class="exp__head">
+    <h2 class="exp__title">Experience</h2>
+    <p class="exp__sub">
+      4+ years of experience in
+      <span class="exp__bin">Health Tech</span>
+      <span class="exp__bin">Agritech</span>
+      <span class="exp__bin">FinTech</span>
+      and much more.
+    </p>
+  </header>
+
+  <div class="exp__stage">
+    <div class="exp__doorwrap" aria-hidden="true">
+      <Image class="exp__door" src={door} alt="" widths={[360, 720]} sizes="19rem" />
+    </div>
+
+    <ol class="exp__list">
+      {roles.map((r) => (
+        <li class="exp__item">
+          <Image class="exp__icon" src={r.icon} alt={`${r.org} logo`} width={40} height={40} />
+          <div class="exp__text">
+            <p class="exp__period">{r.period}</p>
+            <h3 class="exp__role">{r.role}</h3>
+            <p class="exp__org">{r.org}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .exp {
+    color: var(--ink);
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-xl) var(--space-2xl);
+  }
+
+  .exp__head {
+    margin-bottom: var(--space-2xl);
+  }
+  .exp__title {
+    font-size: var(--font-xxl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .exp__sub {
+    margin-top: var(--space-sm);
+    font-size: var(--font-md);
+    line-height: 2;
+    color: var(--muted);
+    max-width: 48rem;
+  }
+  /* Domain pills. */
+  .exp__bin {
+    display: inline-block;
+    padding: 0.18em 0.7em;
+    margin: 0 0.15em;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 0.85em;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  /* Big door on the left; the roles fan out of it, all visible (no scroll). */
+  .exp__stage {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+  .exp__doorwrap {
+    flex-shrink: 0;
+    width: 19rem;
+    /* Overlap so the timeline tucks into the doorway. */
+    margin-right: -2.5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .exp__door {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .exp__list {
+    flex: 1;
+    min-width: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--space-lg);
+    padding-left: 3rem;
+    position: relative;
+  }
+
+  /* Rail coming out of the door into the first icon. */
+  .exp__list::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 3rem;
+    top: 1.25rem;
+    height: 2px;
+    background: var(--hairline);
+    z-index: 0;
+  }
+
+  .exp__item {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    position: relative;
+  }
+  /* Rail connecting each icon to the next. */
+  .exp__item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    right: calc(-1 * var(--space-lg) - 1.25rem);
+    top: 1.25rem;
+    height: 2px;
+    background: var(--hairline);
+    z-index: 0;
+  }
+
+  .exp__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    border-radius: 0.6rem;
+    z-index: 1;
+    box-shadow: 0 0 0 4px var(--surface);
+  }
+
+  .exp__period {
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+  }
+  .exp__role {
+    margin-top: var(--space-2xs);
+    font-size: var(--font-base);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .exp__org {
+    margin-top: 2px;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  @media (max-width: 52rem) {
+    .exp__stage {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    .exp__doorwrap {
+      width: 13rem;
+      margin-right: 0;
+    }
+    .exp__list {
+      width: 100%;
+      flex-wrap: wrap;
+      padding-left: 0;
+      gap: var(--space-xl) var(--space-lg);
+    }
+    .exp__item {
+      flex: 1 1 8rem;
+    }
+    .exp__list::before,
+    .exp__item:not(:last-child)::before {
+      display: none;
+    }
+  }
+</style>

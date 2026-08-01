@@ -1,0 +1,500 @@
+---
+// Dakshxp — an inline AI concierge for the hero: a frosted, glowing typing box.
+// Questions open a popup that shows a surreal loading state (Dalí's melting
+// pocketwatch), then Claude's answer (Magritte's apple), served from
+// /api/dakshgpt, with a follow-up box to keep the conversation going.
+import { getImage } from 'astro:assets';
+import watchSrc from '../assets/dali-pocketwatch.png';
+import appleSrc from '../assets/magritte-apple.png';
+
+const watch = await getImage({ src: watchSrc, width: 420, format: 'webp' });
+const apple = await getImage({ src: appleSrc, width: 240, format: 'webp' });
+---
+
+<div class="dxp">
+  <!-- Typing box -->
+  <div class="dxp__box">
+    <span class="dxp__glow" aria-hidden="true"></span>
+    <form class="dxp__card" autocomplete="off">
+      <textarea
+        class="dxp__input"
+        name="message"
+        rows="1"
+        placeholder="Ask me anything about Daksh"
+        aria-label="Ask Dakshxp"
+      ></textarea>
+
+      <div class="dxp__bar">
+        <button class="dxp__send" type="submit" aria-label="Send message" disabled>
+          <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Answer popup (relocated to <body> on load so the hero's scroll-fade
+       never affects it). Hidden until a question is asked. -->
+  <div class="dxp__modal" hidden aria-hidden="true">
+    <div class="dxp__backdrop" data-close></div>
+    <div class="dxp__dialog" role="dialog" aria-modal="true" aria-label="Answer from Dakshxp">
+      <button class="dxp__close" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+
+      <!-- Loading state: Dalí's melting pocketwatch, bobbing up and down. -->
+      <div class="dxp__loader">
+        <img class="dxp__watch" src={watch.src} alt="" width="200" height="269" decoding="async" />
+        <p class="dxp__loadtext">Hmmmmmm! Lemme think ... gimme a sec...</p>
+      </div>
+
+      <!-- Answer state: Magritte's apple, the answer, then a follow-up box. -->
+      <div class="dxp__answer" hidden>
+        <img class="dxp__apple" src={apple.src} alt="" width="96" height="101" decoding="async" />
+        <p class="dxp__answertext"></p>
+
+        <!-- A copy of the hero typing box, to follow up in the same thread. -->
+        <div class="dxp__box dxp__box--followup">
+          <span class="dxp__glow" aria-hidden="true"></span>
+          <form class="dxp__card" autocomplete="off">
+            <textarea
+              class="dxp__input"
+              name="followup"
+              rows="1"
+              placeholder="Ask a follow-up…"
+              aria-label="Ask a follow-up"
+            ></textarea>
+            <div class="dxp__bar">
+              <button class="dxp__send" type="submit" aria-label="Send message" disabled>
+                <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dxp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(100%, 620px);
+    margin-top: var(--space-lg);
+    pointer-events: auto;
+  }
+
+  /* Registered so the revolving glow's angle can animate smoothly. */
+  @property --dxp-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .dxp__box {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Frosted typing box. Near-solid white so the interior always reads white
+     with only a very slight transparency; the glow behind can't bleed in. */
+  .dxp__card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: rgba(255, 254, 253, 0.92);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.12);
+  }
+
+  /* The AI glow: a soft rainbow light BEHIND the panel. Only the part that
+     extends past the panel's edges shows, and it revolves all the way around. */
+  .dxp__glow {
+    --dxp-angle: 0deg;
+    position: absolute;
+    inset: -8px;
+    z-index: 0;
+    border-radius: calc(var(--radius-md) + 8px);
+    background: conic-gradient(
+      from var(--dxp-angle),
+      #f25b2e,
+      #ff9f45,
+      #ffd23f,
+      #38d39f,
+      #3a86ff,
+      #9b5de5,
+      #f15bb5,
+      #f25b2e
+    );
+    filter: blur(18px);
+    opacity: 0.95;
+    animation: dxp-revolve 5s linear infinite;
+    pointer-events: none;
+  }
+  .dxp__box:focus-within .dxp__glow {
+    inset: -11px;
+    filter: blur(22px);
+    opacity: 1;
+  }
+
+  @keyframes dxp-revolve {
+    to { --dxp-angle: 360deg; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dxp__glow { animation: none; }
+  }
+
+  .dxp__input {
+    width: 100%;
+    min-height: 44px;
+    max-height: 140px;
+    font: inherit;
+    font-size: var(--font-base);
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 4px 2px;
+    line-height: 1.5;
+  }
+  .dxp__input::placeholder {
+    color: rgba(26, 26, 26, 0.55);
+    opacity: 1;
+  }
+
+  /* Just the send button, right-aligned */
+  .dxp__bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--space-xs);
+  }
+  .dxp__send {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .dxp__send:not(:disabled):hover {
+    transform: scale(1.06);
+    background-color: #d94e27;
+  }
+  /* Disabled until the visitor types something. */
+  .dxp__send:disabled {
+    background: rgba(0, 0, 0, 0.14);
+    color: rgba(255, 255, 255, 0.85);
+    cursor: not-allowed;
+  }
+  /* Once there's text, the CTA reads as "ready to send". */
+  .dxp__card.is-active .dxp__send {
+    box-shadow: 0 4px 14px rgba(242, 91, 46, 0.5);
+  }
+</style>
+
+<style is:global>
+  /* ---- Answer popup ---- */
+  .dxp__modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: var(--space-lg);
+  }
+  .dxp__modal[hidden] {
+    display: none;
+  }
+  .dxp__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.42);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    animation: dxp-fade 0.25s ease both;
+  }
+  .dxp__dialog {
+    position: relative;
+    width: min(100%, 560px);
+    max-height: 88vh;
+    overflow-y: auto;
+    background: #efece5;
+    border-radius: 26px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+    animation: dxp-pop 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+    text-align: left;
+  }
+  .dxp__close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--ink);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 3;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .dxp__close:hover {
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  /* ---- Loading state: Dalí's bobbing pocketwatch ---- */
+  .dxp__loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xl);
+    min-height: 340px;
+    text-align: center;
+  }
+  .dxp__loader[hidden] {
+    display: none;
+  }
+  .dxp__watch {
+    width: clamp(120px, 40%, 190px);
+    height: auto;
+    animation: dxp-bob 1.9s ease-in-out infinite;
+    will-change: transform;
+  }
+  .dxp__loadtext {
+    font-size: var(--font-md);
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ---- Answer state: Magritte's apple + the answer + follow-up ---- */
+  .dxp__answer {
+    display: flex;
+    flex-direction: column;
+  }
+  .dxp__answer[hidden] {
+    display: none;
+  }
+  .dxp__apple {
+    width: clamp(72px, 22%, 104px);
+    height: auto;
+    align-self: center;
+    margin-bottom: var(--space-lg);
+  }
+  .dxp__answertext {
+    font-size: var(--font-base);
+    line-height: 1.65;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+  .dxp__answertext--error {
+    color: var(--muted);
+  }
+  .dxp__box--followup {
+    margin-top: var(--space-xl);
+  }
+
+  @keyframes dxp-bob {
+    0%, 100% { transform: translateY(-9px); }
+    50% { transform: translateY(9px); }
+  }
+  @keyframes dxp-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes dxp-pop {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dxp__backdrop, .dxp__dialog { animation: none; }
+    .dxp__watch { animation: none; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.dxp');
+  if (root) {
+    const modal = root.querySelector<HTMLElement>('.dxp__modal')!;
+
+    // Move the popup to <body> so the hero's opacity scroll-fade can't dim it.
+    document.body.appendChild(modal);
+
+    const dialog = modal.querySelector<HTMLElement>('.dxp__dialog')!;
+    const loaderEl = modal.querySelector<HTMLElement>('.dxp__loader')!;
+    const answerEl = modal.querySelector<HTMLElement>('.dxp__answer')!;
+    const appleEl = modal.querySelector<HTMLElement>('.dxp__apple')!;
+    const answerTextEl = modal.querySelector<HTMLElement>('.dxp__answertext')!;
+
+    // The hero box is what's left in .dxp once the modal has moved to <body>.
+    const heroBox = root.querySelector<HTMLElement>('.dxp__box')!;
+    const followupBox = modal.querySelector<HTMLElement>('.dxp__box')!;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    /* ---------- A typing box: autogrow, enable/disable, submit ---------- */
+    function wireBox(box: HTMLElement) {
+      const form = box.querySelector<HTMLFormElement>('.dxp__card')!;
+      const field = box.querySelector<HTMLTextAreaElement>('.dxp__input')!;
+      const send = box.querySelector<HTMLButtonElement>('.dxp__send')!;
+
+      field.addEventListener('input', () => {
+        field.style.height = 'auto';
+        field.style.height = `${Math.min(field.scrollHeight, 140)}px`;
+        const hasText = field.value.trim().length > 0;
+        form.classList.toggle('is-active', hasText);
+        send.disabled = !hasText;
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const q = field.value;
+        field.value = '';
+        field.style.height = 'auto';
+        form.classList.remove('is-active');
+        send.disabled = true;
+        ask(q);
+      });
+
+      return field;
+    }
+
+    const heroInput = wireBox(heroBox);
+    wireBox(followupBox);
+
+    /* ---------- Animated typewriter placeholder (hero box only) ---------- */
+    const PROMPTS = [
+      'Ask me anything about Daksh',
+      'How does Daksh use AI?',
+      'What are Daksh’s strengths?',
+      'Is Daksh a fit for research-heavy work?',
+    ];
+    const BASE = PROMPTS[0];
+    let typeTimer = 0;
+
+    function stopTyping() {
+      window.clearTimeout(typeTimer);
+    }
+
+    function runTyping() {
+      if (reduce.matches) {
+        heroInput.placeholder = BASE;
+        return;
+      }
+      let phrase = 0;
+      let i = 0;
+      let deleting = false;
+
+      const tick = () => {
+        // Never fight a visitor who is focused or typing.
+        if (document.activeElement === heroInput || heroInput.value) {
+          typeTimer = window.setTimeout(tick, 600);
+          return;
+        }
+        const text = PROMPTS[phrase];
+        i = deleting ? i - 1 : i + 1;
+        heroInput.placeholder = text.slice(0, i) + '│';
+
+        let delay = deleting ? 40 : 70;
+        if (!deleting && i === text.length) {
+          deleting = true;
+          delay = 1600; // hold the finished phrase
+        } else if (deleting && i === 0) {
+          deleting = false;
+          phrase = (phrase + 1) % PROMPTS.length;
+          delay = 350;
+        }
+        typeTimer = window.setTimeout(tick, delay);
+      };
+      tick();
+    }
+
+    /* ---------- Popup states ---------- */
+    let lastFocus: HTMLElement | null = null;
+
+    function showLoading() {
+      loaderEl.hidden = false;
+      answerEl.hidden = true;
+    }
+    function showAnswer(text: string) {
+      loaderEl.hidden = true;
+      answerEl.hidden = false;
+      appleEl.style.display = '';
+      answerTextEl.className = 'dxp__answertext';
+      answerTextEl.textContent = text;
+    }
+    function showError(text: string) {
+      loaderEl.hidden = true;
+      answerEl.hidden = false;
+      appleEl.style.display = 'none';
+      answerTextEl.className = 'dxp__answertext dxp__answertext--error';
+      answerTextEl.textContent = text;
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      lastFocus?.focus?.();
+    }
+
+    async function ask(question: string) {
+      const trimmed = question.trim();
+      if (!trimmed) return;
+      if (modal.hidden) {
+        lastFocus = document.activeElement as HTMLElement;
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        dialog.focus?.();
+      }
+      showLoading();
+      dialog.scrollTop = 0;
+      try {
+        const res = await fetch('/api/dakshgpt', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ question: trimmed.slice(0, 500) }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.answer) {
+          showAnswer(data.answer);
+        } else {
+          showError(data.error || 'Dakshxp is having a moment. Please try again shortly.');
+        }
+      } catch {
+        showError('Could not reach the server. Please try again.');
+      }
+    }
+
+    modal.querySelectorAll<HTMLElement>('[data-close]').forEach((el) =>
+      el.addEventListener('click', closeModal)
+    );
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+
+    runTyping();
+    reduce.addEventListener('change', () => {
+      stopTyping();
+      runTyping();
+    });
+  }
+</script>
