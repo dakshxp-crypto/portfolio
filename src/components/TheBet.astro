@@ -1,0 +1,266 @@
+---
+import ReaderSpectrum from './ReaderSpectrum.astro';
+
+const columns = [
+  {
+    key: 'seeker',
+    name: 'The Seeker',
+    identity: 'Self-directed. No diagnosis.',
+    question: 'Did I stay in range today?',
+    horizon: 'Today',
+    views: [
+      { label: 'Daily', desc: 'Glanceable home. Current glucose, daily average, time in range.' },
+    ],
+  },
+  {
+    key: 'changer',
+    name: 'The Changer',
+    identity: 'Guided by a doctor. Reversing insulin resistance.',
+    question: 'Is the trend bending — and can I show my doctor?',
+    horizon: 'This week',
+    views: [
+      { label: 'Daily', desc: 'The same glanceable home — the shared starting point.' },
+      { label: 'Cumulative', desc: 'Progress across fifteen days, built to be shared with a coach.' },
+    ],
+  },
+  {
+    key: 'diabetic',
+    name: 'The Diabetic',
+    identity: 'Years of CGM. Reads clinical data natively.',
+    question: 'How does today compare to last Tuesday?',
+    horizon: 'Long-range',
+    views: [
+      { label: 'Advanced', desc: 'The clinical layer — AGP, variability, SD. The view shared with a doctor.' },
+    ],
+  },
+];
+---
+
+<section class="bet" id="the-bet">
+  <p class="bet__eyebrow">The bet</p>
+  <h2 class="bet__heading">One product, three readers</h2>
+
+  <p class="bet__intro">
+    A CGM produces around fifteen metrics, and the people reading them aren't the
+    same person. All three start from the same daily glucose — they split on how
+    deep they go, and why.
+  </p>
+
+  <div class="bet__spectrum">
+    <ReaderSpectrum />
+  </div>
+
+  {/* Three paired columns: each reader + the view(s) that serve them */}
+  <div class="bet__columns">
+    {columns.map((col) => (
+      <div class={`col col--${col.key}`}>
+        <div class="col__reader">
+          <span class="col__horizon">{col.horizon}</span>
+          <h3 class="col__name">{col.name}</h3>
+          <p class="col__identity">{col.identity}</p>
+          <blockquote class="col__question">{col.question}</blockquote>
+        </div>
+        <div class="col__arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="4" x2="12" y2="20"/><polyline points="6 14 12 20 18 14"/></svg>
+        </div>
+        <div class="col__views">
+          {col.views.map((v) => (
+            <div class="col__view">
+              <span class="col__view-label">{v.label}</span>
+              <p class="col__view-desc">{v.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <aside class="bet__convergence" aria-label="Shared view">
+    <p>
+      <strong>Daily</strong> appears twice — that's the point.
+      The Seeker and the Changer start from the same screen.
+      The depth diverges from there.
+    </p>
+  </aside>
+
+  <div class="bet__cost">
+    <p>
+      Design for the average of these three and you overwhelm the Seeker and
+      underserve the Diabetic. So I stopped designing one screen and metered the
+      depth instead.
+    </p>
+  </div>
+</section>
+
+<style>
+  .bet {
+    position: relative;
+    margin-top: var(--space-3xl);
+    width: min(60rem, 92vw);
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .bet__eyebrow {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-xs);
+  }
+  .bet__heading {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-md);
+  }
+
+  .bet__intro {
+    font-size: var(--font-sm);
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 44rem;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .bet__spectrum {
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-xl);
+  }
+
+  /* ---- Three paired columns ---- */
+  .bet__columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Reader card (top half of column) */
+  .col__reader {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    border-top: 3px solid var(--accent);
+    flex: 1;
+  }
+
+  .col__horizon {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(0, 0, 0, 0.04);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: var(--space-sm);
+  }
+  .col__name {
+    font-size: var(--font-md);
+    font-weight: 700;
+  }
+  .col__identity {
+    margin-top: var(--space-2xs);
+    font-size: var(--font-sm);
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .col__question {
+    margin-top: var(--space-md);
+    font-size: var(--font-lg);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  /* Arrow between reader and view */
+  .col__arrow {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-sm) 0;
+    color: var(--accent);
+    opacity: 0.5;
+  }
+  .col__arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* View card(s) (bottom half of column) */
+  .col__views {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .col__view {
+    padding: var(--space-md);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.02);
+  }
+  .col__view-label {
+    display: inline-block;
+    font-size: var(--font-sm);
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.15rem;
+  }
+  .col__view-desc {
+    font-size: var(--font-xs);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  /* Convergence callout */
+  .bet__convergence {
+    padding: var(--space-md) var(--space-lg);
+    background: rgba(231, 95, 56, 0.04);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-bottom: var(--space-2xl);
+  }
+  .bet__convergence p {
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .bet__convergence strong {
+    color: var(--accent);
+  }
+
+  /* Cost of averaging */
+  .bet__cost {
+    border-top: 2px solid var(--ink);
+    padding-top: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+  }
+  .bet__cost p {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--ink);
+    max-width: 48rem;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 48rem) {
+    .bet__columns {
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+    }
+    .col__question {
+      font-size: var(--font-md);
+    }
+  }
+</style>
