@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 import cgmCover from '../assets/cgm-hero.png';
 import kairaCover from '../assets/cs-hero.png';
+import arcCover from '../assets/arc-ring-hero.png';
+import metabolicCover from '../assets/metabolic-journey-hero.png';
 
 // Case studies shown under the hero. Add future studies to this array.
 const work = [
@@ -24,6 +26,27 @@ const work = [
     href: '/work/food-logging-with-kaira',
     cover: kairaCover,
     coverAlt: 'Kaira app: a conversational meal log and its insight card around the Kaira mark',
+  },
+];
+
+const upcoming = [
+  {
+    index: '03',
+    title: 'ARC Ring',
+    hook: 'A wearable ring that turns metabolic activity into something you can actually act on.',
+    role: 'Product designer, GoodFlip',
+    tags: ['Wearable', 'Metabolic tracking', 'Coming Soon'],
+    cover: arcCover,
+    coverAlt: 'ARC Ring by GoodFlip — a metabolic activity tracker worn on the finger',
+  },
+  {
+    index: '04',
+    title: 'Metabolic Journey',
+    hook: "The cornerstone of GoodFlip's story — a single view of your overall metabolic health.",
+    role: 'Product designer, GoodFlip',
+    tags: ['Health narrative', 'Data visualization', 'Coming Soon'],
+    cover: metabolicCover,
+    coverAlt: 'Metabolic Journey — a holistic view of metabolic health over time',
   },
 ];
 ---
@@ -54,6 +77,27 @@ const work = [
         </a>
       </li>
     ))}
+
+    {upcoming.map((item) => (
+      <li class="work__item">
+        <div class="card card--upcoming">
+          <div class="card__cover">
+            <Image class="card__cover-img" src={item.cover} alt={item.coverAlt} widths={[500, 900, 1440]} sizes="(max-width: 48rem) 92vw, 34rem" />
+          </div>
+          <div class="card__body">
+            <span class="card__index">{item.index}</span>
+            <h3 class="card__title">{item.title}</h3>
+            <p class="card__hook">{item.hook}</p>
+            <p class="card__role">{item.role}</p>
+            <ul class="card__tags">
+              {item.tags.map((t) => (
+                <li class={t === 'Coming Soon' ? 'card__tag--soon' : ''}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </li>
+    ))}
   </ul>
 </section>
 
@@ -63,6 +107,7 @@ const work = [
     max-width: 72rem;
     margin: 0 auto;
     padding: var(--space-3xl) var(--space-xl);
+    padding-bottom: clamp(4rem, 10vh, 8rem);
   }
 
   .work__head {
@@ -188,6 +233,23 @@ const work = [
   .card:hover .card__arrow,
   .card:focus-visible .card__arrow {
     transform: translateX(4px);
+  }
+
+  .card--upcoming {
+    cursor: default;
+    text-decoration: none;
+  }
+  .card--upcoming:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--hairline);
+  }
+
+  .card__tag--soon {
+    background: rgba(231, 95, 56, 0.08);
+    border-color: rgba(231, 95, 56, 0.25) !important;
+    color: var(--accent) !important;
+    font-weight: 600;
   }
 
   @media (max-width: 48rem) {

@@ -1,0 +1,610 @@
+---
+import { Image } from 'astro:assets';
+import AssetPlaceholder from './AssetPlaceholder.astro';
+import cgmCoaches1 from '../assets/cgm-coaches-1.png';
+import cgmCoaches2 from '../assets/cgm-coaches-2.png';
+import cgmCa1 from '../assets/cgm-ca-1.png';
+import cgmCa2 from '../assets/cgm-ca-2.png';
+import cgmCa3 from '../assets/cgm-ca-3.png';
+import cgmOnArm from '../assets/cgm-on-arm.webp';
+import cgmIntegration from '../assets/cgm-integration.png';
+import cgmPurchaseJourney from '../assets/cgm-purchase-journey.png';
+---
+
+<div class="tl" id="device-timeline">
+  <div class="tl__track" aria-hidden="true">
+    <div class="tl__progress"></div>
+  </div>
+
+  {/* ── PHASE 1 ── */}
+  <div class="tl__phase" data-phase="1">
+    <div class="tl__phase-label">Understand the domain</div>
+
+    <ol class="tl__entries">
+      <li class="tl__entry" data-index="0">
+        <span class="tl__dot" aria-hidden="true"></span>
+        <div class="tl__content">
+          <h3 class="tl__headline">Build a basic understanding</h3>
+          <p class="tl__learning">How the body handles glucose, and what the market already does.</p>
+          <p class="tl__consequence">&rarr; A clear read on what BeatO, Ultrahuman, SugarFit get wrong.</p>
+          <div class="tl__asset tl__asset--stacked">
+            <Image src={cgmCa1} alt="Competitive analysis — market landscape" width={700} class="tl__img-full" />
+            <div class="tl__asset--pair">
+              <Image src={cgmCa2} alt="Competitive analysis — feature comparison" width={340} />
+              <Image src={cgmCa3} alt="Competitive analysis — gap identification" width={340} />
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="tl__entry" data-index="1">
+        <span class="tl__dot" aria-hidden="true"></span>
+        <div class="tl__content">
+          <h3 class="tl__headline">Sit with the clinical team</h3>
+          <p class="tl__learning">I sat through calls with doctors and coaches to understand how they read CGM data.</p>
+          <p class="tl__consequence">&rarr; Three things reshaped the entire information architecture.</p>
+          <div class="tl__asset tl__asset--inline tl__asset--pair">
+            <Image src={cgmCoaches1} alt="Sitting with the clinical team — session 1" width={600} />
+            <Image src={cgmCoaches2} alt="Sitting with the clinical team — session 2" width={600} />
+          </div>
+          <div class="tl__insights">
+            <div class="tl__insight">
+              <span class="tl__insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+              <h4 class="tl__insight-title">People panic easily</h4>
+              <p class="tl__insight-body">Any graph going downwards — even on a daily timeline — triggers users into thinking something is wrong.</p>
+            </div>
+            <div class="tl__insight">
+              <span class="tl__insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              </span>
+              <h4 class="tl__insight-title">Experts read cumulative</h4>
+              <p class="tl__insight-body">Doctors look at 15-day aggregates — TIR, TAR, TBR. That is their source of truth, not the daily graph.</p>
+            </div>
+            <div class="tl__insight">
+              <span class="tl__insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <h4 class="tl__insight-title">Experts simplify for users</h4>
+              <p class="tl__insight-body">When talking to patients, doctors use easy-to-understand parameters and keep the clinical metrics for expert eyes only.</p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <p class="tl__phase-close">The data has depths different people can — and can't — read.</p>
+  </div>
+
+  {/* ── PHASE 2 ── */}
+  <div class="tl__phase" data-phase="2">
+    <div class="tl__phase-label">Live it</div>
+
+    <ol class="tl__entries">
+      <li class="tl__entry tl__entry--featured" data-index="2">
+        <span class="tl__dot tl__dot--featured" aria-hidden="true"></span>
+        <div class="tl__content">
+          <h3 class="tl__headline">Wear it for 15 days</h3>
+          <p class="tl__learning">I put a sensor on my own arm for the full cycle.</p>
+          <p class="tl__consequence">&rarr; Three things surfaced that no research would have.</p>
+          <div class="tl__asset tl__asset--featured">
+            <Image src={cgmOnArm} alt="CGM sensor on arm during the 15-day wear period" width={600} />
+          </div>
+
+          <div class="tl__insights">
+            <div class="tl__insight">
+              <span class="tl__insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </span>
+              <h4 class="tl__insight-title">Install</h4>
+              <p class="tl__insight-body">Harder than the manual admits. I fumbled it myself.</p>
+            </div>
+            <div class="tl__insight">
+              <span class="tl__insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+              <h4 class="tl__insight-title">Errors</h4>
+              <p class="tl__insight-body">Not edge cases. Dropouts, moisture, vanished readings.</p>
+            </div>
+            <div class="tl__insight">
+              <span class="tl__insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              </span>
+              <h4 class="tl__insight-title">Nudges</h4>
+              <p class="tl__insight-body">The one thing that genuinely helped.</p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <p class="tl__phase-close">The hardest problems weren't in the data. They were before the app showed a number.</p>
+  </div>
+
+  {/* ── PHASE 3 ── */}
+  <div class="tl__phase" data-phase="3">
+    <div class="tl__phase-label">Map the whole journey</div>
+
+    <ol class="tl__entries">
+      <li class="tl__entry" data-index="3">
+        <span class="tl__dot" aria-hidden="true"></span>
+        <div class="tl__content">
+          <h3 class="tl__headline">Map it end to end</h3>
+          <p class="tl__learning">The journey starts at an advert, not the app — ad, purchase, delivery, connection.</p>
+          <p class="tl__consequence">&rarr; I answered every question at the moment it forms.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="tl__hero-assets">
+      <div class="tl__asset tl__asset--hero">
+        <button class="tl__zoomable" type="button" aria-label="Click to zoom">
+          <Image src={cgmPurchaseJourney} alt="Purchase journey map — three ways in" width={900} />
+          <span class="tl__zoom-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </span>
+        </button>
+        <p class="tl__asset-caption">The journey begins before the product does — three ways in.</p>
+      </div>
+      <div class="tl__asset tl__asset--hero">
+        <button class="tl__zoomable" type="button" aria-label="Click to zoom">
+          <Image src={cgmIntegration} alt="CGM integration map — failure to screen" width={900} />
+          <span class="tl__zoom-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </span>
+        </button>
+        <p class="tl__asset-caption">Every failure I mapped became a screen — the manual QR fallback, the warm-up state, the sync-paused message.</p>
+      </div>
+    </div>
+
+    <p class="tl__phase-close">The user walks one path from an ad to a glucose reading. They never see the four teams behind it.</p>
+  </div>
+
+  {/* ── CLOSING BRIDGE ── */}
+  <div class="tl__bridge">
+    <p class="tl__bridge-main">
+      Three distances, one realization: the person fumbling the install, the person the nudge rescued, and the clinician reading AGP aren't the same person. The same screen can't serve all three.
+    </p>
+    <p class="tl__bridge-muted">From here, everything went into wireframes — the part I owned end to end.</p>
+  </div>
+
+  {/* Lightbox overlay */}
+  <div class="tl__lightbox" id="tl-lightbox" aria-hidden="true">
+    <button class="tl__lightbox-close" type="button" aria-label="Close">&times;</button>
+    <img class="tl__lightbox-img" alt="" />
+  </div>
+</div>
+
+<style>
+  .tl {
+    --dot-size: 0.75rem;
+    --dot-size-featured: 1rem;
+    --track-w: 2px;
+    --rail-x: 1.75rem;
+    --content-gap: 1.25rem;
+    position: relative;
+    padding-left: calc(var(--rail-x) + var(--content-gap));
+    margin-top: var(--space-xl);
+  }
+
+  /* ── Track ── */
+  .tl__track {
+    position: absolute;
+    left: calc(var(--rail-x) - var(--track-w) / 2);
+    top: 0;
+    bottom: 0;
+    width: var(--track-w);
+    background: var(--hairline);
+    border-radius: 1px;
+  }
+  .tl__progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: var(--accent);
+    border-radius: 1px;
+    transition: height 0.15s ease-out;
+  }
+
+  /* ── Phases ── */
+  .tl__phase {
+    margin-bottom: var(--space-3xl);
+  }
+  .tl__phase:last-of-type {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .tl__phase-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 0.3rem 0.75rem;
+    background: rgba(231, 95, 56, 0.06);
+    border-radius: var(--radius-pill);
+    display: inline-block;
+    margin-bottom: var(--space-xl);
+  }
+
+  .tl__phase-close {
+    font-size: var(--font-sm);
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--hairline);
+    max-width: 36rem;
+  }
+
+  /* ── Entries ── */
+  .tl__entries {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .tl__entry {
+    position: relative;
+    opacity: 0.25;
+    transform: translateY(0.75rem);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .tl__entry[data-active] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Dots ── */
+  .tl__dot {
+    position: absolute;
+    left: calc(-1 * var(--content-gap) - var(--dot-size) / 2);
+    top: 0.25rem;
+    width: var(--dot-size);
+    height: var(--dot-size);
+    border-radius: 50%;
+    background: var(--hairline);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 2px var(--hairline);
+    transition: background 0.35s ease, box-shadow 0.35s ease;
+    z-index: 1;
+  }
+  .tl__entry[data-active] .tl__dot {
+    background: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .tl__dot--featured {
+    width: var(--dot-size-featured);
+    height: var(--dot-size-featured);
+    left: calc(-1 * var(--content-gap) - var(--dot-size-featured) / 2);
+    top: 0.15rem;
+  }
+  .tl__entry[data-active] .tl__dot--featured {
+    box-shadow: 0 0 0 2px var(--accent), 0 0 0 6px rgba(231, 95, 56, 0.15);
+  }
+
+  /* ── Content ── */
+  .tl__content {
+    max-width: 36rem;
+  }
+
+  .tl__headline {
+    font-size: var(--font-md);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: var(--space-xs);
+  }
+
+  .tl__learning {
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .tl__consequence {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--accent);
+  }
+
+  /* ── Insight cards (Phase 2) ── */
+  .tl__insights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+  .tl__insight {
+    padding: var(--space-lg) var(--space-md);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    border-top: 3px solid var(--accent);
+    background: var(--surface);
+  }
+  .tl__insight-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: rgba(231, 95, 56, 0.08);
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+  }
+  .tl__insight-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .tl__insight-title {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+  .tl__insight-body {
+    font-size: var(--font-xs);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  @media (max-width: 36rem) {
+    .tl__insights {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Asset slots ── */
+  .tl__asset--inline {
+    margin-top: var(--space-sm);
+  }
+  .tl__asset--pair {
+    display: flex;
+    gap: var(--space-sm);
+  }
+  .tl__asset--pair :global(img) {
+    flex: 1;
+    min-width: 0;
+    border-radius: var(--radius-md);
+    height: auto;
+  }
+  .tl__asset--stacked {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    max-width: 44rem;
+  }
+  .tl__asset--stacked :global(.tl__img-full) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  .tl__asset--featured {
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+  .tl__asset--featured :global(img) {
+    width: 100%;
+    max-width: 36rem;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  .tl__hero-assets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+  }
+  .tl__asset--hero {
+    width: 100%;
+  }
+  .tl__asset--hero :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+  .tl__asset-caption {
+    font-size: var(--font-xs);
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: var(--space-xs);
+    max-width: 44rem;
+  }
+
+  /* ── Zoomable / Lightbox ── */
+  .tl__zoomable {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: none;
+    cursor: zoom-in;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+  }
+  .tl__zoomable:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  .tl__zoomable :global(img) {
+    border-radius: 0;
+  }
+  .tl__zoom-hint {
+    position: absolute;
+    bottom: var(--space-sm);
+    right: var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    color: var(--ink);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .tl__zoomable:hover .tl__zoom-hint {
+    opacity: 1;
+  }
+  .tl__zoom-hint svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .tl__lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.85);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    padding: 2rem;
+  }
+  .tl__lightbox[data-open] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .tl__lightbox-img {
+    max-width: 95vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+  }
+  .tl__lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .tl__lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* ── Bridge ── */
+  .tl__bridge {
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-xl);
+    border-top: 2px solid var(--ink);
+    max-width: 40rem;
+  }
+  .tl__bridge-main {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--ink);
+    margin-bottom: var(--space-md);
+  }
+  .tl__bridge-muted {
+    font-size: var(--font-sm);
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 40rem) {
+    .tl {
+      --rail-x: 1rem;
+      --content-gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  const tl = document.getElementById('device-timeline');
+  if (tl) {
+    const entries = Array.from(tl.querySelectorAll<HTMLElement>('.tl__entry'));
+    const progress = tl.querySelector<HTMLElement>('.tl__progress');
+    const track = tl.querySelector<HTMLElement>('.tl__track');
+
+    function updateTimeline() {
+      const viewMid = window.innerHeight * 0.72;
+      let lastActiveIdx = -1;
+
+      entries.forEach((entry, i) => {
+        const rect = entry.getBoundingClientRect();
+        if (rect.top < viewMid) {
+          entry.setAttribute('data-active', '');
+          lastActiveIdx = i;
+        } else {
+          entry.removeAttribute('data-active');
+        }
+      });
+
+      if (progress && track && lastActiveIdx >= 0) {
+        const trackRect = track.getBoundingClientRect();
+        const lastDot = entries[lastActiveIdx].querySelector('.tl__dot');
+        if (lastDot) {
+          const dotRect = lastDot.getBoundingClientRect();
+          const h = dotRect.top + dotRect.height / 2 - trackRect.top;
+          progress.style.height = `${Math.max(0, h)}px`;
+        }
+      } else if (progress) {
+        progress.style.height = '0';
+      }
+    }
+
+    updateTimeline();
+    window.addEventListener('scroll', updateTimeline, { passive: true });
+    window.addEventListener('resize', updateTimeline, { passive: true });
+
+    // Lightbox
+    const lightbox = document.getElementById('tl-lightbox');
+    const lbImg = lightbox?.querySelector<HTMLImageElement>('.tl__lightbox-img');
+    const lbClose = lightbox?.querySelector('.tl__lightbox-close');
+
+    tl.querySelectorAll<HTMLButtonElement>('.tl__zoomable').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const img = btn.querySelector('img');
+        if (img && lbImg && lightbox) {
+          lbImg.src = img.src;
+          lbImg.alt = img.alt;
+          lightbox.setAttribute('data-open', '');
+          lightbox.removeAttribute('aria-hidden');
+        }
+      });
+    });
+
+    function closeLightbox() {
+      if (lightbox) {
+        lightbox.removeAttribute('data-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    lbClose?.addEventListener('click', closeLightbox);
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  }
+</script>
