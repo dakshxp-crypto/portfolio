@@ -36,9 +36,9 @@ import Dakshxp from './Dakshxp.astro';
         </a>
         <nav class="nav__links" aria-label="Primary">
           <a href="/about">About</a>
-          <a href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Resume</a>
           <a href="#work">Work</a>
           <a href="#contact">Contact</a>
+          <a class="nav__resume" href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Resume <span aria-hidden="true">&rsaquo;</span></a>
         </nav>
       </header>
 
@@ -145,7 +145,7 @@ import Dakshxp from './Dakshxp.astro';
   .nav__links {
     display: flex;
     gap: var(--space-lg);
-    font-size: var(--font-base);
+    font-size: var(--font-md);
     font-weight: 500;
   }
 
@@ -170,6 +170,32 @@ import Dakshxp from './Dakshxp.astro';
   .nav__links a:hover::after,
   .nav__links a:focus-visible::after {
     transform: scaleX(1);
+  }
+
+  .nav__resume {
+    background: #fff;
+    color: var(--accent) !important;
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1.2rem !important;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  .nav__resume::after {
+    display: none !important;
+  }
+
+  .nav__resume:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: scale(1.03);
+  }
+
+  .nav__resume span {
+    margin-left: 0.15em;
+    font-size: 1.1em;
   }
 
   .copy {
