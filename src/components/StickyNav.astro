@@ -8,9 +8,9 @@ import Logo from './Logo.astro';
   </a>
   <div class="stickynav__links">
     <a href="/about">About</a>
-    <a href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Resume</a>
-    <a href="#work">Work</a>
-    <a href="#contact">Contact</a>
+    <a href="/#work">Work</a>
+    <a href="/#contact">Contact</a>
+    <a class="stickynav__resume" href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Resume <span aria-hidden="true">&rsaquo;</span></a>
   </div>
 </nav>
 
@@ -46,7 +46,7 @@ import Logo from './Logo.astro';
   .stickynav__links {
     display: flex;
     gap: var(--space-lg);
-    font-size: var(--font-base);
+    font-size: var(--font-md);
     font-weight: 500;
   }
   .stickynav__links a {
@@ -69,6 +69,32 @@ import Logo from './Logo.astro';
   .stickynav__links a:hover::after,
   .stickynav__links a:focus-visible::after {
     transform: scaleX(1);
+  }
+
+  .stickynav__resume {
+    background: var(--accent);
+    color: #fff !important;
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1.2rem !important;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  .stickynav__resume::after {
+    display: none !important;
+  }
+
+  .stickynav__resume:hover {
+    background: #d14e2b;
+    transform: scale(1.03);
+  }
+
+  .stickynav__resume span {
+    margin-left: 0.15em;
+    font-size: 1.1em;
   }
 
   @media (max-width: 40rem) {

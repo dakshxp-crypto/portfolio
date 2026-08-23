@@ -1,139 +1,842 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import StickyNav from '../components/StickyNav.astro';
+import Logo from '../components/Logo.astro';
 import Footer from '../components/Footer.astro';
+
+import heroBg from '../assets/about/hero-background.png';
+import faceOfMan from '../assets/about/face-of-man.png';
+import myInspirations from '../assets/about/my-inspirations.png';
+import myStory from '../assets/about/my-story.png';
+import myPsychologists from '../assets/about/my-psychologists.png';
+import flyingBird from '../assets/about/flying-bird-with-objects.png';
+import startWithWhy from '../assets/about/start-with-why-book.png';
+import wabisabiVase from '../assets/about/wabisabi-vase.png';
+import flyingWhale from '../assets/about/flying-whale-divider.png';
+import coffeeDesign from '../assets/about/coffee-and-design.png';
+import humtaarImg from '../assets/about/humtaar.png';
+import bharatbionImg from '../assets/about/bharatbion.png';
+import meditationImg from '../assets/about/meditation.png';
+import bookImg from '../assets/about/book.png';
+import animeImg from '../assets/about/anime.png';
+import friendsImg from '../assets/about/freinds.png';
 ---
 
 <BaseLayout
   title="About | Daksh Sharma"
-  description="Daksh Sharma is a senior product designer working where AI, health, and high-craft interfaces meet, from research and strategy through to shipped UI."
+  description="I think design is mostly storytelling. Senior Product Designer working where AI, health, and high-craft interfaces meet."
 >
-  <article class="about">
-    <a class="about__back" href="/">← Home</a>
+  <StickyNav />
 
-    <header class="about__head">
-      <p class="about__kicker">About</p>
-      <h1 class="about__title">Daksh Sharma</h1>
-      <p class="about__lead">
-        Senior Product Designer working where AI, health, and high-craft
-        interfaces meet, building the whole thing from strategy to ship.
-      </p>
+  <!-- ═══ HERO ═══ -->
+  <section class="abthero">
+    <Image
+      class="abthero__bg"
+      src={heroBg}
+      alt=""
+      widths={[960, 1440, 1920, 2560]}
+      sizes="100vw"
+      format="webp"
+      quality={80}
+      loading="eager"
+      fetchpriority="high"
+    />
+
+    <header class="abthero__nav">
+      <a class="abthero__brand" href="/" aria-label="Home">
+        <Logo white />
+      </a>
+      <nav class="abthero__links" aria-label="Primary">
+        <a href="/about" aria-current="page">About</a>
+        <a href="/#work">Work</a>
+        <a href="/#contact">Contact</a>
+        <a class="abthero__resume" href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Resume <span aria-hidden="true">&rsaquo;</span></a>
+      </nav>
     </header>
 
-    <div class="about__body">
-      <p>
-        I work end to end, from research and strategy through to shipped,
-        high-craft UI. My focus is the place where AI and health meet: tools
-        people actually have to trust with their bodies and their data, where a
-        confident wrong answer is worse than no answer at all.
-      </p>
-      <p>
-        Most recently, as sole product designer at GoodFlip (TatvaCare), I
-        designed Kaira, an AI food-logging companion, and the GoodFlip CGM
-        dashboard, both shipped to people managing chronic metabolic conditions.
-        I owned the problem definition, the interaction and visual design, and,
-        for the AI surfaces, the logic and language of what the product actually
-        says back.
-      </p>
+    <div class="abthero__center">
+      <div class="abthero__face">
+        <Image
+          src={faceOfMan}
+          alt="Daksh Sharma — Magritte-style portrait with an apple"
+          widths={[200, 400]}
+          sizes="8rem"
+          format="webp"
+          loading="eager"
+        />
+      </div>
+      <h1 class="abthero__title">I think design is mostly storytelling</h1>
     </div>
 
-    <div class="about__cta">
-      <a class="about__link about__link--primary" href="/#work">See my work</a>
-      <a class="about__link" href="/Daksh_Sharma_Resume.pdf" target="_blank" rel="noopener">Download resume</a>
+    <div class="abthero__scroll" aria-hidden="true">
+      <svg class="abthero__chevron abthero__chevron--1" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2L12 10L22 2" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg class="abthero__chevron abthero__chevron--2" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2L12 10L22 2" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
+  </section>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <article class="abt">
+
+    <!-- ── Flashback ── -->
+    <section class="abt__section">
+      <h2 class="abt__heading">Let&rsquo;s start with a flashback</h2>
+
+      <div class="abt__collage">
+        <Image
+          src={myInspirations}
+          alt="A collage of animated characters, classical paintings, and surreal art that shaped how I think about storytelling"
+          widths={[600, 1000, 1600]}
+          sizes="min(52rem, 92vw)"
+          format="webp"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="abt__prose">
+        <p>The <strong>animated films</strong> I grew up on and the <strong>art</strong> that I saw taught me you can make someone feel something without saying it directly. I&rsquo;ve been trying to do that with products ever since. The goal was never just to make it work. It was to make someone feel something.</p>
+      </div>
+
+      <div class="abt__strip">
+        <Image
+          src={myStory}
+          alt="Newspaper clipping of a young Daksh winning a design competition, building at a science fair, and the NIT Rourkela campus"
+          widths={[600, 1200, 2000]}
+          sizes="min(52rem, 92vw)"
+          format="webp"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="abt__prose">
+        <p>Long before I knew the word &ldquo;design,&rdquo; I was a kid who just made things: science fair models, robots, whatever the problem in front of me needed. That instinct took me through <strong>industrial design engineering at NIT Rourkela</strong>, and somewhere along the way I found the digital version of it. Same love of building, better tools, a lot more people to build for.</p>
+      </div>
+    </section>
+
+    <!-- ── Psychology ── -->
+    <section class="abt__section">
+      <div class="abt__collage">
+        <Image
+          src={myPsychologists}
+          alt="A collage of psychologists and thinkers — Freud, Jung, Kahneman — surrounded by floating brains"
+          widths={[600, 1000, 1600]}
+          sizes="min(52rem, 92vw)"
+          format="webp"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="abt__prose">
+        <p>What pulls me most is what happens beneath a decision. I found <strong>Carl Jung</strong> early, and the idea that so much of what moves us is unconscious, symbolic, half-hidden, felt like the truest thing anyone had said about people. It changed what I look for in a product. Not just whether it&rsquo;s usable, but what it makes someone feel before they&rsquo;ve thought about it at all. Most of the interesting work happens on that layer.</p>
+      </div>
+    </section>
+
+    <!-- ── More Daksh (highlighted with accent bar) ── -->
+    <section class="abt__section abt__section--accent">
+      <h2 class="abt__heading">How can I make it more Daksh?</h2>
+
+      <div class="abt__collage">
+        <Image
+          src={flyingBird}
+          alt="A surreal collage of objects that inspire me — a Magritte archway, Sony Walkman, Cesca chair, TP-7, and a Swatch watch, all tied together by a flying dove"
+          widths={[600, 1000, 1600]}
+          sizes="min(52rem, 92vw)"
+          format="webp"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="abt__prose">
+        <p>I&rsquo;ve always loved the <strong>products brave enough to be strange</strong>: the ones that could have been a beige box and chose to be joyful instead. &ldquo;How can I make it more Daksh?&rdquo; is the permission I give myself to do the same. Get it correct first, then push past correct into something that looks a little different and connects. That last ten percent is usually the only part anyone remembers.</p>
+      </div>
+
+      <!-- ── Principles ── -->
+      <div class="abt__principles">
+        <div class="principle">
+          <div class="principle__arch"></div>
+          <div class="principle__img">
+            <Image
+              src={startWithWhy}
+              alt="Start With Why by Simon Sinek"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <p class="principle__text"><strong>Start with why</strong> &mdash; before anything else, I ask what the work is really for</p>
+        </div>
+        <div class="principle">
+          <div class="principle__arch"></div>
+          <div class="principle__img">
+            <Image
+              src={wabisabiVase}
+              alt="A kintsugi vase repaired with gold — wabi-sabi, the beauty of imperfection"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <p class="principle__text"><strong>Perfect imperfection</strong> &mdash; nothing is right on day one, so I ship, watch, and let the data say where to go next.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Whale divider (full-width) ── -->
+    <div class="abt__divider">
+      <Image
+        src={flyingWhale}
+        alt=""
+        widths={[600, 1200, 2000]}
+        sizes="100vw"
+        format="webp"
+        loading="lazy"
+      />
+    </div>
+
+    <!-- ── Side quests ── -->
+    <section class="abt__section">
+      <h2 class="abt__heading">My side quests</h2>
+      <p class="abt__intro">My paid work has been mostly health tech, most recently as the only designer on a metabolic health platform. The things I&rsquo;m proudest of, though, are the ones nobody asked me to build.</p>
+
+      <ul class="sidequests">
+        <li class="sidequest">
+          <div class="sidequest__img">
+            <Image
+              src={coffeeDesign}
+              alt="Two students huddled around a laptop at a college corridor, working on a product design project"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="sidequest__body">
+            <h3 class="sidequest__name">Coffee &amp; Design</h3>
+            <p class="sidequest__desc">A place to teach product design to engineering students who&rsquo;d been told it was the lesser path. Four people then, a community now &mdash; and proof that health wasn&rsquo;t going away.</p>
+          </div>
+        </li>
+        <li class="sidequest">
+          <div class="sidequest__img">
+            <Image
+              src={bharatbionImg}
+              alt="BharatBion — AI-assisted ultrasound analysis platform"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="sidequest__body">
+            <h3 class="sidequest__name">BharatBion</h3>
+            <p class="sidequest__desc">An AI-assisted diagnostic platform that helps sonologists catch what they might miss. Designed the clinical workflow and reporting interface from scratch.</p>
+          </div>
+        </li>
+        <li class="sidequest">
+          <div class="sidequest__img">
+            <Image
+              src={humtaarImg}
+              alt="Humtaar — You're not broken, you're just stuck"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="sidequest__body">
+            <h3 class="sidequest__name">Humtaar</h3>
+            <p class="sidequest__desc">Built on a simple belief: most people aren&rsquo;t broken, just stuck. It won&rsquo;t replace a therapist, but getting someone to talk out loud might still be worth building.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ── Off the clock ── -->
+    <section class="abt__section">
+      <h2 class="abt__heading">When I&rsquo;m not working, I&rsquo;m usually somewhere off the clock.</h2>
+
+      <ul class="offclock">
+        <li class="offclock__item">
+          <div class="offclock__img">
+            <Image
+              src={meditationImg}
+              alt="Daksh sitting cross-legged on a forest road, meditating"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="offclock__body">
+            <h3 class="offclock__name">Stillness</h3>
+            <p class="offclock__desc">Where I actually process things. Most of what I manage to notice, I notice from here.</p>
+          </div>
+        </li>
+        <li class="offclock__item">
+          <div class="offclock__img">
+            <Image
+              src={bookImg}
+              alt="Daksh browsing a bookshelf"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="offclock__body">
+            <h3 class="offclock__name">Books</h3>
+            <p class="offclock__desc">I read to borrow other people&rsquo;s thinking. They&rsquo;ve usually already chewed on whatever I&rsquo;m stuck on.</p>
+          </div>
+        </li>
+        <li class="offclock__item">
+          <div class="offclock__img">
+            <Image
+              src={animeImg}
+              alt="Roronoa Zoro wanted poster"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="offclock__body">
+            <h3 class="offclock__name">Anime</h3>
+            <p class="offclock__desc">My comfort medium and, honestly, still the clearest proof of what storytelling can do to a person.</p>
+          </div>
+        </li>
+        <li class="offclock__item">
+          <div class="offclock__img">
+            <Image
+              src={friendsImg}
+              alt="A group of friends in the snow"
+              widths={[300, 500]}
+              sizes="12rem"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="offclock__body">
+            <h3 class="offclock__name">Friends</h3>
+            <p class="offclock__desc">The people who keep me out of my own head and remind me the work isn&rsquo;t the whole point.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
   </article>
 
-  <Footer />
+  <div class="grid-bg">
+    <Footer />
+  </div>
 </BaseLayout>
 
 <style is:global>
-  /* Light reading surface for the About page. */
-  body:has(.about) {
+  body:has(.abt) {
     background-color: var(--surface);
     color: var(--ink);
   }
 </style>
 
 <style>
-  .about {
-    max-width: 44rem;
-    margin: 0 auto;
-    padding: var(--space-2xl) var(--space-xl) var(--space-3xl);
-    color: var(--ink);
+  /* ═══ HERO ═══ */
+  .abthero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
   }
 
-  .about__back {
-    display: inline-block;
-    font-size: var(--font-sm);
-    font-weight: 500;
-    color: var(--muted);
-    transition: color 0.2s ease;
-  }
-  .about__back:hover {
-    color: var(--accent);
-  }
-
-  .about__head {
-    margin-top: var(--space-2xl);
+  .abthero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    z-index: 0;
   }
 
-  .about__kicker {
-    font-size: var(--font-sm);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
+  .abthero__nav {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg) var(--space-xl);
   }
 
-  .about__title {
-    margin-top: var(--space-sm);
-    font-size: clamp(2.5rem, 7vw, 4rem);
-    font-weight: 900;
-    line-height: 1.02;
-    letter-spacing: -0.02em;
+  .abthero__brand {
+    display: inline-flex;
+    align-items: center;
   }
 
-  .about__lead {
-    margin-top: var(--space-lg);
-    font-size: var(--font-lg);
-    font-weight: 500;
-    line-height: 1.35;
-  }
-
-  .about__body {
-    margin-top: var(--space-2xl);
-  }
-  .about__body p {
+  .abthero__links {
+    display: flex;
+    gap: var(--space-lg);
     font-size: var(--font-md);
-    line-height: 1.6;
-    margin-top: var(--space-md);
+    font-weight: 500;
   }
-  .about__body p:first-child {
+
+  .abthero__links a {
+    color: #fff;
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  .abthero__links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .abthero__links a:hover::after,
+  .abthero__links a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .abthero__links a[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  .abthero__resume {
+    background: #fff;
+    color: var(--accent) !important;
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1.2rem !important;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  .abthero__resume::after {
+    display: none !important;
+  }
+
+  .abthero__resume:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: scale(1.03);
+  }
+
+  .abthero__resume span {
+    margin-left: 0.15em;
+    font-size: 1.1em;
+  }
+
+  .abthero__center {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 8rem var(--space-xl) 0;
+  }
+
+  .abthero__scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .abthero__chevron {
+    width: 2rem;
+    height: 1rem;
+    opacity: 0;
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+
+  .abthero__chevron--1 {
+    animation-delay: 0s;
+  }
+
+  .abthero__chevron--2 {
+    animation-delay: 0.15s;
+    margin-top: -0.2rem;
+  }
+
+  @keyframes scrollBounce {
+    0%   { opacity: 0; transform: translateY(-4px); }
+    40%  { opacity: 1; transform: translateY(0); }
+    80%  { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 0; transform: translateY(4px); }
+  }
+
+  .abthero__face {
+    width: 9rem;
+    height: 9rem;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .abthero__face :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .abthero__title {
+    max-width: 52rem;
+    font-size: clamp(2.2rem, 6vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* ═══ ARTICLE ═══ */
+  .abt {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 6rem var(--space-xl) 8rem;
+  }
+
+  .abt__section {
+    margin-top: 7rem;
+  }
+
+  .abt__section:first-child {
     margin-top: 0;
   }
 
-  .about__cta {
-    margin-top: var(--space-2xl);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-md);
-  }
-  .about__link {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-sm) var(--space-lg);
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-pill);
-    font-weight: 600;
+  .abt__heading {
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     color: var(--ink);
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    margin-bottom: 2.5rem;
   }
-  .about__link:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
+
+  .abt__heading--lg {
+    max-width: 20ch;
   }
-  .about__link--primary {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
+
+  .abt__intro {
+    font-size: var(--font-md);
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    max-width: 40rem;
+  }
+
+  .abt__collage,
+  .abt__strip,
+  .abt__prose {
+    margin-top: 2.5rem;
+    margin-bottom: 0;
+  }
+
+  .abt__heading + .abt__collage,
+  .abt__heading + .abt__prose,
+  .abt__heading + .abt__strip {
+    margin-top: 0;
+  }
+
+  .abt__collage :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .abt__strip :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .abt__prose p {
+    font-size: var(--font-md);
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  .abt__prose strong {
+    font-weight: 700;
+  }
+
+  /* ═══ ACCENT SECTION (orange bar) ═══ */
+  .abt__section--accent {
+    border-left: 4px solid var(--accent);
+    padding-left: var(--space-xl);
+  }
+
+  /* ═══ PRINCIPLES ═══ */
+  .abt__principles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    margin-top: 2.5rem;
+  }
+
+  .principle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    padding-top: 4rem;
+  }
+
+  .principle__arch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #FDF6F0;
+    border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+  }
+
+  .principle__img {
+    position: relative;
+    z-index: 1;
+    width: 55%;
+    max-width: 12rem;
+  }
+
+  .principle__img :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .principle__text {
+    position: relative;
+    z-index: 1;
+    font-size: var(--font-md);
+    line-height: 1.5;
+    color: var(--ink);
+    padding: 0 var(--space-xl) var(--space-xl);
+  }
+
+  .principle__text strong {
+    font-weight: 700;
+  }
+
+  /* ═══ WHALE DIVIDER (full-width) ═══ */
+  .abt__divider {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .abt__divider :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ═══ SIDE QUESTS ═══ */
+  .sidequests {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .sidequest {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: 2.5rem;
+    align-items: start;
+    position: relative;
+    padding-bottom: 4rem;
+  }
+
+  .sidequest:last-child {
+    padding-bottom: 0;
+  }
+
+  .sidequest__img {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidequest__img::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 0;
+    height: 4rem;
+    border-left: 2px dashed #ccc;
+    transform: translateX(-50%);
+  }
+
+  .sidequest:last-child .sidequest__img::after {
+    display: none;
+  }
+
+  .sidequest__img :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .sidequest__body {
+    padding-top: 0.25rem;
+  }
+
+  .sidequest__name {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: var(--space-xs);
+  }
+
+  .sidequest__desc {
+    font-size: var(--font-md);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ═══ OFF THE CLOCK ═══ */
+  .offclock {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2rem;
+    position: relative;
+  }
+
+  .offclock::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 2px dashed var(--accent);
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .offclock::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 2px dashed var(--accent);
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .offclock__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2.5rem;
+  }
+
+  .offclock__img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: var(--space-md);
+  }
+
+  .offclock__img :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .offclock__name {
+    display: inline-block;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(231, 95, 56, 0.08);
+    border: 1px solid rgba(231, 95, 56, 0.25);
+    border-radius: var(--radius-pill);
+    padding: 0.25rem 1rem;
+    margin-bottom: var(--space-sm);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .offclock__desc {
+    font-size: var(--font-md);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 40rem) {
+    .abthero {
+      min-height: 100vh;
+    }
+    .abthero__nav {
+      padding: var(--space-sm) var(--space-md);
+    }
+    .abthero__links {
+      gap: var(--space-md);
+      font-size: var(--font-sm);
+    }
+    .abthero__title {
+      font-size: clamp(1.75rem, 7vw, 2.5rem);
+      padding: 0 var(--space-md);
+    }
+    .abthero__face {
+      width: 6.5rem;
+      height: 6.5rem;
+    }
+    .abt {
+      padding: var(--space-xl) var(--space-md) var(--space-2xl);
+    }
+    .abt__section--accent {
+      padding-left: var(--space-md);
+    }
+    .abt__principles {
+      grid-template-columns: 1fr;
+    }
+    .principle__img {
+      margin-top: -1rem;
+    }
+    .sidequest {
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    .sidequest__img {
+      width: 100%;
+      max-width: 10rem;
+    }
+    .offclock__item {
+      padding: 1.5rem;
+    }
+    .offclock__img {
+      width: 7rem;
+      height: 7rem;
+    }
   }
 </style>
