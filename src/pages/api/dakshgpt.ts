@@ -10,6 +10,7 @@
 
 import type { APIRoute } from "astro";
 import bio from "../../content/about-daksh.md?raw"; // ?raw pulls the file in as a plain string
+import { supabase } from "../../lib/supabase";
 
 // This route is rendered on demand, not prerendered at build time.
 export const prerender = false;
@@ -43,7 +44,7 @@ ${bio}`;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { question } = await request.json();
+    const { question, sessionId } = await request.json();
 
     if (!question || typeof question !== "string" || question.trim().length === 0) {
       return json({ error: "Please include a question." }, 400);
@@ -90,6 +91,15 @@ export const POST: APIRoute = async ({ request }) => {
         .map((b: { text: string }) => b.text)
         .join("\n")
         .trim() || "Sorry, I didn't catch that.";
+
+    const { error: logError } = await supabase.from("chat_logs").insert({
+      session_id: typeof sessionId === "string" ? sessionId : null,
+      user_message: question,
+      assistant_response: answer,
+    });
+    if (logError) {
+      console.error("chat_logs insert failed:", logError.message);
+    }
 
     return json({ answer }, 200);
   } catch (err) {

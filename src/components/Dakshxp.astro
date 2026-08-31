@@ -379,6 +379,21 @@ const apple = await getImage({ src: appleSrc, width: 240, format: 'webp' });
     const heroInput = wireBox(heroBox);
     wireBox(followupBox);
 
+    /* ---------- Session id, so chat_logs can group a visitor's messages ---------- */
+    const SESSION_KEY = 'dxp-session-id';
+    function getSessionId(): string {
+      try {
+        let id = sessionStorage.getItem(SESSION_KEY);
+        if (!id) {
+          id = crypto.randomUUID();
+          sessionStorage.setItem(SESSION_KEY, id);
+        }
+        return id;
+      } catch {
+        return crypto.randomUUID();
+      }
+    }
+
     /* ---------- Animated typewriter placeholder (hero box only) ---------- */
     const PROMPTS = [
       'Ask me anything about Daksh',
@@ -471,7 +486,7 @@ const apple = await getImage({ src: appleSrc, width: 240, format: 'webp' });
         const res = await fetch('/api/dakshgpt', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ question: trimmed.slice(0, 500) }),
+          body: JSON.stringify({ question: trimmed.slice(0, 500), sessionId: getSessionId() }),
         });
         const data = await res.json().catch(() => ({}));
         if (res.ok && data.answer) {
