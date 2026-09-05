@@ -16,33 +16,32 @@ const columns = [
     key: 'changer',
     name: 'The Changer',
     identity: 'Guided by a doctor. Reversing insulin resistance.',
-    question: 'Is the trend bending — and can I show my doctor?',
+    question: 'Is the trend bending, and can I show my doctor?',
     horizon: 'This week',
     views: [
-      { label: 'Daily', desc: 'The same glanceable home — the shared starting point.' },
+      { label: 'Daily', desc: 'The same glanceable home, the shared starting point.' },
       { label: 'Cumulative', desc: 'Progress across fifteen days, built to be shared with a coach.' },
     ],
   },
   {
     key: 'diabetic',
-    name: 'The Diabetic',
+    name: 'The Clinically Fluent',
     identity: 'Years of CGM. Reads clinical data natively.',
     question: 'How does today compare to last Tuesday?',
     horizon: 'Long-range',
     views: [
-      { label: 'Advanced', desc: 'The clinical layer — AGP, variability, SD. The view shared with a doctor.' },
+      { label: 'Advanced', desc: 'The clinical layer: AGP, variability, SD. The view shared with a doctor.' },
     ],
   },
 ];
 ---
 
 <section class="bet" id="the-bet">
-  <p class="bet__eyebrow">The bet</p>
   <h2 class="bet__heading">One product, three readers</h2>
 
   <p class="bet__intro">
     A CGM produces around fifteen metrics, and the people reading them aren't the
-    same person. All three start from the same daily glucose — they split on how
+    same person. All three start from the same daily glucose. They split on how
     deep they go, and why.
   </p>
 
@@ -77,7 +76,7 @@ const columns = [
 
   <aside class="bet__convergence" aria-label="Shared view">
     <p>
-      <strong>Daily</strong> appears twice — that's the point.
+      <strong>Daily</strong> appears twice. That's the point.
       The Seeker and the Changer start from the same screen.
       The depth diverges from there.
     </p>
@@ -86,8 +85,8 @@ const columns = [
   <div class="bet__cost">
     <p>
       Design for the average of these three and you overwhelm the Seeker and
-      underserve the Diabetic. So I stopped designing one screen and metered the
-      depth instead.
+      underserve the Clinically Fluent. So I stopped designing one screen and
+      metered the depth instead.
     </p>
   </div>
 </section>
@@ -96,19 +95,8 @@ const columns = [
   .bet {
     position: relative;
     margin-top: var(--space-3xl);
-    width: min(60rem, 92vw);
-    margin-left: 50%;
-    transform: translateX(-50%);
   }
 
-  .bet__eyebrow {
-    font-size: var(--font-sm);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: var(--space-xs);
-  }
   .bet__heading {
     font-size: var(--font-xl);
     font-weight: 700;
@@ -118,7 +106,7 @@ const columns = [
   }
 
   .bet__intro {
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     line-height: 1.6;
     color: var(--muted);
     max-width: 44rem;
@@ -171,7 +159,7 @@ const columns = [
   }
   .col__identity {
     margin-top: var(--space-2xs);
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     color: var(--muted);
     line-height: 1.4;
   }
@@ -217,7 +205,7 @@ const columns = [
     margin-bottom: 0.15rem;
   }
   .col__view-desc {
-    font-size: var(--font-xs);
+    font-size: 1.125rem;
     line-height: 1.5;
     color: var(--muted);
   }
@@ -231,7 +219,7 @@ const columns = [
     margin-bottom: var(--space-2xl);
   }
   .bet__convergence p {
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     line-height: 1.5;
     color: var(--ink);
   }

@@ -1,0 +1,329 @@
+---
+// ReaderViewFlow — a two-column "readers → views" flow diagram.
+// Visually in the family of a Sankey (curved ribbons, left/right node
+// columns) but deliberately NOT one: every ribbon carries the same visual
+// weight, since there's no volume/quantity behind these connections, only
+// which reader relies on which view. Built as inline SVG, styled for the
+// dark "Experience" section it sits in on the CGM case study.
+
+const READERS = [
+  { id: 'seeker', name: 'The Seeker', sub: 'Did I stay in range today?' },
+  { id: 'changer', name: 'The Changer', sub: 'Is my trend bending, and can I share it?' },
+  { id: 'fluent', name: 'The Clinically Fluent', sub: 'Show me AGP and variability, natively.' },
+];
+
+const VIEWS = [
+  { id: 'daily', name: 'Daily', sub: "Today's glucose, in-range verdict, food spikes" },
+  { id: 'cumulative', name: 'Cumulative', sub: 'Week-over-week trends, shareable progress' },
+  { id: 'advanced', name: 'Advanced', sub: 'AGP, standard deviation, variability' },
+];
+
+const LINKS = [
+  { reader: 'seeker', view: 'daily' },
+  { reader: 'changer', view: 'daily' },
+  { reader: 'changer', view: 'cumulative' },
+  { reader: 'fluent', view: 'advanced' },
+];
+
+// Layout, in SVG user units. Three stacked rows on each side; ribbons cross
+// rows only where a reader's view lives on a different row than the reader.
+const VB_W = 640;
+const VB_H = 410;
+const NODE_W = 190;
+const NODE_H = 70;
+const LEFT_X = 0;
+const RIGHT_X = VB_W - NODE_W;
+const ROWS: Record<string, number> = { row0: 75, row1: 205, row2: 335 };
+const READER_Y: Record<string, number> = { seeker: ROWS.row0, changer: ROWS.row1, fluent: ROWS.row2 };
+const VIEW_Y: Record<string, number> = { daily: ROWS.row0, cumulative: ROWS.row1, advanced: ROWS.row2 };
+
+function ribbonPath(readerId: string, viewId: string) {
+  const x1 = LEFT_X + NODE_W;
+  const x2 = RIGHT_X;
+  const y1 = READER_Y[readerId];
+  const y2 = VIEW_Y[viewId];
+
+  if (y1 === y2) {
+    // Same row: a flat, direct ribbon.
+    return `M${x1},${y1} L${x2},${y2}`;
+  }
+
+  // Different rows: settle into the target row well before the ribbon
+  // arrives, so it runs alongside (overlaps) any same-row ribbon already
+  // headed into that node, instead of just meeting it at a single point.
+  const dx = x2 - x1;
+  const c1x = x1 + dx * 0.35;
+  const c2x = x1 + dx * 0.75;
+  return `M${x1},${y1} C${c1x},${y1} ${c2x},${y2} ${x2},${y2}`;
+}
+
+const ribbons = LINKS.map((link) => ({ ...link, d: ribbonPath(link.reader, link.view) }));
+
+// Hand-wrapped sub-label lines — kept short and simple on purpose so the
+// SVG stays plain <text>/<tspan>, no foreignObject, no reflow logic.
+const READER_LINES: Record<string, string[]> = {
+  seeker: ['Did I stay in range', 'today?'],
+  changer: ['Is my trend bending,', 'and can I share it?'],
+  fluent: ['Show me AGP and', 'variability, natively.'],
+};
+const VIEW_LINES: Record<string, string[]> = {
+  daily: ["Today's glucose,", 'in-range verdict,', 'food spikes'],
+  cumulative: ['Week-over-week trends,', 'shareable progress'],
+  advanced: ['AGP, standard deviation,', 'variability'],
+};
+---
+
+<figure class="rvf-wrap">
+  <ul class="rvf-sr-desc">
+    <li>The Seeker connects to Daily.</li>
+    <li>The Changer connects to Daily and Cumulative.</li>
+    <li>The Clinically Fluent connects to Advanced.</li>
+  </ul>
+
+  <div class="rvf-svg-wrap" aria-hidden="true">
+    <svg class="rvf" viewBox={`0 0 ${VB_W} ${VB_H}`} role="presentation">
+      <g class="rvf-ribbons">
+        {ribbons.map((r) => (
+          <path
+            class="rvf-ribbon"
+            data-ribbon
+            data-reader={r.reader}
+            data-view={r.view}
+            d={r.d}
+          />
+        ))}
+      </g>
+
+      <g class="rvf-nodes">
+        {READERS.map((r) => (
+          <g class="rvf-node" data-node={r.id}>
+            <rect
+              class="rvf-node-rect"
+              x={LEFT_X}
+              y={READER_Y[r.id] - NODE_H / 2}
+              width={NODE_W}
+              height={NODE_H}
+              rx="12"
+            />
+            <text class="rvf-node-title" x={LEFT_X + 16} y={READER_Y[r.id] - NODE_H / 2 + 22}>{r.name}</text>
+            <text class="rvf-node-sub" x={LEFT_X + 16} y={READER_Y[r.id] - NODE_H / 2 + 40}>
+              {READER_LINES[r.id].map((line, i) => (
+                <tspan x={LEFT_X + 16} dy={i === 0 ? 0 : 13}>{line}</tspan>
+              ))}
+            </text>
+          </g>
+        ))}
+
+        {VIEWS.map((v) => (
+          <g class="rvf-node" data-node={v.id}>
+            <rect
+              class="rvf-node-rect"
+              x={RIGHT_X}
+              y={VIEW_Y[v.id] - NODE_H / 2}
+              width={NODE_W}
+              height={NODE_H}
+              rx="12"
+            />
+            <text class="rvf-node-title" x={RIGHT_X + 16} y={VIEW_Y[v.id] - NODE_H / 2 + 22}>{v.name}</text>
+            <text class="rvf-node-sub" x={RIGHT_X + 16} y={VIEW_Y[v.id] - NODE_H / 2 + 40}>
+              {VIEW_LINES[v.id].map((line, i) => (
+                <tspan x={RIGHT_X + 16} dy={i === 0 ? 0 : 13}>{line}</tspan>
+              ))}
+            </text>
+          </g>
+        ))}
+      </g>
+    </svg>
+  </div>
+
+  <ul class="rvf-mobile" aria-hidden="true">
+    <li><strong>The Seeker</strong><span>&rarr; Daily</span></li>
+    <li><strong>The Changer</strong><span>&rarr; Daily, Cumulative</span></li>
+    <li><strong>The Clinically Fluent</strong><span>&rarr; Advanced</span></li>
+  </ul>
+
+  <figcaption class="rvf-caption">
+    One person's advanced view is another's home screen. All three start
+    from the same daily glucose, they split on how deep they go, and why.
+  </figcaption>
+</figure>
+
+<script>
+  const root = document.querySelector<SVGSVGElement>('.rvf');
+  if (root) {
+    const READER_IDS = new Set(['seeker', 'changer', 'fluent']);
+    const nodes = Array.from(root.querySelectorAll<SVGGElement>('[data-node]'));
+    const ribbons = Array.from(root.querySelectorAll<SVGPathElement>('[data-ribbon]'));
+    const wrap = root.closest('.rvf-wrap');
+
+    function clear() {
+      wrap?.classList.remove('is-hovering');
+      nodes.forEach((n) => n.classList.remove('is-active'));
+      ribbons.forEach((r) => r.classList.remove('is-active'));
+    }
+
+    function activate(matchNode: (id: string) => boolean, matchRibbon: (r: SVGPathElement) => boolean) {
+      wrap?.classList.add('is-hovering');
+      nodes.forEach((n) => n.classList.toggle('is-active', matchNode(n.dataset.node!)));
+      ribbons.forEach((r) => r.classList.toggle('is-active', matchRibbon(r)));
+    }
+
+    nodes.forEach((node) => {
+      const id = node.dataset.node!;
+      const isReader = READER_IDS.has(id);
+      const enter = () => {
+        if (isReader) {
+          activate(
+            (nid) => nid === id || ribbons.some((r) => r.dataset.reader === id && r.dataset.view === nid),
+            (r) => r.dataset.reader === id
+          );
+        } else {
+          activate(
+            (nid) => nid === id || ribbons.some((r) => r.dataset.view === id && r.dataset.reader === nid),
+            (r) => r.dataset.view === id
+          );
+        }
+      };
+      node.addEventListener('mouseenter', enter);
+      node.addEventListener('mouseleave', clear);
+    });
+
+    ribbons.forEach((ribbon) => {
+      const readerId = ribbon.dataset.reader!;
+      const viewId = ribbon.dataset.view!;
+      const enter = () =>
+        activate(
+          (nid) => nid === readerId || nid === viewId,
+          (r) => r === ribbon
+        );
+      ribbon.addEventListener('mouseenter', enter);
+      ribbon.addEventListener('mouseleave', clear);
+    });
+  }
+</script>
+
+<style>
+  .rvf-wrap {
+    margin: 0;
+  }
+
+  /* Screen-reader-only description; the single source of truth for the
+     reader → view mapping, used regardless of viewport. */
+  .rvf-sr-desc {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .rvf-svg-wrap {
+    width: 100%;
+  }
+  .rvf {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .rvf text {
+    font-family: 'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .rvf-node-rect {
+    fill: rgba(255, 255, 255, 0.04);
+    stroke: rgba(255, 255, 255, 0.18);
+    stroke-width: 1.5;
+    transition: fill 0.15s ease, stroke 0.15s ease;
+  }
+  .rvf-node-title {
+    font-size: 15px;
+    font-weight: 700;
+    fill: #fff;
+  }
+  .rvf-node-sub {
+    font-size: 11.5px;
+    fill: rgba(255, 255, 255, 0.6);
+  }
+  .rvf-node {
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .rvf-ribbon {
+    fill: none;
+    stroke: var(--accent);
+    stroke-opacity: 0.32;
+    stroke-width: 9;
+    stroke-linecap: round;
+    cursor: pointer;
+    transition: stroke-opacity 0.15s ease, opacity 0.15s ease;
+  }
+
+  /* Highlight state: dim everything not part of the active reader/view. */
+  .rvf-wrap.is-hovering .rvf-node:not(.is-active) {
+    opacity: 0.3;
+  }
+  .rvf-wrap.is-hovering .rvf-ribbon:not(.is-active) {
+    opacity: 0.15;
+  }
+  .rvf-wrap.is-hovering .rvf-ribbon.is-active {
+    stroke-opacity: 0.7;
+  }
+  .rvf-wrap.is-hovering .rvf-node.is-active .rvf-node-rect {
+    fill: rgba(231, 95, 56, 0.12);
+    stroke: var(--accent);
+  }
+
+  /* Mobile fallback: a plain reader → view list. A full two-column ribbon
+     diagram doesn't have room to stay legible under ~40rem — labels and
+     curves both get too small to read — so below that width we swap to a
+     simple stacked list instead of shrinking the SVG in place. */
+  .rvf-mobile {
+    display: none;
+    list-style: none;
+  }
+  .rvf-mobile li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-sm);
+    align-items: baseline;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 1.125rem;
+  }
+  .rvf-mobile li:first-child {
+    padding-top: 0;
+  }
+  .rvf-mobile li:last-child {
+    border-bottom: none;
+  }
+  .rvf-mobile strong {
+    color: #fff;
+    font-weight: 700;
+  }
+  .rvf-mobile span {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .rvf-caption {
+    margin-top: var(--space-lg);
+    max-width: 40rem;
+    font-size: var(--font-sm);
+    line-height: 1.6;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  @media (max-width: 40rem) {
+    .rvf-svg-wrap {
+      display: none;
+    }
+    .rvf-mobile {
+      display: block;
+    }
+  }
+</style>
