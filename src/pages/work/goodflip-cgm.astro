@@ -6,7 +6,10 @@ import KilledIdeaMock from '../../components/KilledIdeaMock.astro';
 import TheBet from '../../components/TheBet.astro';
 import DeviceTimeline from '../../components/DeviceTimeline.astro';
 import IAWireframe from '../../components/IAWireframe.astro';
+import ReaderViewFlow from '../../components/ReaderViewFlow.astro';
 import cgmHero from '../../assets/cgm-hero.png';
+import cgmContextGoodflip from '../../assets/cgm-context-goodflip.png';
+import cgmContextCgm from '../../assets/cgm-context-cgm.png';
 import cgmMetricCards from '../../assets/cgm-metric-cards.png';
 import cgmEducation from '../../assets/cgm-education.png';
 import cgmNudges from '../../assets/cgm-nudges.png';
@@ -20,6 +23,11 @@ import cgmHindiAfter from '../../assets/cgm-hindi-after.png';
 import cgmAiGraph from '../../assets/cgm-ai-graph.png';
 import cgmAiDaily from '../../assets/cgm-ai-daily.png';
 import cgmAiSpike from '../../assets/cgm-ai-spike.png';
+import cgmExpDailyCumulative from '../../assets/cgm-exp-daily-cumulative.png';
+import cgmExpAdvanced from '../../assets/cgm-exp-advanced.png';
+import cgmExpEducation from '../../assets/cgm-exp-education.png';
+import cgmExpDailyInsight from '../../assets/cgm-exp-daily-insight.png';
+import cgmExpSyncPaused from '../../assets/cgm-exp-sync-paused.png';
 
 const beat5 = {
   metricCards: { src: cgmMetricCards, alt: 'Metric cards ending on a human verdict: Time in Range 76% you’re on track, Time Above Range 18% room to improve' },
@@ -37,7 +45,7 @@ const payoffs = [
     key: 'user',
     label: 'User',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>`,
-    body: 'You see your own glucose patterns and catch spikes early — you know where you stand today, instead of waiting six months for a lab to tell you.',
+    body: 'You see your own glucose patterns and catch spikes early. You know where you stand today, instead of waiting six months for a lab to tell you.',
   },
   {
     key: 'ecosystem',
@@ -49,7 +57,7 @@ const payoffs = [
     key: 'clinical',
     label: 'Clinical / coaching',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>`,
-    body: 'Your coach acts on real days, not twice-a-year snapshots — so the guidance fits the life you’re actually living.',
+    body: 'Your coach acts on real days, not twice-a-year snapshots, so the guidance fits the life you’re actually living.',
   },
 ];
 
@@ -89,10 +97,14 @@ const protos = [
   ...p,
   embed: `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(p.url)}`,
 }));
+
+// Prototype embedded in the "Experience the CGM" dark section. Session token stripped.
+const onboardingProtoUrl = 'https://www.figma.com/proto/sY16NS7f8q4lw8QxmYskkc/GoodFlip-Retrospective?node-id=12-3512&viewport=-348%2C203%2C0.15&scaling=scale-down&content-scaling=fixed&page-id=1%3A3068';
+const onboardingProtoEmbed = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(onboardingProtoUrl)}`;
 ---
 
 <BaseLayout
-  title="GoodFlip CGM | Daksh Sharma"
+  title="Turning clinical data into metabolic health anyone can read | Daksh Sharma"
   description="Case study: a live glucose dashboard built for three kinds of reader. Sole product designer, research to shipped UI, GoodFlip CGM (TatvaCare)."
 >
   <article class="cs">
@@ -108,31 +120,228 @@ const protos = [
         loading="eager"
         fetchpriority="high"
       />
-      <figcaption>GoodFlip CGM dashboard. Sole designer, research to shipped UI.</figcaption>
     </figure>
 
     {/* BEAT 1 — ANCHOR */}
     <header class="cs__anchor">
-      <p class="cs__kicker">Case study</p>
-      <h1 class="cs__title">GoodFlip CGM</h1>
-      <p class="cs__hook">
-        A live glucose dashboard read by three people who couldn't be more
-        different: someone who just wants to know they're okay today, someone
-        tracking progress with a coach, and someone who reads the clinical data
-        natively. One product, three levels of medical literacy.
-      </p>
+      <h1 class="cs__title">Turning clinical data into metabolic health anyone can read</h1>
     </header>
 
-    <dl class="cs__stats">
-      <div class="stat">
-        <dd class="stat__value">77.6%</dd>
-        <dt class="stat__label">finished setup</dt>
+    <section class="context">
+      <h2 class="context__heading">Let's start with some context</h2>
+      <div class="context__grid">
+        <div class="context__col">
+          <figure class="context__fig">
+            <Image class="context__img" src={cgmContextGoodflip} alt="What GoodFlip is: an overview of its metabolic health platform" widths={[144, 216]} sizes="4.5rem" />
+          </figure>
+          <h3 class="context__title">What's GoodFlip</h3>
+          <p class="context__desc">
+            GoodFlip is a metabolic health platform that empowers users to manage
+            metabolic conditions like obesity, fatty liver, diabetes, and PCOS
+            through doctor-led programs, nutraceuticals, smart devices, advanced
+            diagnostics, and personalized coaching.
+          </p>
+        </div>
+        <div class="context__col">
+          <figure class="context__fig">
+            <Image class="context__img" src={cgmContextCgm} alt="What a CGM is: a wearable device tracking glucose levels day and night" widths={[144, 216]} sizes="4.5rem" />
+          </figure>
+          <h3 class="context__title">What's a CGM</h3>
+          <p class="context__desc">
+            A Continuous Glucose Monitor (CGM) is a small, wearable device that
+            tracks your body's glucose (sugar) levels day and night.
+          </p>
+        </div>
       </div>
-      <div class="stat">
-        <dd class="stat__value">78%</dd>
-        <dt class="stat__label">were still using it at day 14</dt>
+    </section>
+
+    <section class="highlights">
+      <h2 class="highlights__heading">Highlights of the project</h2>
+      <div class="highlights__grid">
+        <div class="highlights__card">
+          <p class="highlights__value">77.6%</p>
+          <p class="highlights__label">of people are able to complete the onboarding and connect with their CGM</p>
+        </div>
+        <div class="highlights__card">
+          <p class="highlights__value">78%</p>
+          <p class="highlights__label">of the people come back at day 15 to check their vitals</p>
+        </div>
       </div>
-    </dl>
+    </section>
+
+    {/* MY ROLE */}
+    <section class="beat">
+      <h2 class="beat__h">My role in the project</h2>
+      <p>
+        I was the sole designer on GoodFlip's CGM, owning it end to end: the
+        initial research and success metrics, the onboarding and core metrics
+        dashboard, and the post-launch data that told me what to fix next.
+        Working alongside the clinical team to get the medical detail right
+        and pitching direction to stakeholders, I shipped the MVP, then used
+        what the launch data showed to rework the flow, adding an AI-powered
+        read of each user's day and their glucose spikes.
+      </p>
+    </section>
+
+    {/* EXPERIENCE THE CGM: a plain full-bleed dark section */}
+    <section class="experience" id="experience-cgm">
+      <h2 class="experience__title">Experience the GoodFlip CGM</h2>
+
+      <div class="experience__content">
+        <article class="exp-card">
+          <h3 class="exp-card__title">Your story</h3>
+          <p class="exp-card__intro">
+            Imagine you're on your fitness journey, and you're having trouble
+            knowing which foods react how with your body. You see an
+            intelligent way to track your blood glucose on Instagram, and you
+            order our device. You open the app and continue your journey from
+            here.
+          </p>
+
+          <ol class="exp-steps">
+            <li class="exp-step">
+              <span class="exp-step__num">1</span>
+              <p class="exp-step__text">You want to track your glucose data for your fitness journey.</p>
+            </li>
+            <li class="exp-step">
+              <span class="exp-step__num">2</span>
+              <p class="exp-step__text">You see a GoodFlip ad and purchase our device.</p>
+            </li>
+            <li class="exp-step">
+              <span class="exp-step__num">3</span>
+              <p class="exp-step__text">You install the app and continue your journey from here.</p>
+            </li>
+          </ol>
+        </article>
+
+        <div class="exp-pointer" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>
+        </div>
+
+        <article class="exp-card">
+          <h3 class="exp-card__title">CGM onboarding flow</h3>
+          <div class="exp-proto">
+            <iframe
+              src={onboardingProtoEmbed}
+              title="Interactive Figma prototype: CGM onboarding flow"
+              loading="lazy"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </article>
+
+        <div class="exp-pointer" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>
+        </div>
+
+        {/* Block 1 — the spine of this section: one dashboard, three depths */}
+        <article class="exp-card exp-card--hero">
+          <div class="hero-split" aria-hidden="true">
+            <span class="hero-split__seg">
+              <strong>Daily</strong>
+              <small>the shared starting point</small>
+            </span>
+            <span class="hero-split__seg">
+              <strong>Cumulative</strong>
+              <small>trends and progress</small>
+            </span>
+            <span class="hero-split__seg">
+              <strong>Advanced</strong>
+              <small>the clinical layer</small>
+            </span>
+          </div>
+          <div class="hero-images">
+            <Image class="hero-images__wide" src={cgmExpDailyCumulative} alt="The Daily Metrics and Cumulative Report views side by side, the shared home screen and the trend view" widths={[500, 700]} sizes="(max-width: 48rem) 92vw, 26rem" />
+            <Image class="hero-images__narrow" src={cgmExpAdvanced} alt="The Advanced Metrics view: estimated HbA1c, glucose variability, and other clinical-depth numbers" widths={[300, 420]} sizes="(max-width: 48rem) 60vw, 16rem" />
+          </div>
+          <h3 class="exp-card__title">One dashboard, three ways to read it</h3>
+          <p class="exp-card__intro">
+            The same glucose data, split into three depths for three readers:
+            a daily glance, a cumulative trend, and a clinical layer. Each
+            person lands on their own view without ever standing in someone
+            else's.
+          </p>
+        </article>
+
+        <div class="exp-pointer" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>
+        </div>
+
+        {/* Block 2 — education pages, a deliberate bet */}
+        <article class="exp-card">
+          <Image class="exp-card__img" src={cgmExpEducation} alt="An education page breaking down Time Above Range and a How to Read It explainer with a labelled glucose chart" widths={[500, 700]} sizes="(max-width: 48rem) 92vw, 26rem" />
+          <h3 class="exp-card__title">A bet on curiosity</h3>
+          <p class="exp-card__intro">
+            We chose to teach, not just display. Every clinical term gets
+            what it means, what good looks like, and how to read it.
+          </p>
+          <p class="exp-card__stat">
+            <span class="exp-card__stat-fig">42%</span>
+            <span class="exp-card__stat-label">of users opened at least one education screen</span>
+          </p>
+        </article>
+
+        <div class="exp-pointer" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>
+        </div>
+
+        {/* Block 3 — daily insight and the AI meal read */}
+        <article class="exp-card">
+          <Image class="exp-card__img" src={cgmExpDailyInsight} alt="The daily metrics screen opening into a Daily Insight card explaining an uneven glucose rhythm and prompting a meal log" widths={[500, 700]} sizes="(max-width: 48rem) 92vw, 26rem" />
+          <h3 class="exp-card__title">From what happened to why</h3>
+          <p class="exp-card__intro">
+            The dashboard shows the spikes. Kaira explains them in plain
+            language tied to real meals, then prompts a log so tomorrow's
+            read gets sharper.
+          </p>
+        </article>
+
+        <div class="exp-pointer" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>
+        </div>
+
+        {/* Block 4 — Sync Paused, a systems-thinking decision */}
+        <article class="exp-card">
+          <Image class="exp-card__img" src={cgmExpSyncPaused} alt="A Sync Paused error card asking the user to check the transmitter is properly fitted on the sensor" widths={[500, 700]} sizes="(max-width: 48rem) 92vw, 26rem" />
+          <h3 class="exp-card__title">Designing for failure, not just success</h3>
+          <p class="exp-card__intro">
+            The error states weren't an afterthought. Building them as a
+            reusable system meant that when we later designed for other
+            devices like the Ring, the same failure-handling was already in
+            place to catch issues early.
+          </p>
+        </article>
+
+        <div class="exp-pointer" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>
+        </div>
+
+        <article class="exp-card">
+          <h3 class="exp-card__title">Who reaches for which view</h3>
+          <ReaderViewFlow />
+        </article>
+      </div>
+    </section>
+
+    {/* PROBLEM STATEMENT */}
+    <section class="problem">
+      <div class="problem__inner">
+        <h2 class="problem__heading">Problem statement</h2>
+        <p class="problem__text">
+          Users dealing with metabolic conditions often rely on advice from
+          experts and have to continue doing dedicated tasks with discipline,
+          without any visible progress for significant periods of time. The
+          CGM gives users the ability to track their body's vitals and build
+          more personalized plans.
+        </p>
+        <p class="problem__text problem__text--highlight">
+          The challenge here was to design an experience that created meaning
+          out of medical terms for the average user without overwhelming
+          them, keeping in mind that GoodFlip was aiming to serve a wide
+          variety of users with different needs.
+        </p>
+      </div>
+    </section>
 
     <hr class="cs__divider" />
 
@@ -141,12 +350,8 @@ const protos = [
       {/* Beat 1 — The setup */}
       <h2 class="whycgm__heading">Why CGM</h2>
       <div class="whycgm__setup">
-        <span class="whycgm__marker" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-          business
-        </span>
         <p class="whycgm__setup-text">
-          CGM was a product call — a commercial one. A standalone SKU in a growing
+          CGM was a product call, a commercial one. A standalone SKU in a growing
           market (BeatO, Ultrahuman, SugarFit) with a natural 15-day repurchase cycle.
           The business case was sound.
         </p>
@@ -156,7 +361,7 @@ const protos = [
       <blockquote class="whycgm__pivot">
         <p>
           But a business case greenlights a product. It doesn't make it worth wearing.
-          So before I designed against the call, I pressure-tested it — does continuous
+          So before I designed against the call, I pressure-tested it: does continuous
           glucose actually change how someone experiences their own body, or is it just
           a device we sell every fifteen days?
         </p>
@@ -185,10 +390,9 @@ const protos = [
 
     {/* BEAT 3 — BEFORE THE SCREEN (three-phase timeline) */}
     <section class="beat" id="before-the-screen">
-      <p class="beat__eyebrow">Before the screen</p>
       <h2 class="beat__h">I got close from three distances</h2>
       <p>
-        Before I designed a screen, I got close to this product three ways — the domain, the device, and the whole journey.
+        Before I designed a screen, I got close to this product three ways: the domain, the device, and the whole journey.
       </p>
     </section>
 
@@ -236,9 +440,9 @@ const protos = [
       </p>
     </section>
 
-    {/* BEAT 5 — WHAT I BUILT IN RESPONSE */}
+    {/* BEAT 5 — WHAT I BUILT IN RESPONSE
+    Commented out for now while this section gets reworked. Do not delete, restore when ready.
     <section class="beat">
-      <p class="beat__eyebrow">What I built in response</p>
       <h2 class="beat__h">Legible data, trustworthy device</h2>
       <p>
         That list of everything that can go wrong became the brief. I built
@@ -325,7 +529,7 @@ const protos = [
           </figure>
           <div class="b5-highlight__tag b5-highlight__tag--constraint">
             <span class="b5-highlight__pill b5-highlight__pill--muted">The honest constraint</span>
-            <span class="b5-highlight__line b5-highlight__line--muted">Moisture and distance dropouts heal on their own — so the copy says "it'll resume," not "re-pair everything."</span>
+            <span class="b5-highlight__line b5-highlight__line--muted">Moisture and distance dropouts heal on their own, so the copy says "it'll resume," not "re-pair everything."</span>
           </div>
         </div>
       </li>
@@ -353,17 +557,10 @@ const protos = [
         </figure>
       </li>
     </ul>
-
-    <section class="beat">
-      <p class="beat__lead">
-        Most of this held. The onboarding didn’t, and the complaints told me
-        exactly where.
-      </p>
-    </section>
+    */}
 
     {/* BEAT 6 — THE RECKONING */}
     <section class="beat">
-      <p class="beat__eyebrow">The reckoning</p>
       <h2 class="beat__h">Then I looked at what happened</h2>
       <p>
         Six weeks after launch, the February 2026 data was in. I only claim what
@@ -374,7 +571,7 @@ const protos = [
     <div class="statblocks">
       <article class="statblock">
         <p class="statblock__fig">77.6%</p>
-        <p class="statblock__claim">Finished setup — most onboarding bleeds users at every step. This mostly didn’t.</p>
+        <p class="statblock__claim">Finished setup: most onboarding bleeds users at every step. This mostly didn’t.</p>
         <div class="statblock__viz">
           <svg class="statblock__svg" viewBox="0 0 160 72" role="img" aria-label="Funnel: 100% start, 93% sensor, 83% transmitter detection (the cliff), 77.6% complete">
             <rect x="0" y="0" width="160" height="14" rx="3" fill="rgba(0,0,0,0.06)"/>
@@ -400,7 +597,7 @@ const protos = [
 
       <article class="statblock">
         <p class="statblock__fig">78%</p>
-        <p class="statblock__claim">Still using it at day 14 — they came back to read their data daily.</p>
+        <p class="statblock__claim">Still using it at day 14: they came back to read their data daily.</p>
         <div class="statblock__viz">
           <svg class="statblock__svg" viewBox="0 0 160 60" role="img" aria-label="Retention: Day 0 at 93%, Day 7 at 81%, Day 14 at 78%">
             <path d="M8 8 L80 30 L152 38 L152 52 L8 52 Z" fill="rgba(231,95,56,0.08)"/>
@@ -416,13 +613,13 @@ const protos = [
         </div>
         <details class="statblock__details">
           <summary>Context</summary>
-          <p>Held to day 14 — beyond that the cohorts thin and the number stops being trustworthy. So that’s the ceiling I claim.</p>
+          <p>Held to day 14. Beyond that the cohorts thin and the number stops being trustworthy, so that’s the ceiling I claim.</p>
         </details>
       </article>
 
       <article class="statblock statblock--peak">
         <p class="statblock__fig">42%</p>
-        <p class="statblock__claim">Opened the day-glucose explainer — the most-opened content on the dashboard.</p>
+        <p class="statblock__claim">Opened the day-glucose explainer, the most-opened content on the dashboard.</p>
         <div class="statblock__viz">
           <svg class="statblock__svg" viewBox="0 0 160 52" role="img" aria-label="Day-glucose explainer 42% vs time-in-range explainer 24%">
             <rect x="0" y="4" width="108" height="18" rx="3" fill="var(--accent)"/>
@@ -436,30 +633,10 @@ const protos = [
         </div>
         <details class="statblock__details">
           <summary>Context</summary>
-          <p>People didn’t just glance at numbers — they stopped to learn what they meant. The one decision I most wanted to be right about.</p>
+          <p>People didn’t just glance at numbers: they stopped to learn what they meant. The one decision I most wanted to be right about.</p>
         </details>
       </article>
     </div>
-
-    <figure class="shot shot--support">
-      <figcaption class="chart-title">Retention across the sensor cycle</figcaption>
-      <div class="retention">
-        <svg class="retention__svg" viewBox="0 0 500 200" role="img" aria-label="Retention: Day 0 at 93 percent, Day 7 at 81 percent, Day 14 at 78 percent, held to day 14">
-          <path class="retention__area" d="M40 40 L250 120 L460 145 L460 180 L40 180 Z" />
-          <path class="retention__line" d="M40 40 L250 120 L460 145" />
-          <circle class="retention__dot" cx="40" cy="40" r="6" />
-          <circle class="retention__dot" cx="250" cy="120" r="6" />
-          <circle class="retention__dot" cx="460" cy="145" r="6" />
-          <line class="retention__ceiling" x1="460" y1="145" x2="460" y2="20" />
-        </svg>
-        <div class="retention__labels" aria-hidden="true">
-          <span><b>93%</b>Day 0</span>
-          <span><b>81%</b>Day 7</span>
-          <span><b>78%</b>Day 14</span>
-        </div>
-        <p class="retention__note">Held to day 14. Beyond that the cohorts thin out, so this is the ceiling claimed.</p>
-      </div>
-    </figure>
 
     <section class="beat">
       <p class="beat__lead">The dashboard held. The onboarding was where reality pushed back.</p>
@@ -467,7 +644,6 @@ const protos = [
 
     {/* BEAT 7 — WHERE REALITY PUSHED BACK */}
     <section class="beat">
-      <p class="beat__eyebrow">Where reality pushed back</p>
       <h2 class="beat__h">The device didn’t behave</h2>
       <p>
         Setup completion said 77.6%. What it didn’t say: some of those completed
@@ -500,11 +676,14 @@ const protos = [
         <div class="beforeafter">
           <figure class="ba">
             <span class="ba__label">Before</span>
-            <Image class="ba__img" src={cgmQrBefore} alt="Connect-sensor step with QR scan only, no manual fallback" widths={[400, 790]} sizes="(max-width: 48rem) 46vw, 18rem" />
+            <Image class="ba__img" src={cgmQrBefore} alt="Connect-sensor step with QR scan only, no manual fallback" widths={[300, 400]} sizes="11rem" />
           </figure>
+          <div class="ba__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="18" y2="12"/><polyline points="12 6 18 12 12 18"/></svg>
+          </div>
           <figure class="ba">
             <span class="ba__label ba__label--after">After</span>
-            <Image class="ba__img" src={cgmQrAfter} alt="The same step with a Can’t scan the sensor QR? Enter ID Manually fallback added" widths={[400, 810]} sizes="(max-width: 48rem) 46vw, 18rem" />
+            <Image class="ba__img" src={cgmQrAfter} alt="The same step with a Can’t scan the sensor QR? Enter ID Manually fallback added" widths={[300, 400]} sizes="11rem" />
           </figure>
         </div>
       </li>
@@ -514,11 +693,14 @@ const protos = [
         <div class="beforeafter">
           <figure class="ba">
             <span class="ba__label">Before</span>
-            <Image class="ba__img" src={cgmHindiBefore} alt="Put-on-the-sensor step in English only" widths={[400, 784]} sizes="(max-width: 48rem) 46vw, 18rem" />
+            <Image class="ba__img" src={cgmHindiBefore} alt="Put-on-the-sensor step in English only" widths={[300, 400]} sizes="11rem" />
           </figure>
+          <div class="ba__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="18" y2="12"/><polyline points="12 6 18 12 12 18"/></svg>
+          </div>
           <figure class="ba">
             <span class="ba__label ba__label--after">After</span>
-            <Image class="ba__img" src={cgmHindiAfter} alt="The same step with an English and Hindi language toggle added" widths={[400, 650]} sizes="(max-width: 48rem) 46vw, 18rem" />
+            <Image class="ba__img" src={cgmHindiAfter} alt="The same step with an English and Hindi language toggle added" widths={[300, 400]} sizes="11rem" />
           </figure>
         </div>
       </li>
@@ -541,19 +723,25 @@ const protos = [
 
     {/* BEAT 8 — KAIRA ON CGM */}
     <section class="beat">
-      <p class="beat__eyebrow">Closing the loop</p>
-      <h2 class="beat__h">Kaira on the CGM graph</h2>
+      <h2 class="beat__h">Building a better relatability for users with Kaira AI</h2>
       <p>
-        The fixes handled what broke. The next move wasn’t a fix. The dashboard
-        could tell you your glucose spiked at 3pm. It couldn’t tell you why. The
-        why was almost always food.
-      </p>
-      <p>
-        So we brought Kaira, our food-logging AI, onto the CGM graph itself, with
-        two aims: help users see the pattern between what they ate and how their
-        glucose moved, and get them logging more in the first place.
+        Let's continue our story from above. Imagine that you are now able to
+        track your blood glucose levels and see glucose fluctuations with
+        every activity (eating, exercising, waking up, etc.) you do. You now
+        have visibility, but your curious self wants to know more.
       </p>
     </section>
+
+    <div class="thought-bubbles">
+      <div class="thought-bubble">
+        <p>How is it that a banana can spike my glucose so much?</p>
+        <span class="thought-bubble__tail" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+      <div class="thought-bubble">
+        <p>Are these spikes normal?</p>
+        <span class="thought-bubble__tail" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+    </div>
 
     <div class="collage">
       <div class="collage__grid">
@@ -573,139 +761,169 @@ const protos = [
       </p>
     </div>
 
-    <ol class="decisions4">
-      <li class="fix">
-        <h4 class="fix__lead">Food, placed on the curve</h4>
-        <p>
-          Users could mark meals directly onto their glucose graph and tap any one
-          to see how it moved their sugar. A spike stopped being a number to worry
-          about and became a meal you could point to.
-        </p>
-      </li>
-      <li class="fix">
-        <h4 class="fix__lead">A clear entry point for AI insights</h4>
-        <p>
-          One obvious place to go from “here’s my data” to “tell me what it means,”
-          so the AI layer was something users chose to open, not something that got
-          in their way.
-        </p>
-      </li>
-      <li class="fix">
-        <h4 class="fix__lead">The insight itself was a design surface, not just the container</h4>
-        <p>
-          I owned what the AI actually said, the logic behind which insight surfaces
-          when, and the language it used to say it. In a product like this, the
-          model’s response is the interface, so I treated its words the way I’d
-          treat any other UX copy, held to the same care: useful, plain, and never
-          alarming to someone looking at their own health data.
-        </p>
-      </li>
-      <li class="fix">
-        <h4 class="fix__lead">AI only when the user asks for it</h4>
-        <p>
-          The one-liner above the graph looks AI-generated, but it’s rule-based by
-          design. Real AI runs only on genuine user intent, when someone actually
-          asks for an insight. Same result on screen, a fraction of the token cost
-          at scale.
-        </p>
-      </li>
-    </ol>
-
-    <div class="evidence">
-      <p>
-        It worked as an entry point. The CGM screen became the second-largest
-        food-logging doorway in the entire app, driving 26% of all logging starts,
-        behind only the nutrition screen built specifically for it. A glucose
-        dashboard turned into one of the product’s primary places to log a meal.
-      </p>
-    </div>
-
     <section class="beat">
       <p>
-        My part was the integration: how Kaira surfaced on the CGM screen, how
-        meals mapped onto the graph, the tap-to-detail interaction, the entry point
-        into insights, and the logic and language of the insights themselves. I
-        designed it and handed the logic to the developers.
+        I figured there had to be a way to answer these questions a user
+        might naturally have. This is where we introduced Kaira on the CGM
+        dashboard, with the following aims:
       </p>
+      <ol class="hooked-aims">
+        <li>Provide insights to the user that helped them understand why things are happening the way they are, not just what.</li>
+        <li>Create a habit of food logging, allowing users to track meals as well, because what can be tracked can be improved. We used the Hooked Model to achieve this.</li>
+      </ol>
+      <h3 class="beat__sub">The Hooked Model</h3>
     </section>
+
+    <div class="hooked">
+      <div class="hooked__stage">
+        <span class="hooked__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </span>
+        <h4 class="hooked__title">Trigger</h4>
+        <p class="hooked__desc">A notification or Kaira's message on the CGM dashboard.</p>
+      </div>
+      <div class="hooked__arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="18" y2="12"/><polyline points="12 6 18 12 12 18"/></svg>
+      </div>
+      <div class="hooked__stage">
+        <span class="hooked__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </span>
+        <h4 class="hooked__title">Action</h4>
+        <p class="hooked__desc">Log a meal using Kaira, or manually.</p>
+      </div>
+      <div class="hooked__arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="18" y2="12"/><polyline points="12 6 18 12 12 18"/></svg>
+      </div>
+      <div class="hooked__stage">
+        <span class="hooked__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </span>
+        <h4 class="hooked__title">Variable reward</h4>
+        <p class="hooked__desc">Receive instant insights about why spikes are happening.</p>
+      </div>
+      <div class="hooked__arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="18" y2="12"/><polyline points="12 6 18 12 12 18"/></svg>
+      </div>
+      <div class="hooked__stage">
+        <span class="hooked__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </span>
+        <h4 class="hooked__title">Investment</h4>
+        <p class="hooked__desc">Daily meal logging that results in better overall understanding and guidance.</p>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <p class="evidence__fig">26%</p>
+      <p class="evidence__label">
+        of all logging starts came through the CGM screen, the second-largest
+        food-logging doorway in the entire app, behind only the nutrition
+        screen built specifically for it. A glucose dashboard turned into one
+        of the product’s primary places to log a meal.
+      </p>
+    </div>
 
     <a class="crosslink" href={KAIRA_HREF}>
       <span class="crosslink__label">Kaira as a product has its own story</span>
       <span class="crosslink__cta">Read the Kaira case study<span aria-hidden="true"> →</span></span>
     </a>
 
-    {/* BEAT 9 — WHERE IT STANDS */}
+    {/* HEADING INTO THE FUTURE */}
     <section class="beat">
-      <p class="beat__eyebrow">Where it stands</p>
-      <h2 class="beat__h">The close</h2>
+      <h2 class="beat__h">Heading into the future</h2>
       <p>
-        The clearest proof it held: the same dashboard now runs on MedEcho, the
-        doctor-facing version, where clinicians read their patients’ data through
-        it. A screen built to be legible for three kinds of reader turned out
-        legible enough to become the clinical one.
+        This project was really special. It put GoodFlip on the map alongside
+        other health-tech platforms. From a design perspective, I gained
+        experience drafting data-rich experiences that people actually use and
+        enjoy.
       </p>
       <p>
-        Few real complaints, some genuine user appreciation. For a screen this
-        dense, that’s the outcome I’d have taken at the start.
+        A designer is always stuck in a perpetual loop toward perfection, and
+        the team is already taking significant steps toward a more robust
+        experience. Some of my ideas and the work ahead include the following.
       </p>
     </section>
 
-    {/* ROADMAP */}
-    <section class="beat">
-      <p class="roadmap__intro">It isn’t finished — and I know where it goes.</p>
-    </section>
-
-    <div class="roadmap">
-      <div class="roadmap__tier roadmap__tier--now">
-        <span class="roadmap__tier-label">In motion now</span>
-        <div class="roadmap__cards">
-          <div class="roadmap__card">
-            <p class="roadmap__what">Better shared report</p>
-            <p class="roadmap__why">The doctor-facing export needs to be as legible as the dashboard itself.</p>
-          </div>
-          <div class="roadmap__card">
-            <p class="roadmap__what">Kaira across the whole dashboard</p>
-            <p class="roadmap__why">Food-to-glucose insight on every view, not just a single day.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="roadmap__tier roadmap__tier--next">
-        <span class="roadmap__tier-label">The next bet</span>
-        <div class="roadmap__cards">
-          <div class="roadmap__card roadmap__card--hero">
-            <p class="roadmap__what">From reading to acting</p>
-            <p class="roadmap__why">The dashboard shows you your glucose. The next job is telling you what to do about it — what to change, today.</p>
-            <p class="roadmap__thread">The whole product argued "show the right depth." The next bet is that showing isn’t enough.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="roadmap__tier roadmap__tier--horizon">
-        <span class="roadmap__tier-label">Horizon</span>
-        <div class="roadmap__cards">
-          <div class="roadmap__card">
-            <p class="roadmap__what">An AI-guided plan</p>
-            <p class="roadmap__why">Personalized, action-based guidance built from your own readings — where two-way Kaira is already heading.</p>
-          </div>
-        </div>
-      </div>
+    <div class="future-wrap">
+      <table class="future-table">
+        <thead>
+          <tr>
+            <th>
+              <span class="future-table__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              </span>
+              What's in the pipeline?
+            </th>
+            <th>
+              <span class="future-table__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </span>
+              What am I actively pitching to the team?
+            </th>
+            <th>
+              <span class="future-table__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              What's my north star?
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ol>
+                <li>A better report-sharing experience, letting professionals handle multiple patients without being overwhelmed.</li>
+                <li>Kaira gaining the ability to have two-way engagement with the user.</li>
+              </ol>
+            </td>
+            <td>
+              The whole product argued "show the right depth." The next bet is
+              that showing isn't enough. Next, the system should be smart enough
+              to customize a plan that actually helps you make valuable
+              lifestyle changes.
+            </td>
+            <td>
+              As a designer, I want users to actually understand how they're
+              performing, and to communicate a motivating, transformative
+              message through my work. I'd like this to become the definitive
+              experience for viewing CGM data for everyday users, and a
+              standard across the industry. We're far from that goal, but a
+              designer can dream.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    {/* LEARNINGS */}
-    <ul class="learnings">
-      <li class="learning">A dashboard’s job isn’t to display data — it’s to change behavior.</li>
-      <li class="learning">Showing honestly is table stakes. Acting is the product.</li>
-      <li class="learning">The ambition dev bandwidth killed on day one is the direction the product is taking now.</li>
-    </ul>
-
-    {/* PHILOSOPHICAL CLOSE */}
-    <section class="close">
-      <p class="close__line">
-        None of this was about a dashboard. It was about deciding what each person
-        could handle, showing the data honestly, and fixing what I got wrong when
-        the device proved me wrong. That’s the work I’d do again.
-      </p>
+    {/* TESTIMONIALS */}
+    <section class="testimonials">
+      <div class="testimonials__inner">
+        <h2 class="testimonials__heading">What did the users have to say?</h2>
+        <div class="testimonials__grid">
+          <blockquote class="testimonial">
+            <p class="testimonial__quote">
+              I had actually been misdiagnosed as diabetic, but using the CGM, I
+              could closely monitor and confirm my readings. My HbA1c came down
+              to 5.8, and I was able to see that I was pre-diabetic due to
+              insulin resistance, rather than diabetic. The visualization chart
+              they provide is excellent and very helpful.
+            </p>
+            <footer class="testimonial__source">Someone looking for weight loss</footer>
+          </blockquote>
+          <blockquote class="testimonial">
+            <p class="testimonial__quote">
+              I have used both HealthifyMe and SugarFit CGMs, but I found
+              GoodFlip's CGM to be far better than those two. The tracking chart
+              generated in the GoodFlip app is very good. Unlike other systems,
+              I don't have to repeatedly scan with NFC, and there are none of
+              the Bluetooth disconnection issues. The product is really, really
+              good. I have no complaints.
+            </p>
+            <footer class="testimonial__source">Pre-diabetic fitness enthusiast</footer>
+          </blockquote>
+        </div>
+      </div>
     </section>
 
     <a class="crosslink" href={KAIRA_HREF}>
@@ -730,9 +948,9 @@ const protos = [
 <style>
   /* ---- Shared case-study primitives (match the Kaira study) ---- */
   .cs {
-    max-width: 44rem;
+    max-width: 64rem;
     margin: 0 auto;
-    padding: var(--space-2xl) var(--space-xl) var(--space-3xl);
+    padding: var(--space-3xl) var(--space-xl) var(--space-3xl);
     color: var(--ink);
   }
 
@@ -745,73 +963,364 @@ const protos = [
   }
   .cs__back:hover { color: var(--accent); }
 
-  .cs__anchor { margin-top: var(--space-2xl); }
-
-  .cs__kicker {
-    font-size: var(--font-sm);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
+  .cs__anchor { margin-top: var(--space-3xl); }
 
   .cs__title {
     margin-top: var(--space-sm);
-    font-size: clamp(2.5rem, 7vw, 4rem);
-    font-weight: 900;
-    line-height: 1.02;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
     letter-spacing: -0.02em;
   }
 
-  .cs__hook {
-    margin-top: var(--space-lg);
-    font-size: var(--font-lg);
-    font-weight: 500;
-    line-height: 1.35;
+  /* ---- Context: what GoodFlip is, what a CGM is ---- */
+  .context {
+    margin-top: var(--space-3xl);
   }
-
-  /* Break-out helper used by wide elements. */
-  .shot,
-  .whycgm,
-  .mtable-wrap,
-  .decision,
-  .caption-item,
-  .statblocks,
-  .fixes,
-  .decisions4,
-  .killed,
-  .evidence,
-  .crosslink {
-    width: min(60rem, 92vw);
-    margin-left: 50%;
-    transform: translateX(-50%);
+  .context__heading {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-lg);
   }
-
-  /* Header stats */
-  .cs__stats {
+  .context__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-xl);
-    margin: var(--space-xl) 0 0;
+  }
+  .context__col {
+    padding: var(--space-xl);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .context__title {
+    font-size: var(--font-md);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-xs);
+  }
+  .context__desc {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .context__fig {
+    margin: 0 0 var(--space-lg);
+  }
+  .context__img {
+    display: block;
+    width: 4.5rem;
+    height: 4.5rem;
+    object-fit: contain;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+  @media (max-width: 48rem) {
+    .context__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  /* Highlights: the two headline numbers, right after the context section. */
+  .highlights {
+    margin-top: var(--space-3xl);
     padding-top: var(--space-lg);
     border-top: 1px solid var(--hairline);
-    max-width: 44rem;
   }
-  .stat { display: flex; flex-direction: column; }
-  .stat__value {
-    order: -1;
+  .highlights__heading {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-lg);
+  }
+  .highlights__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+  .highlights__card {
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .highlights__value {
     font-size: clamp(2rem, 4vw, 2.75rem);
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  .highlights__label {
+    margin-top: var(--space-xs);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5;
     color: var(--ink);
   }
-  .stat__label {
-    margin-top: var(--space-sm);
+
+  /* ---- Experience the CGM: a plain full-bleed dark section ---- */
+  .experience {
+    box-sizing: border-box;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+    background: var(--ink);
+  }
+  .experience__title {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 var(--space-xl);
+    font-size: var(--font-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+  .experience__content {
+    max-width: 60rem;
+    margin: var(--space-xl) auto 0;
+    padding: 0 var(--space-xl);
+  }
+  .exp-card {
+    padding: var(--space-2xl);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .exp-card__title {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin-bottom: var(--space-md);
+  }
+  .exp-card__intro {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 44rem;
+  }
+  .exp-card__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: var(--space-lg);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-md);
+  }
+
+  /* Block 1: the emphasised, spine-of-the-section card */
+  .exp-card--hero {
+    border: 2px solid var(--accent);
+    background: rgba(231, 95, 56, 0.06);
+  }
+  .hero-split {
+    display: flex;
+    margin-bottom: var(--space-lg);
+  }
+  .hero-split__seg {
+    flex: 1;
+    padding: 0 var(--space-md);
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .hero-split__seg:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+  .hero-split__seg strong {
     font-size: var(--font-base);
-    line-height: 1.4;
-    color: var(--ink);
-    max-width: 22ch;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .hero-split__seg small {
+    font-size: var(--font-xs);
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .hero-images {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+  .hero-images__wide,
+  .hero-images__narrow {
+    display: block;
+    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-md);
+  }
+  .hero-images__wide { flex: 1.4; min-width: 0; }
+  .hero-images__narrow { flex: 1; min-width: 0; }
+
+  /* Block 2's highlighted, placeholder stat */
+  .exp-card__stat {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  }
+  .exp-card__stat-fig {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .exp-card__stat-label {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  @media (max-width: 40rem) {
+    .hero-split {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .hero-split__seg {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--space-xs);
+      padding-left: 0;
+      border-left: none;
+    }
+    .hero-images { flex-direction: column; }
+  }
+
+  .exp-proto {
+    margin-top: var(--space-lg);
+    aspect-ratio: 3 / 4;
+    max-width: 24rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  .exp-proto iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .exp-steps {
+    list-style: none;
+    display: flex;
+    align-items: flex-start;
+    margin-top: var(--space-2xl);
+  }
+  .exp-step {
+    position: relative;
+    flex: 1;
+    padding: 0 var(--space-md);
+    text-align: center;
+  }
+  .exp-step:first-child { padding-left: 0; }
+  .exp-step:last-child { padding-right: 0; }
+  .exp-step::before {
+    content: '';
+    position: absolute;
+    top: 1.125rem;
+    left: -50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+  .exp-step:first-child::before { display: none; }
+  .exp-step__num {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0 auto var(--space-sm);
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: var(--font-md);
+  }
+  .exp-step__text {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .exp-pointer {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-lg) 0;
+    color: var(--accent);
+  }
+  .exp-pointer svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  @media (max-width: 40rem) {
+    .exp-steps {
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+    .exp-step::before { display: none; }
+    .exp-step { padding: 0; text-align: left; }
+  }
+
+  /* ---- Problem statement: the bright-orange full-bleed section ---- */
+  .problem {
+    box-sizing: border-box;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-top: 0;
+    padding: var(--space-3xl) 0;
+    background: var(--bg);
+  }
+  .problem__inner {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 var(--space-xl);
+  }
+  .problem__heading {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin-bottom: var(--space-lg);
+  }
+  .problem__text {
+    max-width: 48rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .problem__text + .problem__text {
+    margin-top: var(--space-md);
+  }
+  .problem__text--highlight {
+    font-size: var(--font-md);
+    font-weight: 700;
+    color: #fff;
   }
 
   /* Role block */
@@ -826,9 +1335,6 @@ const protos = [
     align-items: center;
     gap: 0;
     margin: var(--space-3xl) 0;
-    width: min(60rem, 92vw);
-    margin-left: 50%;
-    transform: translateX(-50%);
   }
   .cs__section-break-line {
     flex: 1;
@@ -846,14 +1352,6 @@ const protos = [
 
   /* Beats */
   .beat { margin-top: var(--space-3xl); }
-  .beat__eyebrow {
-    font-size: var(--font-sm);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: var(--space-xs);
-  }
   .beat__h {
     font-size: var(--font-xl);
     font-weight: 700;
@@ -868,7 +1366,8 @@ const protos = [
     margin-bottom: var(--space-xs);
   }
   .beat p {
-    font-size: var(--font-md);
+    max-width: 48rem;
+    font-size: 1.125rem;
     line-height: 1.6;
     margin-top: var(--space-md);
   }
@@ -880,8 +1379,7 @@ const protos = [
   }
 
   /* Figures / placeholders */
-  .shot { margin-top: var(--space-2xl); margin-bottom: var(--space-2xl); }
-  .shot--support { width: min(48rem, 92vw); }
+  .shot { margin-top: var(--space-3xl); margin-bottom: var(--space-2xl); }
   .shot figcaption {
     margin-top: var(--space-sm);
     font-size: var(--font-sm);
@@ -910,33 +1408,11 @@ const protos = [
   }
 
   .whycgm__setup {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-md);
     max-width: 44rem;
-  }
-  .whycgm__marker {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    background: rgba(0, 0, 0, 0.04);
-    padding: 0.25rem 0.6rem;
-    border-radius: var(--radius-pill);
-    margin-top: 0.2rem;
-    white-space: nowrap;
-  }
-  .whycgm__marker svg {
-    width: 0.85rem;
-    height: 0.85rem;
+    text-align: left;
   }
   .whycgm__setup-text {
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     line-height: 1.6;
     color: var(--muted);
   }
@@ -961,7 +1437,7 @@ const protos = [
   }
 
   .whycgm__leadin {
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     font-weight: 600;
     color: var(--muted);
     margin-bottom: var(--space-lg);
@@ -1010,7 +1486,7 @@ const protos = [
     color: var(--accent);
   }
   .payoff__body {
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     line-height: 1.55;
     color: var(--ink);
   }
@@ -1028,7 +1504,7 @@ const protos = [
   .mtable {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     line-height: 1.5;
     border: 1px solid var(--hairline);
     border-radius: var(--radius-md);
@@ -1079,7 +1555,7 @@ const protos = [
     margin-bottom: var(--space-sm);
   }
   .decision__text p {
-    font-size: var(--font-md);
+    font-size: 1.125rem;
     line-height: 1.6;
   }
 
@@ -1117,11 +1593,12 @@ const protos = [
     margin-inline: auto;
   }
 
-  /* Before / after pairs (Beat 7 fixes) */
+  /* Before / after pairs (Beat 7 fixes) — kept small and paired with an arrow */
   .beforeafter {
     margin-top: var(--space-md);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: var(--space-md);
   }
   .ba { margin: 0; }
@@ -1137,22 +1614,29 @@ const protos = [
   .ba__label--after { color: var(--accent); }
   .ba__img {
     display: block;
-    width: 100%;
+    width: 11rem;
+    max-width: 100%;
     height: auto;
     border: 1px solid var(--hairline);
     border-radius: var(--radius-md);
   }
-
-  /* Keep the before/after pairs compact enough for smaller laptops. */
-  .fixes {
-    width: min(46rem, 92vw);
+  .ba__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+  }
+  .ba__arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  @media (max-width: 28rem) {
+    .ba__arrow svg { transform: rotate(90deg); }
   }
 
   /* Shipped prototypes (Figma embeds) at the top of Beat 5. */
   .protos {
-    width: min(60rem, 92vw);
-    margin: var(--space-xl) 50% 0;
-    transform: translateX(-50%);
+    margin-top: var(--space-xl);
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-xl);
@@ -1201,7 +1685,7 @@ const protos = [
     margin-bottom: var(--space-xs);
   }
   .b5-item__desc {
-    font-size: var(--font-md);
+    font-size: 1.125rem;
     line-height: 1.6;
     color: var(--ink);
     max-width: 40rem;
@@ -1278,11 +1762,120 @@ const protos = [
     font-style: normal;
   }
 
+  /* Thought bubbles: the two questions pulled out of the intro paragraph */
+  .thought-bubbles {
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+  }
+  .thought-bubble {
+    position: relative;
+    flex: 1;
+    min-width: 14rem;
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    background: rgba(231, 95, 56, 0.03);
+  }
+  .thought-bubble p {
+    font-size: 1.125rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .thought-bubble__tail {
+    position: absolute;
+    left: var(--space-lg);
+    top: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    margin-top: 0.3rem;
+  }
+  .thought-bubble__tail i {
+    display: block;
+    border-radius: 50%;
+    background: rgba(231, 95, 56, 0.15);
+  }
+  .thought-bubble__tail i:nth-child(1) { width: 0.6rem; height: 0.6rem; }
+  .thought-bubble__tail i:nth-child(2) { width: 0.4rem; height: 0.4rem; margin-left: 0.3rem; }
+  .thought-bubble__tail i:nth-child(3) { width: 0.25rem; height: 0.25rem; margin-left: 0.55rem; }
+
+  /* Kaira's aims list + the Hooked Model diagram (Beat 8) */
+  .hooked-aims {
+    margin-top: var(--space-md);
+    padding-left: 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 48rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .hooked {
+    margin-top: var(--space-2xl);
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+  .hooked__stage {
+    flex: 1;
+    padding: var(--space-lg);
+    border: 1px solid var(--hairline);
+    border-top: 3px solid var(--accent);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .hooked__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: var(--space-sm);
+    color: var(--accent);
+  }
+  .hooked__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .hooked__title {
+    font-size: var(--font-base);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: var(--space-xs);
+  }
+  .hooked__desc {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .hooked__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+  }
+  .hooked__arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  @media (max-width: 48rem) {
+    .hooked {
+      flex-direction: column;
+    }
+    .hooked__arrow svg {
+      transform: rotate(90deg);
+    }
+  }
+
   /* Kaira AI collage (Beat 8) */
   .collage {
-    width: min(60rem, 92vw);
-    margin: var(--space-2xl) 50%;
-    transform: translateX(-50%);
+    margin: var(--space-2xl) 0;
     padding: var(--space-lg);
     background: rgba(0, 0, 0, 0.02);
     border: 1px solid var(--hairline);
@@ -1305,19 +1898,17 @@ const protos = [
   }
   .collage__cap {
     margin-top: var(--space-md);
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     color: var(--muted);
     line-height: 1.5;
   }
 
-  .fixes,
-  .decisions4 {
+  .fixes {
     list-style: none;
     margin-top: var(--space-xl);
     display: grid;
     gap: var(--space-lg);
   }
-  .decisions4 { grid-template-columns: repeat(2, 1fr); }
   .fix {
     padding: var(--space-lg);
     border: 1px solid var(--hairline);
@@ -1332,7 +1923,7 @@ const protos = [
     line-height: 1.25;
   }
   .fix p {
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     line-height: 1.55;
     color: var(--muted);
   }
@@ -1358,7 +1949,7 @@ const protos = [
     color: var(--accent);
     margin-bottom: var(--space-sm);
   }
-  .killed__text p { font-size: var(--font-md); line-height: 1.6; }
+  .killed__text p { font-size: 1.125rem; line-height: 1.6; }
 
   /* ---- Beat 6: stat blocks + retention curve ---- */
   .statblocks {
@@ -1386,7 +1977,7 @@ const protos = [
   .statblock--peak .statblock__fig { color: var(--accent); }
   .statblock__claim {
     margin-top: var(--space-sm);
-    font-size: var(--font-sm);
+    font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.4;
   }
@@ -1400,7 +1991,7 @@ const protos = [
   }
   .statblock__details {
     margin-top: var(--space-md);
-    font-size: var(--font-xs);
+    font-size: 1.125rem;
     line-height: 1.5;
     color: var(--muted);
   }
@@ -1418,60 +2009,23 @@ const protos = [
     margin-top: var(--space-xs);
   }
 
-  .chart-title {
-    font-size: var(--font-sm);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: var(--space-md);
-  }
-  .retention {
-    padding: var(--space-lg);
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-md);
-  }
-  .retention__svg {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 500 / 200;
-    overflow: visible;
-  }
-  .retention__line {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .retention__area { fill: rgba(231, 95, 56, 0.08); stroke: none; }
-  .retention__dot { fill: var(--accent); }
-  .retention__ceiling {
-    stroke: var(--accent);
-    stroke-width: 1.5;
-    stroke-dasharray: 6 6;
-    opacity: 0.6;
-  }
-  .retention__labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: var(--space-sm);
-    font-size: var(--font-xs);
-    color: var(--muted);
-  }
-  .retention__labels span { display: flex; flex-direction: column; }
-  .retention__labels b { color: var(--ink); font-size: var(--font-sm); }
-  .retention__labels span:last-child b { color: var(--accent); }
-  .retention__note {
-    margin-top: var(--space-md);
-    font-size: var(--font-xs);
-    color: var(--muted);
-    line-height: 1.5;
-  }
 
   /* ---- Beat 8: evidence + cross-link ---- */
   .evidence { margin-top: var(--space-xl); }
-  .evidence p { font-size: var(--font-md); line-height: 1.6; }
+  .evidence__fig {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  .evidence__label {
+    margin-top: var(--space-sm);
+    max-width: 40rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
   .evidence__verify { margin-top: var(--space-md); }
 
   .crosslink {
@@ -1504,124 +2058,114 @@ const protos = [
     border-top: 1px solid var(--hairline);
   }
 
-  /* ---- Beat 9: roadmap + learnings + close ---- */
-  .roadmap__intro {
-    font-size: var(--font-md);
-    font-weight: 600;
-    line-height: 1.5;
-    color: var(--ink);
-  }
 
-  .roadmap {
-    width: min(60rem, 92vw);
-    margin: var(--space-xl) 50% 0;
-    transform: translateX(-50%);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-    align-items: start;
+  /* ---- Heading into the future: pipeline / pitch / north star table ---- */
+  .future-wrap {
+    margin-top: var(--space-xl);
   }
-
-  .roadmap__tier {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-
-  .roadmap__tier-label {
-    font-size: var(--font-xs);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding-bottom: var(--space-xs);
-    border-bottom: 2px solid var(--hairline);
-  }
-
-  .roadmap__tier--next .roadmap__tier-label {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  .roadmap__cards {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-
-  .roadmap__card {
-    padding: var(--space-md);
+  .future-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
     border: 1px solid var(--hairline);
     border-radius: var(--radius-md);
-    background: var(--surface);
+    overflow: hidden;
   }
-
-  .roadmap__card--hero {
-    border-color: var(--accent);
-    background: rgba(231, 95, 56, 0.04);
-    border-width: 2px;
+  .future-table th,
+  .future-table td {
+    width: 33.333%;
+    text-align: left;
+    vertical-align: top;
+    padding: var(--space-lg);
+    border-left: 1px solid var(--hairline);
   }
-
-  .roadmap__what {
-    font-size: var(--font-sm);
+  .future-table th:first-child,
+  .future-table td:first-child {
+    border-left: none;
+  }
+  .future-table th {
+    font-size: var(--font-md);
     font-weight: 700;
     line-height: 1.3;
-    color: var(--ink);
+    background: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid var(--hairline);
   }
-
-  .roadmap__card--hero .roadmap__what {
-    font-size: var(--font-base);
+  .future-table__icon {
+    display: flex;
+    margin-bottom: var(--space-sm);
     color: var(--accent);
   }
-
-  .roadmap__why {
-    margin-top: var(--space-xs);
-    font-size: var(--font-xs);
-    line-height: 1.5;
-    color: var(--muted);
+  .future-table__icon svg {
+    width: 1.375rem;
+    height: 1.375rem;
   }
-
-  .roadmap__thread {
-    margin-top: var(--space-sm);
-    font-size: var(--font-xs);
-    line-height: 1.5;
-    font-weight: 600;
+  .future-table td {
+    font-size: 1.125rem;
+    line-height: 1.6;
     color: var(--ink);
-    padding-top: var(--space-sm);
-    border-top: 1px solid rgba(231, 95, 56, 0.2);
+  }
+  .future-table ol {
+    padding-left: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 
-  .learnings {
-    list-style: none;
-    width: min(60rem, 92vw);
-    margin: var(--space-2xl) 50% 0;
-    transform: translateX(-50%);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-  }
-
-  .learning {
-    font-size: var(--font-sm);
-    font-weight: 600;
-    line-height: 1.45;
-    color: var(--ink);
-    padding: var(--space-md);
-    border-left: 2px solid var(--hairline);
-  }
-
-  .close {
+  /* ---- Testimonials: a full-bleed dark band, deliberately set apart ---- */
+  .testimonials {
     margin-top: var(--space-3xl);
-    padding: var(--space-2xl) 0;
-    border-top: 2px solid var(--ink);
-    max-width: 44rem;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: var(--space-3xl) 0;
+    background: var(--ink);
   }
-
-  .close__line {
-    font-size: var(--font-lg);
+  .testimonials__inner {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 var(--space-xl);
+  }
+  .testimonials__heading {
+    font-size: var(--font-xl);
     font-weight: 700;
-    line-height: 1.35;
-    color: var(--ink);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin-bottom: var(--space-2xl);
+  }
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2xl);
+  }
+  .testimonial {
+    padding-left: var(--space-lg);
+    border-left: 2px solid var(--accent);
+  }
+  .testimonial__quote {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .testimonial__quote::before,
+  .testimonial__quote::after {
+    display: inline-block;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.75rem;
+    font-weight: 700;
+    line-height: 0;
+    color: var(--accent);
+    vertical-align: -0.4rem;
+  }
+  .testimonial__quote::before { content: '“'; margin-right: 0.2rem; }
+  .testimonial__quote::after { content: '”'; margin-left: 0.2rem; }
+  .testimonial__source {
+    margin-top: var(--space-md);
+    font-size: var(--font-sm);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--accent);
   }
 
   /* ---- Responsive ---- */
@@ -1629,8 +2173,9 @@ const protos = [
     .whycgm__payoffs,
     .readers,
     .iaviews,
-    .decisions4,
-    .statblocks {
+    .statblocks,
+    .highlights__grid,
+    .testimonials__grid {
       grid-template-columns: 1fr;
     }
     .decision,
@@ -1642,7 +2187,28 @@ const protos = [
     .caption-item { direction: ltr; }
     .collage__grid { grid-template-columns: 1fr; }
     .protos { grid-template-columns: 1fr; }
-    .roadmap { grid-template-columns: 1fr; }
-    .learnings { grid-template-columns: 1fr; }
+    .future-table,
+    .future-table thead,
+    .future-table tbody,
+    .future-table tr {
+      display: block;
+      width: 100%;
+    }
+    .future-table th,
+    .future-table td {
+      display: block;
+      width: 100%;
+      border-left: none;
+    }
+    .future-table th {
+      border-bottom: none;
+    }
+    .future-table td {
+      padding-top: 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .future-table tr td:last-child {
+      border-bottom: none;
+    }
   }
 </style>
