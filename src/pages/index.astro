@@ -1,4 +1,8 @@
 ---
+// Rendered on demand (not prerendered) so src/middleware.ts runs on every
+// homepage visit and logs the visitor's user-agent.
+export const prerender = false;
+
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StickyNav from '../components/StickyNav.astro';
 import Hero from '../components/Hero.astro';
