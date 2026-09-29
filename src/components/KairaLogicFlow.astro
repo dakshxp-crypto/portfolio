@@ -1,0 +1,279 @@
+---
+// KairaLogicFlow — the "infer, don't interrogate" conversation logic,
+// redrawn as a legible flowchart. Replaces a dense exported screenshot with
+// two horizontal lanes (single meal / multiple meals) that both end the same
+// way. Deliberately wider than the reading column; the wrapper scrolls.
+
+const laneAViewBox = '0 0 1360 220';
+const laneBViewBox = '0 0 2260 260';
+---
+
+<div class="klf">
+  <p class="klf__intro">
+    Kaira parses what you typed, then splits depending on whether you logged one meal or
+    several. Both paths end the same way.
+  </p>
+
+  <div class="klf__lane">
+    <h4 class="klf__lanehead">If it's a single meal</h4>
+    <div class="klf__scroll">
+      <svg class="klf__svg" viewBox={laneAViewBox} role="img" aria-label="If all info is present, Kaira confirms the meal and asks if there's anything else. If time or quantity is missing, Kaira asks for it and keeps asking gently until the answer is clear, then confirms.">
+        <path class="klf__path" d="M190,110 L250,110" />
+        <path class="klf__path" d="M460,110 C558,110 670,48 740,48" />
+        <path class="klf__path" d="M460,110 C558,110 670,175 740,175" />
+        <path class="klf__path" d="M1070,48 C1098,48 1130,110 1150,110" />
+        <path class="klf__path" d="M1070,175 C1098,175 1130,110 1150,110" />
+
+        <text x="480" y="35" class="klf__branchlabel">All present</text>
+        <text x="480" y="205" class="klf__branchlabel">Missing time / quantity</text>
+
+        <g>
+          <rect x="0" y="78" width="190" height="64" rx="12" class="klf__rect" />
+          <text x="16" y="106" class="klf__title">Single meal</text>
+          <text x="16" y="124" class="klf__desc">detected</text>
+        </g>
+
+        <g>
+          <rect x="250" y="78" width="210" height="64" rx="12" class="klf__rect klf__rect--decision" />
+          <text x="266" y="106" class="klf__title klf__title--decision">All info present?</text>
+          <text x="266" y="124" class="klf__desc">Food, time, quantity</text>
+        </g>
+
+        <g>
+          <rect x="740" y="10" width="330" height="76" rx="12" class="klf__rect klf__rect--yes" />
+          <text x="756" y="34" class="klf__title klf__title--yes">Confirms the meal</text>
+          <text x="756" y="52" class="klf__desc">
+            <tspan x="756" dy="0">Asks: "Want to add</tspan>
+            <tspan x="756" dy="14">anything else?"</tspan>
+          </text>
+        </g>
+
+        <g>
+          <rect x="740" y="130" width="330" height="90" rx="12" class="klf__rect" />
+          <text x="756" y="152" class="klf__title">Asks for the missing info</text>
+          <text x="756" y="170" class="klf__desc">
+            <tspan x="756" dy="0">If the answer is vague, explains why</tspan>
+            <tspan x="756" dy="14">and asks again, gently, until it's clear</tspan>
+          </text>
+        </g>
+
+        <g>
+          <rect x="1150" y="78" width="200" height="64" rx="12" class="klf__rect klf__rect--end" />
+          <text x="1166" y="106" class="klf__title klf__title--end">Confirms the full log</text>
+          <text x="1166" y="124" class="klf__desc klf__desc--end">"Got everything I need"</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="klf__lane">
+    <h4 class="klf__lanehead">If it's multiple meals</h4>
+    <div class="klf__scroll">
+      <svg class="klf__svg" viewBox={laneBViewBox} role="img" aria-label="For each meal, if info is missing Kaira asks and keeps asking until it's filled in. Once every meal is filled in, Kaira checks for large time gaps and asks about them before confirming the full log.">
+        <path class="klf__path" d="M190,130 L250,130" />
+        <path class="klf__path" d="M480,130 C571,130 675,68 740,68" />
+        <path class="klf__path" d="M480,130 C571,130 675,205 740,205" />
+        <path class="klf__path" d="M1020,68 C1065.5,68 1117.5,130 1150,130" />
+        <path class="klf__path" d="M1070,205 C1098,205 1130,130 1150,130" />
+        <path class="klf__path" d="M1410,130 C1469.5,130 1537.5,68 1580,68" />
+        <path class="klf__path" d="M1410,130 C1469.5,130 1537.5,205 1580,205" />
+        <path class="klf__path" d="M1800,68 C1870,68 1950,130 2000,130" />
+        <path class="klf__path" d="M1910,205 C1941.5,205 1977.5,130 2000,130" />
+
+        <text x="500" y="35" class="klf__branchlabel">Complete</text>
+        <text x="500" y="235" class="klf__branchlabel">Missing time / quantity</text>
+        <text x="1430" y="35" class="klf__branchlabel">No gap</text>
+        <text x="1430" y="235" class="klf__branchlabel">Large gap found</text>
+
+        <g>
+          <rect x="0" y="98" width="190" height="64" rx="12" class="klf__rect" />
+          <text x="16" y="126" class="klf__title">Multiple meals</text>
+          <text x="16" y="144" class="klf__desc">detected</text>
+        </g>
+
+        <g>
+          <rect x="250" y="98" width="230" height="64" rx="12" class="klf__rect klf__rect--decision" />
+          <text x="266" y="126" class="klf__title klf__title--decision">
+            <tspan x="266" dy="0">For each meal: is</tspan>
+            <tspan x="266" dy="14">info complete?</tspan>
+          </text>
+        </g>
+
+        <g>
+          <rect x="740" y="40" width="280" height="56" rx="12" class="klf__rect klf__rect--yes" />
+          <text x="756" y="72" class="klf__title klf__title--yes">Nothing to ask</text>
+          <text x="756" y="90" class="klf__desc">Moves on</text>
+        </g>
+
+        <g>
+          <rect x="740" y="160" width="330" height="90" rx="12" class="klf__rect" />
+          <text x="756" y="182" class="klf__title">Asks for the missing info</text>
+          <text x="756" y="200" class="klf__desc">
+            <tspan x="756" dy="0">Per meal. If vague, explains why and</tspan>
+            <tspan x="756" dy="14">asks again until it's filled in</tspan>
+          </text>
+        </g>
+
+        <g>
+          <rect x="1150" y="98" width="260" height="64" rx="12" class="klf__rect klf__rect--decision" />
+          <text x="1166" y="120" class="klf__title klf__title--decision">Once all filled: any large gaps?</text>
+          <text x="1166" y="138" class="klf__desc">For example, 8am to 8pm</text>
+        </g>
+
+        <g>
+          <rect x="1580" y="40" width="220" height="56" rx="12" class="klf__rect klf__rect--yes" />
+          <text x="1596" y="72" class="klf__title klf__title--yes">Continues</text>
+        </g>
+
+        <g>
+          <rect x="1580" y="160" width="330" height="90" rx="12" class="klf__rect" />
+          <text x="1596" y="182" class="klf__title">Did you have anything in between?</text>
+          <text x="1596" y="200" class="klf__desc">
+            <tspan x="1596" dy="0">Prompts for the gap, and asks for</tspan>
+            <tspan x="1596" dy="14">that meal too</tspan>
+          </text>
+        </g>
+
+        <g>
+          <rect x="2000" y="98" width="220" height="64" rx="12" class="klf__rect klf__rect--end" />
+          <text x="2016" y="126" class="klf__title klf__title--end">Confirms the full log</text>
+          <text x="2016" y="144" class="klf__desc klf__desc--end">"Got everything I need"</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="klf__end">
+    <span class="klf__endlabel">Either way</span>
+    <div class="klf__endchain">
+      <div class="klf__endstep">Shows a 2 to 3 line summary, plus a card per meal</div>
+      <span class="klf__endarrow" aria-hidden="true">→</span>
+      <div class="klf__endstep">Asks: "Want to log anything else?"</div>
+      <span class="klf__endarrow" aria-hidden="true">→</span>
+      <div class="klf__endstep klf__endstep--split">
+        <span><strong>Yes</strong> — back to the opening prompt</span>
+        <span><strong>No</strong> — ends the conversation</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .klf { margin-top: var(--space-lg); }
+  .klf__intro {
+    max-width: 46rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: var(--space-xl);
+  }
+  .klf__lane { margin-top: var(--space-xl); }
+  .klf__lane:first-of-type { margin-top: 0; }
+  .klf__lanehead {
+    font-size: var(--font-base);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: var(--space-sm);
+  }
+  .klf__scroll {
+    overflow-x: auto;
+    padding-bottom: var(--space-xs);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+  }
+  .klf__svg {
+    display: block;
+    width: 1360px;
+    max-width: none;
+    height: auto;
+    padding: var(--space-md);
+  }
+  .klf__svg text {
+    font-family: 'Satoshi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .klf__path {
+    fill: none;
+    stroke: var(--hairline);
+    stroke-width: 2.5;
+  }
+  .klf__branchlabel {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    fill: var(--muted);
+  }
+
+  .klf__rect {
+    fill: var(--surface);
+    stroke: var(--hairline);
+    stroke-width: 1.5;
+  }
+  .klf__rect--decision {
+    fill: rgba(0, 0, 0, 0.03);
+    stroke: var(--ink);
+  }
+  .klf__rect--yes {
+    fill: rgba(231, 95, 56, 0.05);
+    stroke: var(--accent);
+  }
+  .klf__rect--end {
+    fill: var(--ink);
+    stroke: var(--ink);
+  }
+
+  .klf__title {
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--ink);
+  }
+  .klf__title--decision { fill: var(--ink); }
+  .klf__title--yes { fill: var(--accent); }
+  .klf__title--end { fill: #fff; }
+  .klf__desc {
+    font-size: 12.5px;
+    fill: var(--muted);
+  }
+  .klf__desc--end { fill: rgba(255, 255, 255, 0.75); }
+
+  .klf__end {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px dashed var(--hairline);
+  }
+  .klf__endlabel {
+    display: block;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+  }
+  .klf__endchain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .klf__endstep {
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
+    font-weight: 600;
+  }
+  .klf__endstep--split {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .klf__endarrow { color: var(--accent); font-weight: 700; }
+
+  @media (max-width: 40rem) {
+    .klf__endchain { flex-direction: column; align-items: stretch; }
+    .klf__endarrow { display: none; }
+  }
+</style>

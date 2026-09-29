@@ -5,11 +5,12 @@
 interface Props {
   label: string;
   ratio?: string;
+  compact?: boolean;
 }
-const { label, ratio } = Astro.props;
+const { label, ratio, compact = false } = Astro.props;
 ---
 
-<div class="asset-ph" style={ratio ? `aspect-ratio: ${ratio};` : undefined}>
+<div class={compact ? 'asset-ph asset-ph--compact' : 'asset-ph'} style={ratio ? `aspect-ratio: ${ratio};` : undefined}>
   <span class="asset-ph__tag">Asset</span>
   <span class="asset-ph__label">{label}</span>
   {ratio && <span class="asset-ph__ratio">{ratio}</span>}
@@ -54,5 +55,18 @@ const { label, ratio } = Astro.props;
     font-size: var(--font-xs);
     color: var(--muted);
     opacity: 0.7;
+  }
+
+  .asset-ph--compact {
+    min-height: 4rem;
+    gap: var(--space-xs);
+    padding: var(--space-sm);
+  }
+  .asset-ph--compact .asset-ph__tag {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+  }
+  .asset-ph--compact .asset-ph__label {
+    font-size: var(--font-xs);
   }
 </style>
